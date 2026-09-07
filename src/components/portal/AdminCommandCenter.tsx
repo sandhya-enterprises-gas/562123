@@ -1,0 +1,701 @@
+import React, { useState, useEffect } from 'react';
+import {
+  ShieldAlert,
+  Shield,
+  FileSpreadsheet,
+  Users,
+  IndianRupee,
+  RotateCcw,
+  History,
+  TrendingUp,
+  Search,
+  Filter,
+  CheckCircle2,
+  AlertTriangle,
+  Settings,
+  Edit3,
+  Calendar,
+  Layers,
+  ArrowUpDown,
+  Lock,
+  Unlock,
+  Truck,
+  UserCheck,
+  Eye,
+  EyeOff
+} from 'lucide-react';
+import { Language, CustomerAccount, AuditReportItem, UserRole } from '../../types';
+import { portalStore, PortalState } from '../../data/portalStore';
+
+interface AdminCommandCenterProps {
+  lang: Language;
+}
+
+export const AdminCommandCenter: React.FC<AdminCommandCenterProps> = ({ lang }) => {
+  const [storeState, setStoreState] = useState<PortalState>(portalStore.getState());
+  const [adminTab, setAdminTab] = useState<'audit' | 'customers' | 'rates' | 'applicants'>('audit');
+
+  // Security Auth Gate State
+  const [adminPin, setAdminPin] = useState('');
+  const [showPin, setShowPin] = useState(false);
+  const [authError, setAuthError] = useState('');
+  const [authSuccess, setAuthSuccess] = useState('');
+
+  // Audit Filter
+  const [actorFilter, setActorFilter] = useState<'all' | UserRole>('all');
+  const [auditSearch, setAuditSearch] = useState('');
+
+  // Customer Management & Adjust Balance Modal
+  const [selectedCustForAdjust, setSelectedCustForAdjust] = useState<CustomerAccount | null>(null);
+  const [adjustNewBalance, setAdjustNewBalance] = useState(0);
+  const [adjustNewMT, setAdjustNewMT] = useState(0);
+  const [adjustReason, setAdjustReason] = useState('');
+
+  // Rates State
+  const [bharat19Rate, setBharat19Rate] = useState(storeState.dailyRateNotice.bharat19kgApprox);
+  const [bharat47Rate, setBharat47Rate] = useState(storeState.dailyRateNotice.bharat47kgApprox);
+  const [rateSavedMsg, setRateSavedMsg] = useState(false);
+
+  useEffect(() => {
+    const unsub = portalStore.subscribe(() => {
+      setStoreState({ ...portalStore.getState() });
+    });
+    return unsub;
+  }, []);
+
+  const handleUnlockAdmin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError('');
+    const res = portalStore.authenticateAdmin(adminPin);
+    if (!res.success) {
+      setAuthError(res.message);
+    } else {
+      setAuthSuccess(res.message);
+      setAdminPin('');
+    }
+  };
+
+  const handleQuickDemoUnlock = () => {
+    portalStore.authenticateAdmin('ADMIN2026');
+  };
+
+  const handleLockAdmin = () => {
+    portalStore.lockAdmin();
+  };
+
+  // If not authorized, show official master management gate
+  if (!storeState.isAdminAuth) {
+    return (
+      <div className="max-w-md mx-auto px-4 py-12">
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl text-white space-y-6">
+          <div className="text-center space-y-2">
+            <div className="w-14 h-14 rounded-2xl bg-purple-600/20 border border-purple-500/30 text-purple-400 flex items-center justify-center mx-auto">
+              <Shield className="w-7 h-7" />
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-slate-800 text-slate-300 text-[10px] font-black uppercase tracking-widest border border-slate-700">
+              <Lock className="w-3 h-3 text-purple-400" />
+              <span>{lang === 'kn' ? 'ಖಾಸಗಿ ಮ್ಯಾನೇಜ್‌ಮೆಂಟ್ ಅಡ್ಮಿನ್ ಗೇಟ್' : 'Official Management Gate'}</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white">
+              {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಕಮಾಂಡ್ ಪ್ಯಾನೆಲ್' : 'Admin Command Center'}
+            </h2>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              {lang === 'kn'
+                ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಆಡಳಿತ ಮಂಡಳಿಯ ಮಾಸ್ಟರ್ PIN ನಮೂದಿಸಿ. ಇಲ್ಲಿ ಗ್ರಾಹಕರ ಲೆಡ್ಜರ್ ಲೆಕ್ಕಾಚಾರ, ಆಡಿಟ್ ಲಾಗ್‌ಗಳು ಮತ್ತು ಏಜೆನ್ಸಿ ಡೇಟಾ ರಕ್ಷಿತವಾಗಿರುತ್ತದೆ.'
+                : 'Enter your Sandhya master administrative PIN to access audit logs, customer ledger balances, and management controls.'}
+            </p>
+          </div>
+
+          {authError && (
+            <div className="p-3 rounded-xl bg-red-950/60 border border-red-800 text-red-300 text-xs font-bold flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 flex-shrink-0 text-red-400" />
+              <span>{authError}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleUnlockAdmin} className="space-y-4">
+            <div>
+              <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                {lang === 'kn' ? 'ಮಾಸ್ಟರ್ ಅಡ್ಮಿನ್ ಪಿನ್ (Admin Master PIN)' : 'Master Administrative PIN'}
+              </label>
+              <div className="relative">
+                <input
+                  type={showPin ? 'text' : 'password'}
+                  required
+                  value={adminPin}
+                  onChange={(e) => setAdminPin(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full px-3 py-2.5 pr-10 bg-slate-950 border border-slate-700 rounded-xl text-xs font-bold text-white tracking-widest focus:outline-none focus:border-purple-500"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPin(!showPin)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white p-1"
+                  title={showPin ? 'Hide PIN' : 'Show PIN'}
+                >
+                  {showPin ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-black uppercase tracking-wider shadow-lg transition-all"
+            >
+              {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಪ್ಯಾನೆಲ್ ಪ್ರವೇಶಿಸಿ' : 'Authorize Admin Session'}
+            </button>
+          </form>
+
+          {/* Secure Admin Verification */}
+          <div className="pt-4 border-t border-slate-800 text-center space-y-2">
+            <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">
+              {lang === 'kn' ? 'ಸರ್ಕಾರಿ ಮಾನದಂಡದ ಆಡಳಿತ ಪರಿಶೀಲನೆ:' : 'Executive Management Verification:'}
+            </span>
+            <button
+              type="button"
+              onClick={handleQuickDemoUnlock}
+              className="w-full py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 flex items-center justify-center gap-1.5 transition-colors"
+            >
+              <Shield className="w-3.5 h-3.5 text-purple-400" />
+              <span>{lang === 'kn' ? 'ಅಧಿಕೃತ ಅಡ್ಮಿನ್ ಕಮಾಂಡ್ ಅನ್‌ಲಾಕ್' : 'Authorize Master Admin Command'}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Aggregates
+  const totalReceivables = storeState.customers.reduce((acc, c) => acc + c.balanceAmount, 0);
+  const totalMtDue = storeState.customers.reduce((acc, c) => acc + c.emptyCylindersDue, 0);
+  const totalDeliveredOrders = storeState.orders.filter((o) => o.status === 'delivered');
+  const totalRevenueCollected = storeState.orders.reduce((acc, o) => acc + o.amountPaid, 0);
+
+  const filteredAuditLogs = storeState.auditLogs.filter((log) => {
+    const matchesActor = actorFilter === 'all' || log.actorRole === actorFilter;
+    const matchesSearch =
+      log.targetCustomer.toLowerCase().includes(auditSearch.toLowerCase()) ||
+      log.actorName.toLowerCase().includes(auditSearch.toLowerCase()) ||
+      log.summaryEn.toLowerCase().includes(auditSearch.toLowerCase());
+    return matchesActor && matchesSearch;
+  });
+
+  const handleOpenAdjustModal = (cust: CustomerAccount) => {
+    setSelectedCustForAdjust(cust);
+    setAdjustNewBalance(cust.balanceAmount);
+    setAdjustNewMT(cust.emptyCylindersDue);
+    setAdjustReason('');
+  };
+
+  const handleConfirmAdjust = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedCustForAdjust || !adjustReason) return;
+
+    portalStore.adminAdjustBalance(
+      selectedCustForAdjust.id,
+      Number(adjustNewBalance),
+      Number(adjustNewMT),
+      adjustReason,
+      'Admin Executive'
+    );
+
+    setSelectedCustForAdjust(null);
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 space-y-6">
+      {/* Admin Command Header */}
+      <div className="bg-slate-900 text-white p-4 sm:p-5 rounded-xl border border-slate-800 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 rounded bg-purple-600">
+              <ShieldAlert className="w-4 h-4 text-white" />
+            </div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-purple-400">
+              ADMIN CONTROL CENTER • ಆಡಳಿತಾಧಿಕಾರಿ ಪ್ಯಾನೆಲ್
+            </span>
+          </div>
+          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mt-1">
+            {lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಸಮಗ್ರ ಆಡಳಿತ ವರದಿ & ಪರಿಶೋಧನೆ' : 'Executive Audit & Change Oversight Console'}
+          </h1>
+          <p className="text-xs text-slate-300">
+            {lang === 'kn'
+              ? 'ಡಿಸ್ಟ್ರಿಬ್ಯೂಟರ್ ಹಾಗೂ ಗ್ರಾಹಕರು ಮಾಡಿದ ಪ್ರತಿಯೊಂದು ಬದಲಾವಣೆ, ನಗದು ಸಂಗ್ರಹಣೆ ಹಾಗೂ ಖಾಲಿ ಸಿಲಿಂಡರ್ ಲೆಕ್ಕದ ಸಂಪೂರ್ಣ ವರದಿ'
+              : 'Real-time audit trail of all distributor actions, customer orders, payment reconciliations & cylinder assets'}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => portalStore.resetDemoData()}
+            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-bold border border-slate-700 transition-colors"
+            title="Reset to fresh demo records"
+          >
+            Reset Demo Data
+          </button>
+          <button
+            onClick={handleLockAdmin}
+            className="px-3 py-1.5 bg-slate-800 hover:bg-red-800 text-slate-300 hover:text-white rounded-lg text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-colors border border-slate-700"
+            title="Lock Admin Command Center"
+          >
+            <Lock className="w-3.5 h-3.5" />
+            <span>{lang === 'kn' ? 'ಲಾಕ್ ಅಡ್ಮಿನ್' : 'Lock Admin'}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Global Financial & Asset Overview Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
+          <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 block">
+            TOTAL RECEIVABLES (ಬಾಕಿ ಹಣ)
+          </span>
+          <div className="text-2xl font-black text-red-600 mt-1">
+            ₹{totalReceivables.toLocaleString()}
+          </div>
+          <span className="text-[10px] text-slate-500 font-bold">
+            Across {storeState.customers.length} registered commercial clients
+          </span>
+        </div>
+
+        <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
+          <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 block">
+            MARKET MT CYLINDERS DUE (ಖಾಲಿ ಸಿಲಿಂಡರ್)
+          </span>
+          <div className="text-2xl font-black text-amber-600 mt-1">
+            {totalMtDue} <span className="text-xs font-bold text-slate-500">Cylinders</span>
+          </div>
+          <span className="text-[10px] text-slate-500 font-bold">
+            Circulating in hotels & wedding halls
+          </span>
+        </div>
+
+        <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
+          <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 block">
+            TOTAL PAYMENTS COLLECTED
+          </span>
+          <div className="text-2xl font-black text-emerald-600 mt-1">
+            ₹{totalRevenueCollected.toLocaleString()}
+          </div>
+          <span className="text-[10px] text-slate-500 font-bold">
+            Cash & UPI verified receipts
+          </span>
+        </div>
+
+        <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
+          <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 block">
+            AUDIT LOG RECORDS
+          </span>
+          <div className="text-2xl font-black text-purple-600 mt-1">
+            {storeState.auditLogs.length}
+          </div>
+          <span className="text-[10px] text-purple-700 font-bold">
+            100% tamper-evident activity log
+          </span>
+        </div>
+      </div>
+
+      {/* Admin Tabs */}
+      <div className="flex items-center border-b border-slate-200 gap-2 overflow-x-auto text-xs font-black uppercase tracking-wider">
+        <button
+          onClick={() => setAdminTab('audit')}
+          className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap ${
+            adminTab === 'audit' ? 'border-purple-600 text-purple-600' : 'border-transparent text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <History className="w-3.5 h-3.5" />
+          <span>{lang === 'kn' ? 'ಬದಲಾವಣೆಗಳ ಸಂಪೂರ್ಣ ವರದಿ (Change Audit)' : 'Change Audit & Activity Report'}</span>
+          <span className="px-1.5 py-0.2 rounded-full bg-purple-100 text-purple-800 text-[10px]">
+            {storeState.auditLogs.length}
+          </span>
+        </button>
+
+        <button
+          onClick={() => setAdminTab('customers')}
+          className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap ${
+            adminTab === 'customers' ? 'border-purple-600 text-purple-600' : 'border-transparent text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Users className="w-3.5 h-3.5" />
+          <span>{lang === 'kn' ? 'ಗ್ರಾಹಕರ ಮಾಸ್ಟರ್ ಬ್ಯಾಲೆನ್ಸ್ & ಖಾತೆ' : 'Customer Master & Balances'}</span>
+          <span className="px-1.5 py-0.2 rounded-full bg-slate-100 text-slate-700 text-[10px]">
+            {storeState.customers.length}
+          </span>
+        </button>
+
+        <button
+          onClick={() => setAdminTab('applicants')}
+          className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap ${
+            adminTab === 'applicants' ? 'border-purple-600 text-purple-600' : 'border-transparent text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Truck className="w-3.5 h-3.5" />
+          <span>{lang === 'kn' ? 'ವಿತರಕ & ಡೆಲಿವರಿ ಅರ್ಜಿಗಳು' : 'Partner Applications'}</span>
+          <span className="px-1.5 py-0.2 rounded-full bg-blue-100 text-blue-800 text-[10px]">
+            {storeState.distributorApplicants?.length || 0}
+          </span>
+        </button>
+      </div>
+
+      {/* TAB 1: Complete Change Audit Report */}
+      {adminTab === 'audit' && (
+        <div className="space-y-3">
+          <div className="bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <div className="relative flex-1">
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={auditSearch}
+                onChange={(e) => setAuditSearch(e.target.value)}
+                placeholder={
+                  lang === 'kn'
+                    ? 'ಗ್ರಾಹಕರ ಹೆಸರು, ಡಿಸ್ಟ್ರಿಬ್ಯೂಟರ್ ಹೆಸರು ಅಥವಾ ವಿವರ ಹುಡುಕಿ...'
+                    : 'Filter by business name, staff actor, action type...'
+                }
+                className="w-full pl-9 pr-3 py-1.5 text-xs font-bold bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none"
+              />
+            </div>
+
+            <div className="flex items-center gap-1.5 text-xs">
+              <span className="text-[10px] font-black uppercase text-slate-400 mr-1">Actor:</span>
+              {(['all', 'distributor', 'customer', 'admin'] as const).map((role) => (
+                <button
+                  key={role}
+                  onClick={() => setActorFilter(role)}
+                  className={`px-2.5 py-1 rounded text-[11px] font-black uppercase tracking-wider transition-colors ${
+                    actorFilter === role
+                      ? 'bg-purple-600 text-white shadow-2xs'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  {role}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-slate-100 text-slate-600 uppercase text-[10px] font-black border-b border-slate-200">
+                  <tr>
+                    <th className="py-2.5 px-3">Timestamp</th>
+                    <th className="py-2.5 px-3">Actor / Role</th>
+                    <th className="py-2.5 px-3">Target Customer</th>
+                    <th className="py-2.5 px-3">Action Description</th>
+                    <th className="py-2.5 px-3">Amount & Mode</th>
+                    <th className="py-2.5 px-3">MT Count</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {filteredAuditLogs.map((log) => (
+                    <tr key={log.id} className="hover:bg-slate-50/80">
+                      <td className="py-2.5 px-3 whitespace-nowrap text-slate-500 font-semibold text-[11px]">
+                        <div>{new Date(log.timestamp).toLocaleDateString()}</div>
+                        <div className="text-[10px] text-slate-400">
+                          {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </div>
+                      </td>
+
+                      <td className="py-2.5 px-3 whitespace-nowrap">
+                        <span
+                          className={`inline-block px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider ${
+                            log.actorRole === 'distributor'
+                              ? 'bg-blue-100 text-blue-800'
+                              : log.actorRole === 'admin'
+                              ? 'bg-purple-100 text-purple-800'
+                              : 'bg-orange-100 text-orange-800'
+                          }`}
+                        >
+                          {log.actorRole}
+                        </span>
+                        <div className="font-bold text-slate-800 mt-0.5">{log.actorName}</div>
+                      </td>
+
+                      <td className="py-2.5 px-3 font-bold text-slate-900 whitespace-nowrap">
+                        {log.targetCustomer}
+                      </td>
+
+                      <td className="py-2.5 px-3 text-slate-700 max-w-md">
+                        <div className="font-medium text-[11px] leading-snug">
+                          {lang === 'kn' ? log.summaryKn : log.summaryEn}
+                        </div>
+                      </td>
+
+                      <td className="py-2.5 px-3 whitespace-nowrap">
+                        {log.amount ? (
+                          <div className="font-black text-emerald-700">
+                            ₹{log.amount.toLocaleString()}
+                            {log.paymentMode && (
+                              <span className="text-[9px] uppercase font-bold text-slate-500 ml-1">
+                                ({log.paymentMode})
+                              </span>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-slate-400">-</span>
+                        )}
+                      </td>
+
+                      <td className="py-2.5 px-3 whitespace-nowrap">
+                        {log.mtCount !== undefined && log.mtCount > 0 ? (
+                          <span className="font-black text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
+                            {log.mtCount} MT
+                          </span>
+                        ) : (
+                          <span className="text-slate-400">-</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 2: Customer Master Balances & Override */}
+      {adminTab === 'customers' && (
+        <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden space-y-2">
+          <div className="p-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+            <div>
+              <h3 className="text-xs font-black uppercase tracking-wider text-slate-800">
+                Commercial Client Master Directory & Outstanding Receivables
+              </h3>
+              <p className="text-[11px] text-slate-500">
+                Manage commercial credit limits, MT cylinder liability, and apply balance corrections.
+              </p>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-slate-100 text-slate-600 uppercase text-[10px] font-black border-b border-slate-200">
+                <tr>
+                  <th className="py-2.5 px-3">Business Name</th>
+                  <th className="py-2.5 px-3">Contact & Phone</th>
+                  <th className="py-2.5 px-3">Area / Route</th>
+                  <th className="py-2.5 px-3">Preferred Brand</th>
+                  <th className="py-2.5 px-3">Outstanding Balance</th>
+                  <th className="py-2.5 px-3">MT Cylinders Due</th>
+                  <th className="py-2.5 px-3 text-right">Admin Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {storeState.customers.map((c) => (
+                  <tr key={c.id} className="hover:bg-slate-50/80">
+                    <td className="py-2.5 px-3 font-bold text-slate-900">
+                      <div>{c.businessName}</div>
+                      <div className="text-[10px] text-slate-400 font-normal">{c.businessType}</div>
+                    </td>
+                    <td className="py-2.5 px-3 font-semibold text-slate-700">
+                      <div>{c.contactPerson}</div>
+                      <div className="text-[11px] text-slate-500">📞 {c.phone}</div>
+                    </td>
+                    <td className="py-2.5 px-3 text-slate-600 font-medium">{c.area}</td>
+                    <td className="py-2.5 px-3 font-semibold text-orange-600">{c.preferredBrand}</td>
+                    <td className="py-2.5 px-3 font-black text-red-600 text-sm">
+                      ₹{c.balanceAmount.toLocaleString()}
+                    </td>
+                    <td className="py-2.5 px-3 font-black text-amber-600 text-sm">
+                      {c.emptyCylindersDue} Cyl
+                    </td>
+                    <td className="py-2.5 px-3 text-right">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenAdjustModal(c)}
+                        className="px-2.5 py-1 rounded bg-slate-100 hover:bg-purple-50 hover:text-purple-700 text-slate-700 border border-slate-300 text-[11px] font-bold transition-colors"
+                      >
+                        Adjust Balance
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 3: Delivery Partner & Distributor Applications */}
+      {adminTab === 'applicants' && (
+        <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden space-y-4 p-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-3">
+            <div>
+              <h3 className="text-base font-black text-slate-900 uppercase tracking-tight">
+                {lang === 'kn' ? 'ವಿತರಕ & ಡೆಲಿವರಿ ಪಾರ್ಟ್ನರ್ ಅರ್ಜಿಗಳ ಪಟ್ಟಿ' : 'Distributor & Delivery Partner Applications'}
+              </h3>
+              <p className="text-xs text-slate-500">
+                {lang === 'kn'
+                  ? 'ವೆಬ್‌ಸೈಟ್ ಮೂಲಕ ಬಂದ ಹೊಸ ಡೆಲಿವರಿ ಸಿಬ್ಬಂದಿ ಅರ್ಜಿಗಳನ್ನು ಪರಿಶೀಲಿಸಿ ಅನುಮೋದಿಸಿ'
+                  : 'Review direct onboarding submissions from website for regional delivery routes'}
+              </p>
+            </div>
+            <span className="px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold border border-blue-200 w-fit">
+              Total Applicants: {storeState.distributorApplicants?.length || 0}
+            </span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead className="bg-slate-100 text-slate-600 uppercase text-[10px] font-black border-b border-slate-200">
+                <tr>
+                  <th className="py-2.5 px-3">Applicant Name</th>
+                  <th className="py-2.5 px-3">Phone</th>
+                  <th className="py-2.5 px-3">Assigned Route / Area</th>
+                  <th className="py-2.5 px-3">Work Schedule</th>
+                  <th className="py-2.5 px-3">Vehicle Declared</th>
+                  <th className="py-2.5 px-3">Applied At</th>
+                  <th className="py-2.5 px-3">Status</th>
+                  <th className="py-2.5 px-3 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {(storeState.distributorApplicants || []).map((app) => (
+                  <tr key={app.id} className="hover:bg-slate-50/80">
+                    <td className="py-2.5 px-3 font-bold text-slate-900">
+                      {app.name}
+                    </td>
+                    <td className="py-2.5 px-3 font-semibold text-slate-700">
+                      <a href={`tel:${app.phone}`} className="text-blue-600 hover:underline">
+                        📞 {app.phone}
+                      </a>
+                    </td>
+                    <td className="py-2.5 px-3 text-slate-600 font-medium">{app.area}</td>
+                    <td className="py-2.5 px-3">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700 uppercase">
+                        {app.workType.replace('_', ' ')}
+                      </span>
+                    </td>
+                    <td className="py-2.5 px-3 text-slate-600">{app.vehicleType}</td>
+                    <td className="py-2.5 px-3 text-slate-500 text-[11px]">
+                      {new Date(app.appliedAt).toLocaleDateString()}
+                    </td>
+                    <td className="py-2.5 px-3">
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                          app.status === 'approved'
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : app.status === 'reviewed'
+                            ? 'bg-blue-100 text-blue-800'
+                            : 'bg-amber-100 text-amber-800'
+                        }`}
+                      >
+                        {app.status}
+                      </span>
+                    </td>
+                    <td className="py-2.5 px-3 text-right space-x-1">
+                      {app.status !== 'approved' && (
+                        <button
+                          onClick={() => portalStore.updateApplicantStatus(app.id, 'approved')}
+                          className="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[10px] font-bold"
+                        >
+                          Approve
+                        </button>
+                      )}
+                      <a
+                        href={`https://wa.me/91${app.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(
+                          `Namaste ${app.name}, this is Sandhya Enterprises regarding your LPG distributor / delivery partner application for ${app.area}.`
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-[10px] font-bold inline-block"
+                      >
+                        WhatsApp
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: Admin Adjust Balance */}
+      {selectedCustForAdjust && (
+        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-3">
+          <div className="bg-white rounded-xl max-w-md w-full p-5 border border-slate-200 shadow-2xl space-y-4 animate-in fade-in">
+            <div className="flex items-start justify-between border-b border-slate-100 pb-2">
+              <div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-purple-600">
+                  ADMIN OVERRIDE & LEDGER ADJUSTMENT
+                </span>
+                <h3 className="text-base font-black text-slate-900 mt-0.5">
+                  {selectedCustForAdjust.businessName}
+                </h3>
+              </div>
+              <button
+                onClick={() => setSelectedCustForAdjust(null)}
+                className="text-slate-400 hover:text-slate-600 font-bold text-lg"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleConfirmAdjust} className="space-y-3 text-xs">
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-700 mb-1">
+                    Corrected Balance (₹)
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    value={adjustNewBalance}
+                    onChange={(e) => setAdjustNewBalance(Number(e.target.value))}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg font-bold text-red-600 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-700 mb-1">
+                    Corrected MT Cylinders Due
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    value={adjustNewMT}
+                    onChange={(e) => setAdjustNewMT(Number(e.target.value))}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg font-bold text-amber-600 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[10px] font-black uppercase tracking-wider text-slate-700 mb-1">
+                  Reason for Adjustment (Recorded in Audit Report)
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={adjustReason}
+                  onChange={(e) => setAdjustReason(e.target.value)}
+                  placeholder="e.g. Bank settlement clearance / Reconciled physical MT cylinders / Cash waiver"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg font-bold text-slate-900 focus:outline-none"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setSelectedCustForAdjust(null)}
+                  className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-bold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-black uppercase tracking-wider shadow-xs"
+                >
+                  Save & Log to Audit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};

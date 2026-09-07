@@ -1,0 +1,202 @@
+{
+  "entities": {
+    "inquiry": {
+      "title": "Rate Inquiry",
+      "description": "Inquiry or quote request for commercial LPG cylinder rates",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "clientName": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "brand": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "quantity": {
+          "type": "number"
+        },
+        "location": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "status": {
+          "type": "string",
+          "enum": ["new", "contacted", "closed"]
+        },
+        "createdAt": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "brand", "quantity", "location", "status", "createdAt"]
+    },
+    "order": {
+      "title": "Cylinder Order",
+      "description": "Commercial LPG cylinder booking record",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "orderNumber": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "customerId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "businessName": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "contactPerson": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "brand": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "cylinderType": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "quantity": {
+          "type": "number"
+        },
+        "deliveryArea": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "pincode": {
+          "type": "string",
+          "maxLength": 10
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "confirmed", "dispatched", "delivered", "cancelled"]
+        },
+        "totalAmount": {
+          "type": "number"
+        },
+        "paymentStatus": {
+          "type": "string",
+          "enum": ["paid", "pending", "cod", "credit"]
+        },
+        "emptyCylindersReturned": {
+          "type": "number"
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "createdAt": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "orderNumber", "brand", "quantity", "deliveryArea", "status", "createdAt"]
+    },
+    "distributorApplicant": {
+      "title": "Distributor Applicant",
+      "description": "Applicant for cylinder delivery driver, agency, or franchise",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "area": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "workType": {
+          "type": "string",
+          "enum": ["full_time", "part_time", "agency_franchise"]
+        },
+        "vehicleType": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "reviewed", "approved"]
+        },
+        "appliedAt": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": ["id", "name", "phone", "area", "workType", "status", "appliedAt"]
+    },
+    "rateNotice": {
+      "title": "Daily Rate Notice",
+      "description": "Commercial LPG daily prevailing rates per cylinder type",
+      "type": "object",
+      "properties": {
+        "bharat19kgApprox": {
+          "type": "number"
+        },
+        "bharat47kgApprox": {
+          "type": "number"
+        },
+        "gogasApprox": {
+          "type": "number"
+        },
+        "lastUpdated": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": ["bharat19kgApprox", "bharat47kgApprox", "gogasApprox", "lastUpdated"]
+    }
+  },
+  "firestore": {
+    "/inquiries/{inquiryId}": {
+      "schema": "inquiry",
+      "description": "Customer rate quotes and commercial inquiries"
+    },
+    "/orders/{orderId}": {
+      "schema": "order",
+      "description": "LPG cylinder dispatch orders"
+    },
+    "/applicants/{applicantId}": {
+      "schema": "distributorApplicant",
+      "description": "Distributor and delivery associate candidates"
+    },
+    "/rates/{rateId}": {
+      "schema": "rateNotice",
+      "description": "Daily rate notifications and benchmark prices"
+    }
+  }
+}

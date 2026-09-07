@@ -1,0 +1,6 @@
+{
+  "name": "Sandhya Enterprises - Commercial LPG Gas Agency",
+  "description": "Official bilingual portal for Sandhya Enterprises - Premier Commercial & Domestic LPG Supplier, Pipeline Installation & 24/7 Service Specialists in Nelamangala, Tumkur, Sira, and Bangalore Rural.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
