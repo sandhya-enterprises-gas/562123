@@ -1,12 +1,12 @@
 {
-  "id": "/",
+  "id": "./",
   "name": "Sandhya Enterprises - Commercial LPG Gas Agency",
   "short_name": "Sandhya LPG",
   "description": "Official Commercial LPG Gas Agency, Manifold Pipeline & Bulk Fuel Supply in Nelamangala, Dobbaspet & Tumkur",
   "lang": "en",
   "dir": "ltr",
-  "start_url": "/",
-  "scope": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui", "browser"],
   "orientation": "portrait-primary",
@@ -16,25 +16,25 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/pwa-192x192.png",
+      "src": "pwa-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/pwa-512x512.png",
+      "src": "pwa-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/pwa-maskable-512x512.png",
+      "src": "pwa-maskable-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/icon.svg",
+      "src": "icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
@@ -45,15 +45,15 @@
       "name": "Book Cylinder",
       "short_name": "Book",
       "description": "Instant 19kg / 47.5kg commercial cylinder booking",
-      "url": "/#calculator",
-      "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192" }]
+      "url": "./#calculator",
+      "icons": [{ "src": "pwa-192x192.png", "sizes": "192x192" }]
     },
     {
       "name": "WhatsApp Order",
       "short_name": "WhatsApp",
       "description": "Chat with Sandhya LPG dispatch desk",
       "url": "https://wa.me/918152889500",
-      "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "pwa-192x192.png", "sizes": "192x192" }]
     }
   ]
 }
