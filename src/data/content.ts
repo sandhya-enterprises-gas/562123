@@ -3,6 +3,10 @@ import { CylinderProduct, ServiceItem, CustomerSegment, AccessoryItem } from '..
 export const BUSINESS_INFO = {
   name: 'SANDHYA ENTERPRISES',
   nameKn: 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್',
+  proprietor: 'Ramakrishnaiah',
+  proprietorKn: 'ರಾಮಕೃಷ್ಣಯ್ಯ',
+  gstin: '29CJXPR4809J1Z6',
+  udyam: 'UDYAM-KR-02-0049972',
   taglineEn: 'Commercial & Domestic LPG Supplier & Service Specialists',
   taglineKn: 'ವಾಣಿಜ್ಯ ಮತ್ತು ಗೃಹಬಳಕೆಯ ಎಲ್‌ಪಿಜಿ ಸಿಲಿಂಡರ್ ಪೂರೈಕೆದಾರರು ಮತ್ತು ಸರ್ವಿಸ್ ತಜ್ಞರು',
   established: 2010,

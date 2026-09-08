@@ -160,6 +160,16 @@ export const RateInquiryModal: React.FC<RateInquiryModalProps> = ({
               <span>8152889500</span>
             </a>
           </div>
+
+          {/* Official Verification Micro Footer */}
+          <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500">
+            <span>
+              {lang === 'kn' ? `ಪ್ರೊ: ${BUSINESS_INFO.proprietorKn}` : `Pro: ${BUSINESS_INFO.proprietor}`}
+            </span>
+            <span className="font-mono">
+              GSTIN: <strong className="text-slate-700">{BUSINESS_INFO.gstin}</strong>
+            </span>
+          </div>
         </div>
       </div>
     </div>

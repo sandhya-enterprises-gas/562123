@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { Language, CustomerAccount, AuditReportItem, UserRole } from '../../types';
 import { portalStore, PortalState } from '../../data/portalStore';
+import { BUSINESS_INFO } from '../../data/content';
 
 interface AdminCommandCenterProps {
   lang: Language;
@@ -223,6 +224,15 @@ export const AdminCommandCenter: React.FC<AdminCommandCenterProps> = ({ lang }) 
               ? 'ಡಿಸ್ಟ್ರಿಬ್ಯೂಟರ್ ಹಾಗೂ ಗ್ರಾಹಕರು ಮಾಡಿದ ಪ್ರತಿಯೊಂದು ಬದಲಾವಣೆ, ನಗದು ಸಂಗ್ರಹಣೆ ಹಾಗೂ ಖಾಲಿ ಸಿಲಿಂಡರ್ ಲೆಕ್ಕದ ಸಂಪೂರ್ಣ ವರದಿ'
               : 'Real-time audit trail of all distributor actions, customer orders, payment reconciliations & cylinder assets'}
           </p>
+          <div className="flex flex-wrap items-center gap-2 pt-1 text-[10px] text-slate-400 font-mono">
+            <span className="text-amber-300 font-sans font-bold">
+              {lang === 'kn' ? `ಪ್ರೊ: ${BUSINESS_INFO.proprietorKn}` : `Pro: ${BUSINESS_INFO.proprietor}`}
+            </span>
+            <span>•</span>
+            <span>GSTIN: <strong className="text-slate-200">{BUSINESS_INFO.gstin}</strong></span>
+            <span>•</span>
+            <span>UDYAM: <strong className="text-slate-200">{BUSINESS_INFO.udyam}</strong></span>
+          </div>
         </div>
 
         <div className="flex items-center gap-2">

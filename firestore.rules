@@ -69,6 +69,13 @@ service cloud.firestore {
       allow read: if true;
     }
 
+    // Authenticated User Profiles
+    match /users/{userId} {
+      allow read: if isValidId(userId);
+      allow create, update: if isSignedIn() && request.auth.uid == userId;
+      allow delete: if isSignedIn() && request.auth.uid == userId;
+    }
+
     // Rate Inquiries Collection
     match /inquiries/{inquiryId} {
       allow create: if isValidId(inquiryId) && isValidInquiry(incoming());

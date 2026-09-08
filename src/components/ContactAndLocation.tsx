@@ -59,6 +59,41 @@ export const ContactAndLocation: React.FC<ContactAndLocationProps> = ({ lang }) 
                   <p className="text-xs text-slate-600 leading-relaxed font-medium">
                     {lang === 'kn' ? BUSINESS_INFO.address.fullAddressKn : BUSINESS_INFO.address.fullAddressEn}
                   </p>
+
+                  {/* Proprietor & Government Registration Credentials */}
+                  <div className="pt-2 mt-2 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                    <div className="p-2 rounded-lg bg-amber-50/70 border border-amber-200/80">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-amber-800 block">
+                        {lang === 'kn' ? 'ಪ್ರೊಪ್ರೈಟರ್ / ಮಾಲೀಕರು' : 'PROPRIETOR'}
+                      </span>
+                      <strong className="text-slate-900 font-bold text-xs">
+                        {lang === 'kn' ? `${BUSINESS_INFO.proprietorKn} (${BUSINESS_INFO.proprietor})` : BUSINESS_INFO.proprietor}
+                      </strong>
+                    </div>
+
+                    <div className="p-2 rounded-lg bg-slate-50 border border-slate-200">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 block">
+                        GSTIN (ಜಿಎಸ್‌ಟಿ ಸಂಖ್ಯೆ)
+                      </span>
+                      <strong className="text-slate-900 font-mono text-xs">
+                        {BUSINESS_INFO.gstin}
+                      </strong>
+                    </div>
+
+                    <div className="sm:col-span-2 p-2 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between">
+                      <div>
+                        <span className="text-[10px] font-black uppercase tracking-wider text-slate-500 block">
+                          UDYAM MSME REGISTRATION (ಉದ್ಯಮ್ ನೋಂದಣಿ)
+                        </span>
+                        <strong className="text-slate-900 font-mono text-xs">
+                          {BUSINESS_INFO.udyam}
+                        </strong>
+                      </div>
+                      <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-black border border-emerald-300">
+                        ✓ VERIFIED
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
 

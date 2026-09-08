@@ -20,7 +20,11 @@ import {
   Calculator,
   Gauge,
   FileText,
-  MessageSquare
+  MessageSquare,
+  MapPin,
+  Navigation,
+  ShieldCheck,
+  Cpu
 } from 'lucide-react';
 import { Language, CustomerAccount } from '../../types';
 import { BUSINESS_INFO } from '../../data/content';
@@ -44,6 +48,16 @@ export interface ChatMessage {
       web?: {
         uri?: string;
         title?: string;
+      };
+      maps?: {
+        uri?: string;
+        title?: string;
+        placeAnswerSources?: {
+          reviewSnippets?: Array<{
+            uri?: string;
+            reviewText?: string;
+          }>;
+        };
       };
     }>;
   } | null;
@@ -88,7 +102,8 @@ export const AiBusinessAdvisor: React.FC<AiBusinessAdvisorProps> = ({
 }) => {
   const [selectedRole, setSelectedRole] = useState<'commercial_hotel' | 'catering_marriage' | 'bakery_sweets' | 'industrial_canteen'>('commercial_hotel');
   const [activeTab, setActiveTab] = useState<'chat' | 'feast_calc' | 'burner_audit' | 'rates_gst'>('chat');
-  const [enableSearch, setEnableSearch] = useState<boolean>(true);
+  const [groundingMode, setGroundingMode] = useState<'search' | 'maps' | 'none'>('search');
+  const [selectedModel, setSelectedModel] = useState<'gemini-3.5-flash' | 'gemini-3.1-pro-preview' | 'gemini-3.1-flash-lite'>('gemini-3.5-flash');
   const [inputPrompt, setInputPrompt] = useState('');
   const [isThinking, setIsThinking] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
@@ -105,22 +120,24 @@ export const AiBusinessAdvisor: React.FC<AiBusinessAdvisorProps> = ({
 ನಾನು ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ (Sandhya Enterprises) ಅಧಿಕೃತ ವಾಣಿಜ್ಯ ಎಲ್‌ಪಿಜಿ ಮತ್ತು ವ್ಯವಹಾರ ವೃದ್ಧಿ AI ಸಲಹೆಗಾರ.
 
 ನಮ್ಮ ವಿಶೇಷತೆಗಳು:
-• **ಅಧಿಕೃತ ಮಾಹಿತಿ**: ಭಾರತ್ ಗ್ಯಾಸ್ 19kg & 47.5kg ಇಂಡಸ್ಟ್ರಿಯಲ್, ಗೋ ಗ್ಯಾಸ್ ಹಾಗೂ ಪವರ್ ಗ್ಯಾಸ್ ವಿತರಣೆ (ನೆಲಮಂಗಲ, ದಾಬಸ್‌ಪೇಟೆ, ತುಮಕೂರು, ಶಿರಾ).
+• **ಅಧಿಕೃತ ಮಾಹಿತಿ**: ಭಾರತ್ ಗ್ಯಾಸ್ (Bharat Gas - BPCL) 19kg & 47.5kg ಇಂಡಸ್ಟ್ರಿಯಲ್, ಗೋ ಗ್ಯಾಸ್ ಹಾಗೂ ಪವರ್ ಗ್ಯಾಸ್ ವಿತರಣೆ (ನೆಲಮಂಗಲ, ದಾಬಸ್‌ಪೇಟೆ KIADB, ತುಮಕೂರು, ಶಿರಾ, ಮಾಧುಗಿರಿ, ಕೊರಟಗೆರೆ).
 • **ಗ್ಯಾಸ್ ಉಳಿತಾಯ**: ಹೋಟೆಲ್ ಮಾಸಿಕ ಬಿಲ್‌ನಲ್ಲಿ 15-20% ಉಳಿತಾಯ ತಂತ್ರಗಳು ಮತ್ತು ಬರ್ನರ್ ಟ್ಯೂನಿಂಗ್.
-• **ಗೂಗಲ್ ಸರ್ಚ್ ಡಾಟಾ**: ಇಂದಿನ ಪ್ರಚಲಿತ ಮಾರುಕಟ್ಟೆ ದರಗಳು ಮತ್ತು ಎಲ್‌ಪಿಜಿ ನಿಯಮಗಳು.
-• **ಕ್ಯಾಟರಿಂಗ್ ಲೆಕ್ಕಾಚಾರ**: ಮದುವೆ ಊಟ, ಸಮಾರಂಭಗಳಿಗೆ ಸಿಲಿಂಡರ್ ಅಂದಾಜು.
+• **ಗೂಗಲ್ ಸರ್ಚ್ ಡಾಟಾ**: ಇಂದಿನ ಪ್ರಚಲಿತ ಮಾರುಕಟ್ಟೆ ದರಗಳು ಮತ್ತು OMC ಅಧಿಸೂಚನೆಗಳು.
+• **ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್ ಡಾಟಾ**: ನಮ್ಮ ಮುಖ್ಯ ನೆಲಮಂಗಲ ಡಿಪೋ ಮತ್ತು 2 ಗಂಟೆಗಳ ಡೆಲಿವರಿ ವ್ಯಾಪ್ತಿ.
+• **ಕ್ಯಾಟರಿಂಗ್ ಲೆಕ್ಕಾಚಾರ**: ಮದುವೆ ಊಟ, ಸಮಾರಂಭಗಳಿಗೆ ನಿಖರ ಸಿಲಿಂಡರ್ ಅಂದಾಜು.
 
-ನಿಮ್ಮ ಪ್ರಶ್ನೆಗಳನ್ನು ಕೇಳಿ ಅಥವಾ ಕೆಳಗಿನ ಆಯ್ಕೆಗಳನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ!`
+ನಿಮ್ಮ ಯಾವುದೇ ಪ್ರಶ್ನೆಗಳನ್ನು ಕೇಳಿ ಅಥವಾ ಕೆಳಗಿನ ತ್ವರಿತ ಪ್ರಶ್ನೆಗಳನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ!`
       : `Greetings ${customer ? customer.businessName : 'Valued Partner'}! 
 I am the Official Sandhya Enterprises Commercial LPG & Business Growth AI Advisor.
 
-How I can help you today:
-• **Official LPG Supply**: Bharat Gas 19kg & 47.5kg Industrial, Go Gas & Power Gas across Nelamangala, Dobbaspet, Tumkur, and Sira.
-• **Cost Reduction**: Techniques to trim commercial kitchen gas bills by 15-20% and balance air-to-gas flame ratios.
-• **Live Search Grounding**: Up-to-date commercial rates, OMC policy notices, and industry standards powered by Google Search.
-• **Banquet & Event Planning**: Accurate cylinder requirements for weddings, canteens, and bulk catering.
+How I assist your kitchen operations and commercial growth:
+• **Official LPG Supply**: Authorized distributor of Bharat Gas (BPCL) 19kg & 47.5kg Industrial, Go Gas, and Power Gas across Nelamangala, Dobbaspet KIADB, Tumkur, Sira, and surrounding hubs.
+• **Cost Reduction**: Techniques to trim commercial kitchen fuel bills by 15-20% and balance air-to-gas flame ratios.
+• **Google Search Grounding**: Real-time commercial LPG fuel prices and government notifications directly verified via Google Search.
+• **Google Maps Grounding**: Direct depot location (Nelamangala Depot: 13.0984°N, 77.3916°E) and 2-hour rapid delivery routing.
+• **Banquet & Event Planning**: Precision cylinder estimations for weddings, canteens, and bulk catering.
 
-Feel free to type your question or select from the quick prompts below!`,
+Feel free to ask a question or select from the quick prompts below!`,
     time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     mode: 'gemini-3.5-flash'
   };
@@ -161,7 +178,9 @@ Feel free to type your question or select from the quick prompts below!`,
             content: m.content
           })),
           lang,
-          enableSearch,
+          groundingType: groundingMode,
+          enableSearch: groundingMode === 'search',
+          model: selectedModel,
           clientRole: selectedRole
         })
       });
@@ -189,10 +208,10 @@ Feel free to type your question or select from the quick prompts below!`,
         {
           role: 'model',
           content: lang === 'kn'
-            ? 'ನಮಸ್ಕಾರ! ತಾಂತ್ರಿಕ ಸಂಪರ್ಕದಲ್ಲಿ ಸಣ್ಣ ವ್ಯತ್ಯಯವಾಗಿದೆ. ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ತುರ್ತು ಸಹಾಯವಾಣಿಗೆ ಕರೆ ಮಾಡಿ: +91 8152889500.'
-            : 'Unable to reach the AI engine right now. For urgent queries, please call Sandhya Enterprises at +91 8152889500.',
+            ? 'ನಮಸ್ಕಾರ! ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಅಧಿಕೃತ ವಾಣಿಜ್ಯ ಸಿಲಿಂಡರ್ ಡೆಲಿವರಿ ಹಾಗೂ ಇಂಧನ ಸಮಾಲೋಚನೆಗಾಗಿ ನೇರವಾಗಿ ಕರೆ ಮಾಡಿ: +91 8152889500 (ಪ್ರೊಪ್ರೈಟರ್: ರಾಮಕೃಷ್ಣಯ್ಯ).'
+            : 'For instant commercial bookings or technical assistance, call Sandhya Enterprises 24/7 hotline directly: +91 8152889500 (Proprietor: Ramakrishnaiah).',
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          mode: 'offline'
+          mode: 'sandhya-official-direct'
         }
       ]);
     } finally {
@@ -228,12 +247,18 @@ Feel free to type your question or select from the quick prompts below!`,
                 </span>
                 <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                  ONLINE ASSISTANT
+                  OFFICIAL ADVISOR
                 </span>
-                {enableSearch && (
+                {groundingMode === 'search' && (
                   <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-blue-500/20 text-blue-300 border border-blue-500/30 flex items-center gap-1">
                     <Search className="w-2.5 h-2.5" />
                     GOOGLE SEARCH GROUNDING
+                  </span>
+                )}
+                {groundingMode === 'maps' && (
+                  <span className="px-2 py-0.5 rounded-full text-[9px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1">
+                    <MapPin className="w-2.5 h-2.5" />
+                    GOOGLE MAPS GROUNDING
                   </span>
                 )}
               </div>
@@ -242,13 +267,13 @@ Feel free to type your question or select from the quick prompts below!`,
               </h2>
               <p className="text-xs text-slate-300 max-w-2xl leading-relaxed mt-0.5">
                 {lang === 'kn'
-                  ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಅಧಿಕೃತ ಮಾಹಿತಿ, ಗ್ಯಾಸ್ ಬಿಲ್ ಉಳಿತಾಯ, ಬರ್ನರ್ ಟ್ಯೂನಿಂಗ್, ಮದುವೆ ಊಟ ಸಿಲಿಂಡರ್ ಲೆಕ್ಕಾಚಾರ ಹಾಗೂ ಗೂಗಲ್ ಸರ್ಚ್ ನೈಜ ಸಮಯದ ದರಗಳು.'
-                  : 'Official agency insights, energy saving protocols, wedding catering volume estimates, and real-time market grounding powered by Google Search.'}
+                  ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಅಧಿಕೃತ ಮಾಹಿತಿ, ಗ್ಯಾಸ್ ಬಿಲ್ ಉಳಿತಾಯ, ಬರ್ನರ್ ಟ್ಯೂನಿಂಗ್, ಮದುವೆ ಊಟ ಸಿಲಿಂಡರ್ ಲೆಕ್ಕಾಚಾರ, ಗೂಗಲ್ ಸರ್ಚ್ ದರಗಳು ಹಾಗೂ ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್ ಡಿಪೋ ಸ್ಥಳಗಳು.'
+                  : 'Official agency insights, energy saving protocols, wedding catering volume estimates, real-time Google Search rates, and Google Maps depot location routing.'}
               </p>
             </div>
           </div>
 
-          {/* Quick Actions & Role Picker */}
+          {/* Quick Actions & Contact */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <a
               href={`tel:${BUSINESS_INFO.phonePrimary}`}
@@ -352,329 +377,465 @@ Feel free to type your question or select from the quick prompts below!`,
 
       {activeTab === 'chat' && (
         <>
-          {/* Role & Grounding Controls */}
-          <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-3 text-xs">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[11px] font-black uppercase text-slate-500 tracking-wider flex items-center gap-1">
-            <Layers className="w-3.5 h-3.5 text-orange-600" />
-            {lang === 'kn' ? 'ನಿಮ್ಮ ವ್ಯವಹಾರ ಶ್ರೇಣಿ:' : 'Business Profile:'}
-          </span>
-          <div className="inline-flex rounded-lg border border-slate-200 p-0.5 bg-slate-50">
-            <button
-              type="button"
-              onClick={() => setSelectedRole('commercial_hotel')}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all ${
-                selectedRole === 'commercial_hotel'
-                  ? 'bg-orange-600 text-white shadow-2xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              {lang === 'kn' ? 'ಹೋಟೆಲ್ & ರೆಸ್ಟೋರೆಂಟ್' : 'Hotel / Restaurant'}
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedRole('catering_marriage')}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all ${
-                selectedRole === 'catering_marriage'
-                  ? 'bg-orange-600 text-white shadow-2xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              {lang === 'kn' ? 'ಮದುವೆ & ಕ್ಯಾಟರಿಂಗ್' : 'Banquet / Catering'}
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedRole('bakery_sweets')}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all ${
-                selectedRole === 'bakery_sweets'
-                  ? 'bg-orange-600 text-white shadow-2xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              {lang === 'kn' ? 'ಬೇಕರಿ & ಸಿಹಿತಿಂಡಿ' : 'Bakery & Sweets'}
-            </button>
-            <button
-              type="button"
-              onClick={() => setSelectedRole('industrial_canteen')}
-              className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all ${
-                selectedRole === 'industrial_canteen'
-                  ? 'bg-orange-600 text-white shadow-2xs'
-                  : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              {lang === 'kn' ? 'ಫ್ಯಾಕ್ಟರಿ & ಕ್ಯಾಂಟೀನ್' : 'Factory / Canteen'}
-            </button>
-          </div>
-        </div>
-
-        {/* Google Search Grounding Toggle */}
-        <div className="flex items-center gap-2">
-          <label className="flex items-center gap-2 cursor-pointer select-none">
-            <input
-              type="checkbox"
-              checked={enableSearch}
-              onChange={(e) => setEnableSearch(e.target.checked)}
-              className="w-4 h-4 text-orange-600 rounded border-slate-300 focus:ring-orange-500 cursor-pointer"
-            />
-            <span className="text-[11px] font-bold text-slate-700 flex items-center gap-1">
-              <Search className="w-3 h-3 text-blue-600" />
-              {lang === 'kn' ? 'ಗೂಗಲ್ ಸರ್ಚ್ ಡೇಟಾ ಬಳಸಿ (Google Search Grounding)' : 'Google Search Grounding (Live Market Data)'}
-            </span>
-          </label>
-        </div>
-      </div>
-
-      {/* 4 Core Best Practice Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-        {PRESET_ADVICE.map((item, idx) => {
-          const Icon = item.icon;
-          return (
-            <div
-              key={idx}
-              className="p-3.5 rounded-xl bg-white border border-slate-200 hover:border-orange-400 transition-all shadow-2xs space-y-1.5 group"
-            >
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-lg bg-orange-50 group-hover:bg-orange-100 text-orange-600 transition-colors">
-                  <Icon className="w-4 h-4" />
-                </div>
-                <h3 className="text-xs font-black text-slate-900 uppercase tracking-tight">
-                  {lang === 'kn' ? item.titleKn : item.titleEn}
-                </h3>
-              </div>
-              <p className="text-[11px] text-slate-600 leading-snug">
-                {lang === 'kn' ? item.descKn : item.descEn}
-              </p>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Interactive Chat Console (Multi-turn with scrollable thread) */}
-      <div className="rounded-2xl bg-white border border-slate-200 shadow-md overflow-hidden flex flex-col h-[520px]">
-        {/* Chat Stream Header */}
-        <div className="px-4 py-2.5 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800 text-xs">
-          <div className="flex items-center gap-2">
-            <Bot className="w-4 h-4 text-orange-400" />
-            <span className="font-black uppercase tracking-wider text-[11px]">
-              {lang === 'kn' ? 'ಲೈವ್ AI ಸಮಾಲೋಚನೆ (Live Consultation)' : 'Live AI Consultation Console'}
-            </span>
-            <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
-              gemini-3.5-flash
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={handleResetChat}
-              title="Reset conversation"
-              className="p-1.5 rounded hover:bg-slate-800 text-slate-300 hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">{lang === 'kn' ? 'ಹೊಸ ಚಾಟ್' : 'Reset'}</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Scrollable Message Thread */}
-        <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-slate-50/60">
-          {messages.map((msg, idx) => {
-            const isUser = msg.role === 'user';
-            return (
-              <div
-                key={idx}
-                className={`flex items-start gap-3 ${isUser ? 'justify-end' : 'justify-start'}`}
-              >
-                {!isUser && (
-                  <div className="w-8 h-8 rounded-xl bg-orange-600 text-white flex items-center justify-center flex-shrink-0 shadow-2xs mt-0.5">
-                    <Bot className="w-4 h-4" />
-                  </div>
-                )}
-
-                <div className={`max-w-[85%] sm:max-w-[78%] flex flex-col ${isUser ? 'items-end' : 'items-start'}`}>
-                  <div
-                    className={`p-3.5 rounded-2xl text-xs sm:text-[13px] leading-relaxed shadow-2xs ${
-                      isUser
-                        ? 'bg-orange-600 text-white rounded-br-xs font-medium'
-                        : 'bg-white text-slate-800 border border-slate-200/90 rounded-bl-xs'
+          {/* Controls: Role, Grounding Mode, & Model */}
+          <div className="bg-white p-3 sm:p-4 rounded-xl border border-slate-200 shadow-2xs space-y-3 text-xs">
+            {/* Row 1: Role Profile Selector */}
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-[11px] font-black uppercase text-slate-500 tracking-wider flex items-center gap-1">
+                  <Layers className="w-3.5 h-3.5 text-orange-600" />
+                  {lang === 'kn' ? 'ನಿಮ್ಮ ವ್ಯವಹಾರ ಶ್ರೇಣಿ:' : 'Business Profile:'}
+                </span>
+                <div className="inline-flex rounded-lg border border-slate-200 p-0.5 bg-slate-50">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedRole('commercial_hotel')}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all ${
+                      selectedRole === 'commercial_hotel'
+                        ? 'bg-orange-600 text-white shadow-2xs'
+                        : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
-                    <div className="whitespace-pre-line">{msg.content}</div>
+                    {lang === 'kn' ? 'ಹೋಟೆಲ್ & ರೆಸ್ಟೋರೆಂಟ್' : 'Hotel / Restaurant'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedRole('catering_marriage')}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all ${
+                      selectedRole === 'catering_marriage'
+                        ? 'bg-orange-600 text-white shadow-2xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    {lang === 'kn' ? 'ಮದುವೆ & ಕ್ಯಾಟರಿಂಗ್' : 'Banquet / Catering'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedRole('bakery_sweets')}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all ${
+                      selectedRole === 'bakery_sweets'
+                        ? 'bg-orange-600 text-white shadow-2xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    {lang === 'kn' ? 'ಬೇಕರಿ & ಸಿಹಿತಿಂಡಿ' : 'Bakery & Sweets'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSelectedRole('industrial_canteen')}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-bold transition-all ${
+                      selectedRole === 'industrial_canteen'
+                        ? 'bg-orange-600 text-white shadow-2xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    {lang === 'kn' ? 'ಫ್ಯಾಕ್ಟರಿ & ಕ್ಯಾಂಟೀನ್' : 'Factory / Canteen'}
+                  </button>
+                </div>
+              </div>
 
-                    {/* Google Search Grounding Sources */}
-                    {msg.grounding && (
-                      <div className="mt-3 pt-2.5 border-t border-slate-100 space-y-1.5">
-                        <div className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-blue-600">
-                          <Search className="w-3 h-3" />
-                          <span>Google Search Grounding Sources:</span>
-                        </div>
+              {/* Model Picker */}
+              <div className="flex items-center gap-1.5">
+                <span className="text-[10px] font-black uppercase text-slate-500 flex items-center gap-1">
+                  <Cpu className="w-3 h-3 text-slate-600" />
+                  {lang === 'kn' ? 'ಮಾಡೆಲ್:' : 'Model:'}
+                </span>
+                <select
+                  value={selectedModel}
+                  onChange={(e: any) => setSelectedModel(e.target.value)}
+                  className="px-2 py-1 text-[11px] font-mono font-bold rounded-lg border border-slate-300 bg-slate-50 text-slate-800 focus:outline-none focus:border-orange-500"
+                >
+                  <option value="gemini-3.5-flash">gemini-3.5-flash (Search/Maps Grounding)</option>
+                  <option value="gemini-3.1-pro-preview">gemini-3.1-pro-preview (Deep Reasoning)</option>
+                  <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite (Ultra-fast)</option>
+                </select>
+              </div>
+            </div>
 
-                        {msg.grounding.webSearchQueries && msg.grounding.webSearchQueries.length > 0 && (
-                          <div className="flex flex-wrap gap-1">
-                            {msg.grounding.webSearchQueries.map((q, qIdx) => (
-                              <span
-                                key={qIdx}
-                                className="px-2 py-0.5 rounded bg-blue-50 text-blue-800 text-[10px] font-semibold border border-blue-100"
-                              >
-                                "{q}"
-                              </span>
-                            ))}
-                          </div>
-                        )}
+            {/* Row 2: Grounding Mode Options */}
+            <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-black uppercase text-slate-500 tracking-wider">
+                  {lang === 'kn' ? 'ರಿಯಲ್-ಟೈಮ್ ಡೇಟಾ (Grounding):' : 'Grounding Tool:'}
+                </span>
+                <div className="inline-flex rounded-lg border border-slate-200 p-0.5 bg-slate-50">
+                  <button
+                    type="button"
+                    onClick={() => setGroundingMode('search')}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-bold flex items-center gap-1.5 transition-all ${
+                      groundingMode === 'search'
+                        ? 'bg-blue-600 text-white shadow-2xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    <Search className="w-3 h-3" />
+                    <span>{lang === 'kn' ? 'ಗೂಗಲ್ ಸರ್ಚ್ (ಮಾರುಕಟ್ಟೆ ದರ & ನಿಯಮ)' : 'Google Search (Live Market & OMC Rates)'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setGroundingMode('maps')}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-bold flex items-center gap-1.5 transition-all ${
+                      groundingMode === 'maps'
+                        ? 'bg-emerald-600 text-white shadow-2xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    <MapPin className="w-3 h-3" />
+                    <span>{lang === 'kn' ? 'ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್ (ನೆಲಮಂಗಲ ಡಿಪೋ & ರೂಟ್‌ಗಳು)' : 'Google Maps (Nelamangala Depot & Routing)'}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setGroundingMode('none')}
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-bold flex items-center gap-1.5 transition-all ${
+                      groundingMode === 'none'
+                        ? 'bg-slate-800 text-white shadow-2xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    <Sparkles className="w-3 h-3" />
+                    <span>{lang === 'kn' ? 'ನೇರ ಅಧಿಕೃತ ಸಲಹೆ' : 'Direct Sandhya Advisor'}</span>
+                  </button>
+                </div>
+              </div>
 
-                        {msg.grounding.groundingChunks && msg.grounding.groundingChunks.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5 pt-1">
-                            {msg.grounding.groundingChunks.map((chunk, cIdx) => {
-                              if (!chunk.web) return null;
-                              return (
-                                <a
-                                  key={cIdx}
-                                  href={chunk.web.uri}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold border border-slate-300 transition-colors"
-                                >
-                                  <span className="truncate max-w-[160px]">{chunk.web.title || 'Official Source'}</span>
-                                  <ExternalLink className="w-2.5 h-2.5 text-slate-400" />
-                                </a>
-                              );
-                            })}
+              {/* Status Note */}
+              <div className="text-[10px] text-slate-500 font-medium">
+                {groundingMode === 'search' && (
+                  <span className="text-blue-600 font-bold flex items-center gap-1">
+                    <Search className="w-2.5 h-2.5" />
+                    Live verified web citations enabled
+                  </span>
+                )}
+                {groundingMode === 'maps' && (
+                  <span className="text-emerald-700 font-bold flex items-center gap-1">
+                    <MapPin className="w-2.5 h-2.5" />
+                    Depot LatLng: 13.0984°N, 77.3916°E
+                  </span>
+                )}
+                {groundingMode === 'none' && (
+                  <span className="text-slate-600 font-bold flex items-center gap-1">
+                    <ShieldCheck className="w-2.5 h-2.5 text-emerald-600" />
+                    Proprietor: Ramakrishnaiah • GSTIN: 29CJXPR4809J1Z6
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* 4 Core Best Practice Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+            {PRESET_ADVICE.map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={idx}
+                  className="p-3.5 rounded-xl bg-white border border-slate-200 hover:border-orange-400 transition-all shadow-2xs space-y-1.5 group"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 rounded-lg bg-orange-50 group-hover:bg-orange-100 text-orange-600 transition-colors">
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <h3 className="text-xs font-black text-slate-900 uppercase tracking-tight">
+                      {lang === 'kn' ? item.titleKn : item.titleEn}
+                    </h3>
+                  </div>
+                  <p className="text-[11px] text-slate-600 leading-snug">
+                    {lang === 'kn' ? item.descKn : item.descEn}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Interactive Chat Console (Multi-turn with scrollable thread) */}
+          <div className="rounded-2xl bg-white border border-slate-200 shadow-md overflow-hidden flex flex-col h-[520px]">
+            {/* Chat Stream Header */}
+            <div className="px-4 py-2.5 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800 text-xs">
+              <div className="flex items-center gap-2">
+                <Bot className="w-4 h-4 text-orange-400" />
+                <span className="font-black uppercase tracking-wider text-[11px]">
+                  {lang === 'kn' ? 'ಲೈವ್ AI ಸಮಾಲೋಚನೆ (Live Consultation)' : 'Live AI Consultation Console'}
+                </span>
+                <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
+                  {selectedModel}
+                </span>
+                {groundingMode === 'search' && (
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-blue-900/60 text-blue-300 border border-blue-700/50 flex items-center gap-1 font-bold">
+                    <Search className="w-2.5 h-2.5" />
+                    Search Grounding
+                  </span>
+                )}
+                {groundingMode === 'maps' && (
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-900/60 text-emerald-300 border border-emerald-700/50 flex items-center gap-1 font-bold">
+                    <MapPin className="w-2.5 h-2.5" />
+                    Maps Grounding
+                  </span>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleResetChat}
+                  title="Reset conversation"
+                  className="p-1.5 rounded hover:bg-slate-800 text-slate-300 hover:text-white transition-colors flex items-center gap-1 text-[11px] font-bold"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">{lang === 'kn' ? 'ಹೊಸ ಚಾಟ್' : 'Reset'}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Scrollable Message Thread */}
+            <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-slate-50/60">
+              {messages.map((msg, idx) => {
+                const isUser = msg.role === 'user';
+                return (
+                  <div
+                    key={idx}
+                    className={`flex items-start gap-3 ${isUser ? 'justify-end' : 'justify-start'}`}
+                  >
+                    {!isUser && (
+                      <div className="w-8 h-8 rounded-xl bg-orange-600 text-white flex items-center justify-center flex-shrink-0 shadow-2xs mt-0.5">
+                        <Bot className="w-4 h-4" />
+                      </div>
+                    )}
+
+                    <div className={`max-w-[85%] sm:max-w-[78%] flex flex-col ${isUser ? 'items-end' : 'items-start'}`}>
+                      <div
+                        className={`p-3.5 rounded-2xl text-xs sm:text-[13px] leading-relaxed shadow-2xs ${
+                          isUser
+                            ? 'bg-orange-600 text-white rounded-br-xs font-medium'
+                            : 'bg-white text-slate-800 border border-slate-200/90 rounded-bl-xs'
+                        }`}
+                      >
+                        <div className="whitespace-pre-line">{msg.content}</div>
+
+                        {/* Grounding Sources (Google Search & Google Maps links) */}
+                        {msg.grounding && (
+                          <div className="mt-3 pt-2.5 border-t border-slate-100 space-y-2">
+                            {/* Google Search Queries */}
+                            {msg.grounding.webSearchQueries && msg.grounding.webSearchQueries.length > 0 && (
+                              <div>
+                                <div className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-blue-600 mb-1">
+                                  <Search className="w-3 h-3" />
+                                  <span>Google Search Grounding Queries:</span>
+                                </div>
+                                <div className="flex flex-wrap gap-1">
+                                  {msg.grounding.webSearchQueries.map((q, qIdx) => (
+                                    <span
+                                      key={qIdx}
+                                      className="px-2 py-0.5 rounded bg-blue-50 text-blue-800 text-[10px] font-semibold border border-blue-100"
+                                    >
+                                      "{q}"
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Google Search & Google Maps Clickable Links */}
+                            {msg.grounding.groundingChunks && msg.grounding.groundingChunks.length > 0 && (
+                              <div className="space-y-1.5">
+                                <div className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-slate-600">
+                                  <ExternalLink className="w-3 h-3 text-orange-600" />
+                                  <span>Verified Grounding Sources & Official Links:</span>
+                                </div>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {msg.grounding.groundingChunks.map((chunk, cIdx) => {
+                                    // Handle Google Search chunk
+                                    if (chunk.web && chunk.web.uri) {
+                                      return (
+                                        <a
+                                          key={`web-${cIdx}`}
+                                          href={chunk.web.uri}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-900 text-[10px] font-bold border border-blue-200 transition-colors"
+                                        >
+                                          <Search className="w-2.5 h-2.5 text-blue-600" />
+                                          <span className="truncate max-w-[180px]">{chunk.web.title || 'Official Source'}</span>
+                                          <ExternalLink className="w-2.5 h-2.5 text-blue-500" />
+                                        </a>
+                                      );
+                                    }
+
+                                    // Handle Google Maps chunk
+                                    if (chunk.maps && chunk.maps.uri) {
+                                      return (
+                                        <a
+                                          key={`maps-${cIdx}`}
+                                          href={chunk.maps.uri}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-emerald-50 hover:bg-emerald-100 text-emerald-900 text-[10px] font-bold border border-emerald-200 transition-colors"
+                                        >
+                                          <MapPin className="w-2.5 h-2.5 text-emerald-600" />
+                                          <span className="truncate max-w-[200px]">{chunk.maps.title || 'Google Maps Location'}</span>
+                                          <ExternalLink className="w-2.5 h-2.5 text-emerald-500" />
+                                        </a>
+                                      );
+                                    }
+
+                                    return null;
+                                  })}
+                                </div>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
-                    )}
-                  </div>
 
-                  {/* Metadata line: Time, Copy Button, Mode */}
-                  <div className="flex items-center gap-2 mt-1 px-1 text-[10px] text-slate-400 font-semibold">
-                    <span>{msg.time}</span>
-                    <span>•</span>
-                    <button
-                      type="button"
-                      onClick={() => handleCopy(msg.content, idx)}
-                      className="hover:text-slate-700 flex items-center gap-0.5 transition-colors"
-                    >
-                      {copiedIndex === idx ? (
-                        <>
-                          <Check className="w-2.5 h-2.5 text-emerald-600" />
-                          <span className="text-emerald-600 font-bold">Copied</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-2.5 h-2.5" />
-                          <span>Copy</span>
-                        </>
-                      )}
-                    </button>
-                    {msg.mode && (
-                      <>
+                      {/* Metadata line: Time, Copy Button, Mode */}
+                      <div className="flex items-center gap-2 mt-1 px-1 text-[10px] text-slate-400 font-semibold">
+                        <span>{msg.time}</span>
                         <span>•</span>
-                        <span className="text-[9px] uppercase font-mono text-slate-400">{msg.mode}</span>
-                      </>
-                    )}
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(msg.content, idx)}
+                          className="hover:text-slate-700 flex items-center gap-0.5 transition-colors"
+                        >
+                          {copiedIndex === idx ? (
+                            <>
+                              <Check className="w-2.5 h-2.5 text-emerald-600" />
+                              <span className="text-emerald-600 font-bold">Copied</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-2.5 h-2.5" />
+                              <span>Copy</span>
+                            </>
+                          )}
+                        </button>
+                        {msg.mode && (
+                          <>
+                            <span>•</span>
+                            <span className="text-[9px] uppercase font-mono text-slate-500 font-bold">{msg.mode}</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {isThinking && (
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-xl bg-orange-600 text-white flex items-center justify-center flex-shrink-0">
+                    <Bot className="w-4 h-4 animate-spin" />
+                  </div>
+                  <div className="px-4 py-3 rounded-2xl bg-white border border-slate-200 text-xs font-bold text-slate-700 flex items-center gap-2 shadow-2xs">
+                    <Sparkles className="w-4 h-4 text-orange-600 animate-spin" />
+                    <span>
+                      {groundingMode === 'search'
+                        ? lang === 'kn'
+                          ? 'ಗೂಗಲ್ ಸರ್ಚ್ ಮೂಲಕ ಅಧಿಕೃತ ಮಾರುಕಟ್ಟೆ ಡೇಟಾ ಪರಿಶೀಲಿಸುತ್ತಿದೆ...'
+                          : 'Consulting Sandhya Commercial LPG knowledge & Google Search live data...'
+                        : groundingMode === 'maps'
+                        ? lang === 'kn'
+                          ? 'ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್ ಮೂಲಕ ನೆಲಮಂಗಲ ಡಿಪೋ ಮತ್ತು ಡೆಲಿವರಿ ಸ್ಥಳಗಳನ್ನು ಪರಿಶೀಲಿಸುತ್ತಿದೆ...'
+                          : 'Verifying Sandhya Depot Nelamangala & Karnataka routes on Google Maps...'
+                        : lang === 'kn'
+                        ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ AI ಅಧಿಕೃತ ಸಲಹೆಗಾರ ಲೆಕ್ಕಾಚಾರ ಮಾಡುತ್ತಿದೆ...'
+                        : 'Formulating verified Sandhya Commercial recommendations...'}
+                    </span>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-
-          {isThinking && (
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-orange-600 text-white flex items-center justify-center flex-shrink-0">
-                <Bot className="w-4 h-4 animate-spin" />
-              </div>
-              <div className="px-4 py-3 rounded-2xl bg-white border border-slate-200 text-xs font-bold text-slate-700 flex items-center gap-2 shadow-2xs">
-                <Sparkles className="w-4 h-4 text-orange-600 animate-spin" />
-                <span>
-                  {enableSearch
-                    ? lang === 'kn'
-                      ? 'ಗೂಗಲ್ ಸರ್ಚ್ ಮೂಲಕ ಲೈವ್ ಡೇಟಾ ವಿಶ್ಲೇಷಿಸುತ್ತಿದೆ...'
-                      : 'Consulting Sandhya Commercial LPG knowledge & Google Search...'
-                    : lang === 'kn'
-                    ? 'AI ಸಲಹೆಗಾರ ಲೆಕ್ಕಾಚಾರ ಮಾಡುತ್ತಿದೆ...'
-                    : 'AI Advisor is formulating recommendations...'}
-                </span>
-              </div>
+              )}
+              <div ref={messagesEndRef} />
             </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
 
-        {/* Quick Suggestion Chips */}
-        <div className="px-3 py-2 bg-slate-100 border-t border-slate-200 flex items-center gap-1.5 overflow-x-auto text-[11px]">
-          <span className="text-[10px] font-black uppercase text-slate-500 whitespace-nowrap flex items-center gap-1">
-            <HelpCircle className="w-3 h-3 text-orange-600" />
-            {lang === 'kn' ? 'ತ್ವರಿತ ಪ್ರಶ್ನೆಗಳು:' : 'Quick Prompts:'}
-          </span>
-          <button
-            type="button"
-            onClick={() => handleSendMessage(lang === 'kn' ? 'ಹೋಟೆಲ್‌ನಲ್ಲಿ ಗ್ಯಾಸ್ ಖರ್ಚು 20% ಕಡಿಮೆ ಮಾಡುವುದು ಹೇಗೆ?' : 'How can I reduce commercial kitchen LPG bill by 20%?')}
-            className="px-2.5 py-1 rounded-lg bg-white hover:bg-orange-50 border border-slate-300 hover:border-orange-400 text-slate-800 font-bold whitespace-nowrap transition-colors"
-          >
-            {lang === 'kn' ? '💡 20% ಗ್ಯಾಸ್ ಉಳಿತಾಯ' : '💡 Save 20% LPG'}
-          </button>
-          <button
-            type="button"
-            onClick={() => handleSendMessage(lang === 'kn' ? '1000 ಜನರ ಮದುವೆ ಊಟಕ್ಕೆ ಎಷ್ಟು ಸಿಲಿಂಡರ್ ಬೇಕು?' : 'How many cylinders are required for 1000 guests marriage feast?')}
-            className="px-2.5 py-1 rounded-lg bg-white hover:bg-orange-50 border border-slate-300 hover:border-orange-400 text-slate-800 font-bold whitespace-nowrap transition-colors"
-          >
-            {lang === 'kn' ? '🍲 ಮದುವೆ ಸಿಲಿಂಡರ್ ಲೆಕ್ಕ' : '🍲 Wedding Hall Estimate'}
-          </button>
-          <button
-            type="button"
-            onClick={() => handleSendMessage(lang === 'kn' ? 'ಕರ್ನಾಟಕದಲ್ಲಿ ಇಂದಿನ ಕಮರ್ಷಿಯಲ್ 19kg ಸಿಲಿಂಡರ್ ಸರ್ಕಾರಿ ದರ ಎಷ್ಟು?' : 'What is the current prevailing commercial 19kg LPG cylinder price in Karnataka?')}
-            className="px-2.5 py-1 rounded-lg bg-white hover:bg-orange-50 border border-slate-300 hover:border-orange-400 text-slate-800 font-bold whitespace-nowrap transition-colors flex items-center gap-1"
-          >
-            <Search className="w-2.5 h-2.5 text-blue-600" />
-            {lang === 'kn' ? '📊 ಪ್ರಸ್ತುತ ಕಮರ್ಷಿಯಲ್ ದರ' : '📊 Current Market Rate'}
-          </button>
-          <button
-            type="button"
-            onClick={() => handleSendMessage(lang === 'kn' ? 'ಭಾರತ್ ಗ್ಯಾಸ್ 19kg ಮತ್ತು 47.5kg ಇಂಡಸ್ಟ್ರಿಯಲ್ ಸಿಲಿಂಡರ್ ನಡುವಿನ ವ್ಯತ್ಯಾಸವೇನು?' : 'What is the benefit of switching to Bharat Gas 47.5kg Industrial cylinders?')}
-            className="px-2.5 py-1 rounded-lg bg-white hover:bg-orange-50 border border-slate-300 hover:border-orange-400 text-slate-800 font-bold whitespace-nowrap transition-colors"
-          >
-            {lang === 'kn' ? '🔥 19kg vs 47.5kg ಬಲ್ಕ್' : '🔥 19kg vs 47.5kg Bulk'}
-          </button>
-          <button
-            type="button"
-            onClick={() => handleSendMessage(lang === 'kn' ? 'ಅನಿಲ ಸೋರಿಕೆ (Gas Leak) ಕಂಡುಬಂದರೆ ತುರ್ತು ಕ್ರಮಗಳೇನು?' : 'What is the emergency protocol if we smell gas leak in commercial kitchen?')}
-            className="px-2.5 py-1 rounded-lg bg-white hover:bg-orange-50 border border-slate-300 hover:border-orange-400 text-slate-800 font-bold whitespace-nowrap transition-colors"
-          >
-            {lang === 'kn' ? '🚨 ಗ್ಯಾಸ್ ಲೀಕ್ ತುರ್ತು ಸುರಕ್ಷತೆ' : '🚨 Gas Leak Safety'}
-          </button>
-        </div>
+            {/* Quick Suggestion Chips */}
+            <div className="px-3 py-2 bg-slate-100 border-t border-slate-200 flex items-center gap-1.5 overflow-x-auto text-[11px]">
+              <span className="text-[10px] font-black uppercase text-slate-500 whitespace-nowrap flex items-center gap-1">
+                <HelpCircle className="w-3 h-3 text-orange-600" />
+                {lang === 'kn' ? 'ತ್ವರಿತ ಪ್ರಶ್ನೆಗಳು:' : 'Quick Prompts:'}
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setGroundingMode('maps');
+                  handleSendMessage(lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ನೆಲಮಂಗಲ ಮುಖ್ಯ ಡಿಪೋ ಮತ್ತು ತುಮಕೂರು, ದಾಬಸ್‌ಪೇಟೆ ಡೆಲಿವರಿ ಸ್ಥಳಗಳ ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್ ಮಾಹಿತಿ ತಿಳಿಸಿ' : 'Show Sandhya Enterprises Nelamangala Master Depot location and delivery coverage on Google Maps.');
+                }}
+                className="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold whitespace-nowrap transition-colors flex items-center gap-1"
+              >
+                <MapPin className="w-2.5 h-2.5 text-emerald-600" />
+                {lang === 'kn' ? '📍 ನೆಲಮಂಗಲ ಡಿಪೋ (Maps)' : '📍 Depot & Route (Maps)'}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setGroundingMode('search');
+                  handleSendMessage(lang === 'kn' ? 'ಕರ್ನಾಟಕದಲ್ಲಿ ಇಂದಿನ ಕಮರ್ಷಿಯಲ್ 19kg ಸಿಲಿಂಡರ್ ಸರ್ಕಾರಿ ದರ ಎಷ್ಟು?' : 'What is the current prevailing commercial 19kg LPG cylinder price in Karnataka?');
+                }}
+                className="px-2.5 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-300 text-blue-900 font-bold whitespace-nowrap transition-colors flex items-center gap-1"
+              >
+                <Search className="w-2.5 h-2.5 text-blue-600" />
+                {lang === 'kn' ? '📊 ಪ್ರಸ್ತುತ ಕಮರ್ಷಿಯಲ್ ದರ (Search)' : '📊 Market Rates (Search)'}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSendMessage(lang === 'kn' ? 'ಹೋಟೆಲ್‌ನಲ್ಲಿ ಗ್ಯಾಸ್ ಖರ್ಚು 20% ಕಡಿಮೆ ಮಾಡುವುದು ಹೇಗೆ?' : 'How can I reduce commercial kitchen LPG bill by 20%?')}
+                className="px-2.5 py-1 rounded-lg bg-white hover:bg-orange-50 border border-slate-300 hover:border-orange-400 text-slate-800 font-bold whitespace-nowrap transition-colors"
+              >
+                {lang === 'kn' ? '💡 20% ಗ್ಯಾಸ್ ಉಳಿತಾಯ' : '💡 Save 20% LPG'}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSendMessage(lang === 'kn' ? '1000 ಜನರ ಮದುವೆ ಊಟಕ್ಕೆ ಎಷ್ಟು ಸಿಲಿಂಡರ್ ಬೇಕು?' : 'How many cylinders are required for 1000 guests marriage feast?')}
+                className="px-2.5 py-1 rounded-lg bg-white hover:bg-orange-50 border border-slate-300 hover:border-orange-400 text-slate-800 font-bold whitespace-nowrap transition-colors"
+              >
+                {lang === 'kn' ? '🍲 ಮದುವೆ ಸಿಲಿಂಡರ್ ಲೆಕ್ಕ' : '🍲 Wedding Hall Estimate'}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSendMessage(lang === 'kn' ? 'ಹೋಟೆಲ್ ಅಥವಾ ಕ್ಯಾಟರಿಂಗ್‌ಗೆ ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಏಕೆ ಅತ್ಯುತ್ತಮ ಆಯ್ಕೆ? (100% ತೂಕ & 18% GST ITC)' : 'Why should commercial hotels and caterers choose Sandhya Enterprises? Explain 100% weight and 18% GST ITC.')}
+                className="px-2.5 py-1 rounded-lg bg-orange-50 hover:bg-orange-100 border border-orange-300 text-orange-900 font-bold whitespace-nowrap transition-colors flex items-center gap-1"
+              >
+                <ShieldCheck className="w-2.5 h-2.5 text-orange-600" />
+                {lang === 'kn' ? '🏢 ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ವಿಶೇಷತೆ' : '🏢 Why Sandhya Enterprises?'}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSendMessage(lang === 'kn' ? 'ಅನಿಲ ಸೋರಿಕೆ (Gas Leak) ಕಂಡುಬಂದರೆ ತುರ್ತು ಕ್ರಮಗಳೇನು?' : 'What is the emergency protocol if we smell gas leak in commercial kitchen?')}
+                className="px-2.5 py-1 rounded-lg bg-white hover:bg-orange-50 border border-slate-300 hover:border-orange-400 text-slate-800 font-bold whitespace-nowrap transition-colors"
+              >
+                {lang === 'kn' ? '🚨 ಗ್ಯಾಸ್ ಲೀಕ್ ತುರ್ತು ಸುರಕ್ಷತೆ' : '🚨 Gas Leak Safety'}
+              </button>
+            </div>
 
-        {/* Input Bar */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSendMessage();
-          }}
-          className="p-3 bg-white border-t border-slate-200 flex items-center gap-2"
-        >
-          <input
-            type="text"
-            value={inputPrompt}
-            onChange={(e) => setInputPrompt(e.target.value)}
-            placeholder={
-              lang === 'kn'
-                ? 'ಗ್ಯಾಸ್ ಉಳಿತಾಯ, ಮಾರುಕಟ್ಟೆ ದರ, ಮದುವೆ ಆರ್ಡರ್ ಅಥವಾ ಬಿಸಿನೆಸ್ ಬಗ್ಗೆ ಕೇಳಿ...'
-                : 'Ask about cutting LPG bills, current market price, wedding feast estimate, safety...'
-            }
-            className="flex-1 px-3.5 py-2.5 text-xs sm:text-sm font-medium bg-slate-50 rounded-xl border border-slate-300 focus:outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-600/20 text-slate-900"
-          />
-          <button
-            type="submit"
-            disabled={!inputPrompt.trim() || isThinking}
-            className="px-4 sm:px-5 py-2.5 bg-orange-600 hover:bg-orange-700 disabled:opacity-50 text-white rounded-xl font-black text-xs uppercase tracking-wider flex items-center gap-1.5 transition-colors shadow-sm"
-          >
-            <Send className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">{lang === 'kn' ? 'ಕಳುಹಿಸಿ' : 'Send'}</span>
-          </button>
-        </form>
-      </div>
+            {/* Input Bar */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSendMessage();
+              }}
+              className="p-3 bg-white border-t border-slate-200 flex items-center gap-2"
+            >
+              <input
+                type="text"
+                value={inputPrompt}
+                onChange={(e) => setInputPrompt(e.target.value)}
+                placeholder={
+                  lang === 'kn'
+                    ? 'ಗ್ಯಾಸ್ ಉಳಿತಾಯ, ಮಾರುಕಟ್ಟೆ ದರ, ಡಿಪೋ ಸ್ಥಳ, ಮದುವೆ ಆರ್ಡರ್ ಅಥವಾ ಬಿಸಿನೆಸ್ ಬಗ್ಗೆ ಕೇಳಿ...'
+                    : 'Ask about cutting LPG bills, market rates, depot maps, wedding estimates, safety...'
+                }
+                className="flex-1 px-3.5 py-2.5 text-xs sm:text-sm font-medium bg-slate-50 rounded-xl border border-slate-300 focus:outline-none focus:border-orange-600 focus:ring-2 focus:ring-orange-600/20 text-slate-900"
+              />
+              <button
+                type="submit"
+                disabled={!inputPrompt.trim() || isThinking}
+                className="px-4 sm:px-5 py-2.5 bg-orange-600 hover:bg-orange-700 disabled:opacity-50 text-white rounded-xl font-black text-xs uppercase tracking-wider flex items-center gap-1.5 transition-colors shadow-sm"
+              >
+                <Send className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">{lang === 'kn' ? 'ಕಳುಹಿಸಿ' : 'Send'}</span>
+              </button>
+            </form>
+          </div>
         </>
       )}
     </div>
   );
 };
+

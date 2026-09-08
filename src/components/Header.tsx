@@ -37,20 +37,28 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-xs">
       {/* Top High-Density micro bar */}
       <div className="bg-slate-900 text-slate-300 text-[11px] py-1.5 px-4 hidden md:block">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 text-orange-400 font-bold uppercase tracking-wider text-[10px]">
-              <MapPin className="w-3.5 h-3.5" />
-              {lang === 'kn' ? 'ನೆಲಮಂಗಲ ಟೌನ್, ತುಮಕೂರು, ಶಿರಾ, ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರ' : 'Nelamangala, Tumkur Highway, Sira & Bangalore Rural'}
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 overflow-x-auto no-scrollbar">
+          <div className="flex items-center gap-2.5 sm:gap-3 flex-shrink-0">
+            <span className="flex items-center gap-1 text-orange-400 font-bold uppercase tracking-wider text-[10px]">
+              <MapPin className="w-3 h-3 flex-shrink-0" />
+              <span>{lang === 'kn' ? 'ನೆಲಮಂಗಲ, ತುಮಕೂರು, ಶಿರಾ' : 'Nelamangala, Tumkur & Sira'}</span>
             </span>
             <span className="text-slate-600">|</span>
-            <span className="text-slate-300 text-[11px]">
-              {lang === 'kn' ? 'ಅಧಿಕೃತ ಕಮರ್ಷಿಯಲ್ ಎಲ್‌ಪಿಜಿ ವಿತರಕರು • PESO & OMC ಮಾನದಂಡ' : 'Official Commercial LPG Distributor • PESO & OMC Certified'}
+            <span className="text-amber-300 font-black text-[10px] uppercase tracking-wider bg-amber-950/60 px-1.5 py-0.5 rounded border border-amber-500/30">
+              {lang === 'kn' ? `ಪ್ರೊ: ${BUSINESS_INFO.proprietorKn}` : `Pro: ${BUSINESS_INFO.proprietor}`}
+            </span>
+            <span className="text-slate-600 hidden md:inline">|</span>
+            <span className="text-slate-300 text-[10px] hidden md:inline font-mono">
+              GSTIN: <strong className="text-white font-bold">{BUSINESS_INFO.gstin}</strong>
+            </span>
+            <span className="text-slate-600 hidden lg:inline">|</span>
+            <span className="text-slate-300 text-[10px] hidden lg:inline font-mono">
+              UDYAM: <strong className="text-white font-bold">{BUSINESS_INFO.udyam}</strong>
             </span>
           </div>
 
-          <div className="flex items-center gap-4 text-[11px]">
-            <span className="text-slate-400 font-semibold uppercase text-[10px] tracking-wider">
+          <div className="flex items-center gap-3 text-[11px] flex-shrink-0">
+            <span className="text-slate-400 font-semibold uppercase text-[10px] tracking-wider hidden sm:inline">
               {lang === 'kn' ? '24/7 ತುರ್ತು ಸೇವೆ:' : '24/7 Support:'}
             </span>
             <a
@@ -59,10 +67,10 @@ export const Header: React.FC<HeaderProps> = ({
             >
               +91 {BUSINESS_INFO.phonePrimary}
             </a>
-            <span className="text-slate-600">|</span>
+            <span className="text-slate-600 hidden sm:inline">|</span>
             <a
               href={`mailto:${BUSINESS_INFO.emailOfficial}`}
-              className="text-slate-300 hover:text-white transition-colors"
+              className="text-slate-300 hover:text-white transition-colors hidden sm:inline"
             >
               {BUSINESS_INFO.emailOfficial}
             </a>
@@ -331,6 +339,20 @@ export const Header: React.FC<HeaderProps> = ({
               <Flame className="w-4 h-4" />
               <span>{lang === 'kn' ? 'ಇಂದಿನ ದರ ವಿಚಾರಿಸಿ' : 'Get Today\'s Rate'}</span>
             </button>
+
+            {/* Official Registration & GSTIN Badge */}
+            <div className="p-2.5 rounded-lg bg-slate-900 text-slate-300 text-[10px] space-y-1 border border-slate-800">
+              <div className="flex items-center justify-between font-black text-amber-400 uppercase tracking-wider">
+                <span>{lang === 'kn' ? `ಪ್ರೊಪ್ರೈಟರ್: ${BUSINESS_INFO.proprietorKn}` : `Pro: ${BUSINESS_INFO.proprietor}`}</span>
+                <span className="text-[9px] bg-slate-800 text-emerald-400 font-bold px-1.5 py-0.2 rounded border border-slate-700">✓ VERIFIED</span>
+              </div>
+              <div className="font-mono text-slate-400">
+                GSTIN: <span className="text-white font-bold">{BUSINESS_INFO.gstin}</span>
+              </div>
+              <div className="font-mono text-slate-400">
+                UDYAM: <span className="text-white font-bold">{BUSINESS_INFO.udyam}</span>
+              </div>
+            </div>
           </div>
         </div>
       )}

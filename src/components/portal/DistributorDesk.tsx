@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { Language, OrderRecord, PaymentMode, OrderStatus, CustomerAccount } from '../../types';
 import { portalStore, PortalState } from '../../data/portalStore';
+import { BUSINESS_INFO } from '../../data/content';
 
 interface DistributorDeskProps {
   lang: Language;
@@ -251,6 +252,15 @@ export const DistributorDesk: React.FC<DistributorDeskProps> = ({ lang }) => {
               ? 'ಆರ್ಡರ್‌ಗಳ ಸ್ವೀಕಾರ, ಡೆಲಿವರಿ ಸ್ಥಿತಿ ಬದಲಾವಣೆ, ನಗದು/ಆನ್‌ಲೈನ್ ಪಾವತಿ ದಾಖಲಿಸುವಿಕೆ & MT ಖಾಲಿ ಸಿಲಿಂಡರ್ ಸಂಗ್ರಹ'
               : 'Dispatch management, status updates, live Cash/UPI receipt logging, and MT Cylinder reconciliation'}
           </p>
+          <div className="flex flex-wrap items-center gap-2 pt-1 text-[10px] text-slate-400 font-mono">
+            <span className="text-amber-300 font-sans font-bold">
+              {lang === 'kn' ? `ಪ್ರೊ: ${BUSINESS_INFO.proprietorKn}` : `Pro: ${BUSINESS_INFO.proprietor}`}
+            </span>
+            <span>•</span>
+            <span>GSTIN: <strong className="text-slate-200">{BUSINESS_INFO.gstin}</strong></span>
+            <span>•</span>
+            <span>UDYAM: <strong className="text-slate-200">{BUSINESS_INFO.udyam}</strong></span>
+          </div>
         </div>
 
         {/* Staff Identifier & Direct Payment Button */}

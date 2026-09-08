@@ -31,6 +31,37 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
                 ? 'ಪ್ರತಿ ತಿಂಗಳು ಗ್ಯಾಸ್ ದರ ಪರಿಷ್ಕರಣೆಯಾಗುವುದರಿಂದ, ಇಂದಿನ ದರಕ್ಕಾಗಿ 8152889500 ಗೆ ಕರೆ ಮಾಡಿ.'
                 : 'Rates revise every month. Call 8152889500 to get today\'s best wholesale price.'}
             </div>
+
+            {/* Official Registration, GST & MSME Badge */}
+            <div className="p-3 rounded-lg bg-slate-900/90 border border-slate-800/80 text-xs space-y-1.5 shadow-2xs">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-black uppercase tracking-widest text-amber-400 flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  {lang === 'kn' ? 'ಅಧಿಕೃತ ನೋಂದಣಿ ವಿವರಗಳು' : 'REGISTRATION & TAX COMPLIANCE'}
+                </span>
+                <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-800/50 font-bold">
+                  ✓ VERIFIED
+                </span>
+              </div>
+              <div className="text-[11px] text-slate-300">
+                <span className="text-slate-400">{lang === 'kn' ? 'ಪ್ರೊಪ್ರೈಟರ್ / ಮಾಲೀಕರು:' : 'Proprietor:'}</span>{' '}
+                <strong className="text-amber-300 font-bold tracking-wide">
+                  {lang === 'kn' ? `${BUSINESS_INFO.proprietorKn} (${BUSINESS_INFO.proprietor})` : BUSINESS_INFO.proprietor}
+                </strong>
+              </div>
+              <div className="text-[11px] font-mono text-slate-400 flex items-center justify-between">
+                <span>GSTIN:</span>
+                <span className="text-white font-bold bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700">
+                  {BUSINESS_INFO.gstin}
+                </span>
+              </div>
+              <div className="text-[11px] font-mono text-slate-400 flex items-center justify-between">
+                <span>UDYAM:</span>
+                <span className="text-white font-bold bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700">
+                  {BUSINESS_INFO.udyam}
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* Col 2: Quick Links */}
@@ -121,8 +152,17 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
 
         {/* Bottom copyright and social row */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
-          <div>
-            © {new Date().getFullYear()} {BUSINESS_INFO.name}. All Rights Reserved. Official Commercial Distributor.
+          <div className="space-y-0.5 text-center sm:text-left">
+            <div>
+              © {new Date().getFullYear()} {BUSINESS_INFO.name}. All Rights Reserved.
+            </div>
+            <div className="text-[11px] text-slate-400">
+              <span className="text-amber-400 font-semibold">{lang === 'kn' ? `ಪ್ರೊ: ${BUSINESS_INFO.proprietorKn}` : `Pro: ${BUSINESS_INFO.proprietor}`}</span>
+              {' • '}
+              <span>GSTIN: <strong className="text-slate-300 font-mono">{BUSINESS_INFO.gstin}</strong></span>
+              {' • '}
+              <span>UDYAM: <strong className="text-slate-300 font-mono">{BUSINESS_INFO.udyam}</strong></span>
+            </div>
           </div>
 
           {/* Social Links */}

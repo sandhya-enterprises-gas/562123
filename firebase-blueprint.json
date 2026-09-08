@@ -179,9 +179,58 @@
         }
       },
       "required": ["bharat19kgApprox", "bharat47kgApprox", "gogasApprox", "lastUpdated"]
+    },
+    "userProfile": {
+      "title": "User Profile",
+      "description": "Authenticated commercial client or business owner profile",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "photoURL": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "businessName": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "phone": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "area": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "role": {
+          "type": "string",
+          "enum": ["customer", "distributor", "admin"]
+        },
+        "createdAt": {
+          "type": "string",
+          "maxLength": 64
+        }
+      },
+      "required": ["uid", "email", "createdAt"]
     }
   },
   "firestore": {
+    "/users/{userId}": {
+      "schema": "userProfile",
+      "description": "User profile information and saved customer preferences"
+    },
     "/inquiries/{inquiryId}": {
       "schema": "inquiry",
       "description": "Customer rate quotes and commercial inquiries"

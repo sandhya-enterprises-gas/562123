@@ -67,7 +67,7 @@ function aistudioMediaPlugin(): Plugin {
 
 export default defineConfig(() => {
   return {
-    base: '/562123/',
+    base: '/',
     plugins: [
       react(),
       tailwindcss(),
@@ -76,7 +76,7 @@ export default defineConfig(() => {
         registerType: 'autoUpdate',
         includeAssets: ['favicon.png', 'apple-touch-icon.png', 'icon.svg'],
         manifest: {
-          id: '/562123/',
+          id: '/',
           name: 'Sandhya Enterprises - Commercial LPG Gas Agency',
           short_name: 'Sandhya LPG',
           description: 'Official Commercial LPG Gas Agency, Manifold Pipeline & Bulk Fuel Supply in Nelamangala, Dobbaspet & Tumkur',
@@ -84,23 +84,23 @@ export default defineConfig(() => {
           background_color: '#0f172a',
           display: 'standalone',
           orientation: 'portrait-primary',
-          start_url: '/562123/',
-          scope: '/562123/',
+          start_url: '/',
+          scope: '/',
           icons: [
             {
-              src: '/562123/pwa-192x192.png',
+              src: '/pwa-192x192.png',
               sizes: '192x192',
               type: 'image/png',
               purpose: 'any',
             },
             {
-              src: '/562123/pwa-512x512.png',
+              src: '/pwa-512x512.png',
               sizes: '512x512',
               type: 'image/png',
               purpose: 'any',
             },
             {
-              src: '/562123/pwa-maskable-512x512.png',
+              src: '/pwa-maskable-512x512.png',
               sizes: '512x512',
               type: 'image/png',
               purpose: 'maskable',

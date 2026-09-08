@@ -22,7 +22,7 @@ import {
 import { Language } from '../../types';
 import {
   initAuth,
-  googleSignIn,
+  googleSignInWithGmail,
   logout,
   getAccessToken
 } from '../../lib/firebaseAuth';
@@ -85,7 +85,7 @@ export const GmailHub: React.FC<GmailHubProps> = ({ lang }) => {
     setIsLoggingIn(true);
     setErrorMsg(null);
     try {
-      const result = await googleSignIn();
+      const result = await googleSignInWithGmail();
       if (result) {
         setCurrentUser(result.user);
         setAccessToken(result.accessToken);
@@ -182,8 +182,10 @@ Please find below the billing statement for Commercial LPG Cylinders supplied by
 INVOICE SUMMARY:
 ------------------------------------------
 Supplier: Sandhya Enterprises (Commercial LPG Gas Agency)
+Proprietor: Ramakrishnaiah
+GSTIN: 29CJXPR4809J1Z6
+UDYAM Reg: UDYAM-KR-02-0049972
 Customer Business: Commercial Establishment
-GSTIN: 29XXXXX0000X1Z5
 SAC / HSN Code: 27111200 (Liquified Petroleum Gas)
 Total Cylinders Supplied: 25 x 19kg Bharat Gas Commercial
 Total Amount Billed: ₹ 46,250.00
@@ -191,15 +193,16 @@ Empty Cylinders Reconciled: 25 Returned / 0 Pending
 Payment Terms: Within 7 Days via NEFT/RTGS/UPI
 
 Bank Transfer Details:
-Account Name: Sandhya Enterprises
+Account Name: Sandhya Enterprises (Pro: Ramakrishnaiah)
 Bank: State Bank of India, Nelamangala Branch
 UPI ID: 8152889500@upi
 
 For billing ledger reconciliation, reply directly to this email or call our accounts desk at 8152889500.
 
 Sincerely,
-Accounts & Billing Department
-Sandhya Enterprises`
+Accounts & Billing Department (Pro: Ramakrishnaiah)
+Sandhya Enterprises
+GSTIN: 29CJXPR4809J1Z6 | UDYAM: UDYAM-KR-02-0049972`
       );
     } else if (type === 'safety_certificate') {
       setComposeSubject('VOT/LOT Commercial Pipeline Manifold Safety Compliance Certificate');

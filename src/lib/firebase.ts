@@ -161,3 +161,69 @@ export async function saveApplicantToFirestore(applicant: {
     handleFirestoreError(error, OperationType.WRITE, path);
   }
 }
+
+/**
+ * Persist or Update User Profile in Firestore
+ */
+export async function saveUserProfileToFirestore(profile: {
+  uid: string;
+  displayName?: string;
+  email: string;
+  photoURL?: string;
+  businessName?: string;
+  phone?: string;
+  area?: string;
+  role?: 'customer' | 'distributor' | 'admin';
+  createdAt: string;
+}) {
+  const path = `users/${profile.uid}`;
+  try {
+    await setDoc(doc(db, 'users', profile.uid), profile, { merge: true });
+    console.log('[Firebase] User profile synced to Firestore:', profile.uid);
+  } catch (error) {
+    handleFirestoreError(error, OperationType.WRITE, path);
+  }
+}
+
+/**
+ * Get User Profile from Firestore
+ */
+export async function getUserProfileFromFirestore(uid: string) {
+  const path = `users/${uid}`;
+  try {
+    const snap = await getDocFromServer(doc(db, 'users', uid));
+    return snap.exists() ? snap.data() : null;
+  } catch (error) {
+    console.warn('[Firebase] Could not fetch user profile:', error);
+    return null;
+  }
+}
+
+/**
+ * Fetch all Orders from Firestore
+ */
+export async function fetchOrdersFromFirestore(): Promise<any[]> {
+  const path = 'orders';
+  try {
+    const snap = await getDocs(collection(db, 'orders'));
+    return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+  } catch (error) {
+    console.warn('[Firebase] Could not fetch orders:', error);
+    return [];
+  }
+}
+
+/**
+ * Fetch all Inquiries from Firestore
+ */
+export async function fetchInquiriesFromFirestore(): Promise<any[]> {
+  const path = 'inquiries';
+  try {
+    const snap = await getDocs(collection(db, 'inquiries'));
+    return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+  } catch (error) {
+    console.warn('[Firebase] Could not fetch inquiries:', error);
+    return [];
+  }
+}
+

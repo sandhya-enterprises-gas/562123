@@ -213,6 +213,15 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
                 ? '1-ಕ್ಲಿಕ್ ಸಿಲಿಂಡರ್ ಆರ್ಡರ್, ಬಾಕಿ ಹಣದ ಲೆಕ್ಕ (Balance), ಖಾಲಿ ಸಿಲಿಂಡರ್ (MT) ಲೆಡ್ಜರ್ ಮತ್ತು ಪಾವತಿ ವಿವರ'
                 : '1-Click Cylinder Request, Balance Outstanding, MT Empty Returns & Cash/Online Payment Ledger')}
           </p>
+          <div className="flex flex-wrap items-center gap-2 pt-1 text-[10px] text-slate-400 font-mono">
+            <span className="text-amber-300 font-sans font-bold">
+              {lang === 'kn' ? `ಪ್ರೊ: ${BUSINESS_INFO.proprietorKn}` : `Pro: ${BUSINESS_INFO.proprietor}`}
+            </span>
+            <span>•</span>
+            <span>GSTIN: <strong className="text-slate-200">{BUSINESS_INFO.gstin}</strong></span>
+            <span>•</span>
+            <span>UDYAM: <strong className="text-slate-200">{BUSINESS_INFO.udyam}</strong></span>
+          </div>
         </div>
 
         {/* Right Action: Logout if logged in, or Security Seal if logged out */}
