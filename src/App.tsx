@@ -14,7 +14,6 @@ import { GoogleMapsLocator } from './components/GoogleMapsLocator';
 import { Footer } from './components/Footer';
 import { RateInquiryModal } from './components/RateInquiryModal';
 import { FloatingActions } from './components/FloatingActions';
-import { SandhyaAiAdvisorModal } from './components/SandhyaAiAdvisorModal';
 import { PortalNavigation } from './components/portal/PortalNavigation';
 import { CustomerPortal } from './components/portal/CustomerPortal';
 import { DistributorDesk } from './components/portal/DistributorDesk';
@@ -33,7 +32,6 @@ export default function App() {
 
   const [activePortalTab, setActivePortalTab] = useState<ActivePortalTab>('website');
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
-  const [aiAdvisorModalOpen, setAiAdvisorModalOpen] = useState(false);
   const [selectedBrandForModal, setSelectedBrandForModal] = useState<string | undefined>();
 
   const handleLanguageChange = (newLang: Language) => {
@@ -68,7 +66,6 @@ export default function App() {
         lang={lang}
         onLanguageChange={handleLanguageChange}
         onOpenInquiryModal={() => handleOpenInquiry()}
-        onOpenAiAdvisor={() => setAiAdvisorModalOpen(true)}
         activePortalTab={activePortalTab}
         onNavigatePortal={setActivePortalTab}
       />
@@ -178,7 +175,6 @@ export default function App() {
       <FloatingActions
         lang={lang}
         onOpenInquiryModal={() => handleOpenInquiry()}
-        onOpenAiAdvisor={() => setAiAdvisorModalOpen(true)}
       />
 
       {/* Live Rate & Quote Modal */}
@@ -187,14 +183,6 @@ export default function App() {
         onClose={() => setInquiryModalOpen(false)}
         lang={lang}
         initialBrand={selectedBrandForModal}
-      />
-
-      {/* Official Sandhya AI Advisor Modal (Powered by Gemini 3.5 & Google Search Grounding) */}
-      <SandhyaAiAdvisorModal
-        isOpen={aiAdvisorModalOpen}
-        onClose={() => setAiAdvisorModalOpen(false)}
-        lang={lang}
-        onOpenOrderModal={() => handleOpenInquiry()}
       />
     </div>
   );

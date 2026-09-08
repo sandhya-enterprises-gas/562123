@@ -17,7 +17,6 @@ import {
   Building2,
   Phone,
   MapPin,
-  Bot,
   Shield,
   Eye,
   EyeOff,
@@ -25,7 +24,6 @@ import {
 } from 'lucide-react';
 import { Language, CustomerAccount, OrderRecord, LedgerEntry } from '../../types';
 import { portalStore, PortalState } from '../../data/portalStore';
-import { AiBusinessAdvisor } from './AiBusinessAdvisor';
 import { BUSINESS_INFO } from '../../data/content';
 
 interface CustomerPortalProps {
@@ -34,7 +32,7 @@ interface CustomerPortalProps {
 
 export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
   const [storeState, setStoreState] = useState<PortalState>(portalStore.getState());
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'reorder' | 'ledger' | 'ai'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'reorder' | 'ledger'>('dashboard');
 
   // Auth Forms State
   const [authMode, setAuthMode] = useState<'login' | 'register' | 'forgot'>('login');
@@ -619,17 +617,6 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
               <Send className="w-3.5 h-3.5" />
               <span>{lang === 'kn' ? 'ಕಸ್ಟಮ್ ಆರ್ಡರ್ ಬುಕಿಂಗ್' : 'Custom Booking'}</span>
             </button>
-
-            <button
-              onClick={() => setActiveTab('ai')}
-              className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap ${
-                activeTab === 'ai' ? 'border-orange-600 text-orange-600 bg-orange-50/50' : 'border-transparent text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <Bot className="w-3.5 h-3.5 text-orange-600" />
-              <span>{lang === 'kn' ? 'AI ಕಿಚನ್ ಅಡ್ವೈಸರ್' : 'AI Business Advisor'}</span>
-              <span className="px-1.5 py-0.2 rounded text-[9px] bg-orange-600 text-white">AI</span>
-            </button>
           </div>
 
           {/* TAB 1: Active Orders */}
@@ -877,15 +864,6 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
                 </button>
               </form>
             </div>
-          )}
-
-          {/* TAB 4: AI Kitchen & Business Advisor */}
-          {activeTab === 'ai' && (
-            <AiBusinessAdvisor
-              lang={lang}
-              customer={currentCustomer}
-              onOpenOrderModal={() => setActiveTab('reorder')}
-            />
           )}
         </div>
       )}

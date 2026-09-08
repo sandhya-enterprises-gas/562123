@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PhoneCall, MessageCircle, Globe, Menu, X, MapPin, Flame, User, Truck, ShieldAlert, Mail, Bot, Sparkles } from 'lucide-react';
+import { PhoneCall, MessageCircle, Globe, Menu, X, MapPin, Flame, User, Truck, ShieldAlert, Mail } from 'lucide-react';
 import { Language, ActivePortalTab } from '../types';
 import { SandhyaLogo } from './SandhyaLogo';
 import { BUSINESS_INFO } from '../data/content';
@@ -8,7 +8,6 @@ interface HeaderProps {
   lang: Language;
   onLanguageChange: (lang: Language) => void;
   onOpenInquiryModal: () => void;
-  onOpenAiAdvisor?: () => void;
   activePortalTab?: ActivePortalTab;
   onNavigatePortal?: (tab: ActivePortalTab) => void;
 }
@@ -17,7 +16,6 @@ export const Header: React.FC<HeaderProps> = ({
   lang,
   onLanguageChange,
   onOpenInquiryModal,
-  onOpenAiAdvisor,
   activePortalTab = 'website',
   onNavigatePortal
 }) => {
@@ -138,21 +136,6 @@ export const Header: React.FC<HeaderProps> = ({
                 +91 8152889500
               </a>
             </div>
-
-            {/* AI Advisor Button */}
-            {onOpenAiAdvisor && (
-              <button
-                type="button"
-                id="header-ai-advisor-btn"
-                onClick={onOpenAiAdvisor}
-                className="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all border bg-gradient-to-r from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 text-orange-950 border-orange-300 shadow-2xs group"
-              >
-                <Bot className="w-3.5 h-3.5 text-orange-600 animate-pulse" />
-                <span className="hidden lg:inline">{lang === 'kn' ? 'AI ಸಲಹೆಗಾರ' : 'AI Advisor'}</span>
-                <span className="lg:hidden">AI</span>
-                <Sparkles className="w-3 h-3 text-amber-500 group-hover:rotate-12 transition-transform" />
-              </button>
-            )}
 
             {/* Customer Portal Button */}
             {onNavigatePortal && (
@@ -300,22 +283,6 @@ export const Header: React.FC<HeaderProps> = ({
                   <span>Gmail</span>
                 </button>
               </div>
-            )}
-
-            {/* AI Advisor Mobile Button */}
-            {onOpenAiAdvisor && (
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onOpenAiAdvisor();
-                }}
-                className="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-gradient-to-r from-orange-600 to-amber-600 text-white text-xs font-black uppercase tracking-wider shadow-sm"
-              >
-                <Bot className="w-4 h-4" />
-                <span>{lang === 'kn' ? 'ಸಂಧ್ಯಾ AI ಸಲಹೆಗಾರ (Google Search)' : 'Sandhya AI Advisor (Google Search)'}</span>
-                <Sparkles className="w-3.5 h-3.5 text-amber-200" />
-              </button>
             )}
 
             {navLinks.map((link) => (
