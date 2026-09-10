@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Globe, User, Truck, Shield, Lock, Unlock, LogOut, CheckCircle2, Mail } from 'lucide-react';
+import { Globe, User, Truck, Shield, Lock, Unlock, LogOut, CheckCircle2, Mail, Key } from 'lucide-react';
 import { ActivePortalTab, Language } from '../../types';
 import { portalStore, PortalState } from '../../data/portalStore';
+import { portalAuth, PortalUserSession } from '../../lib/portalAuth';
+import { OfficialLogoBadge } from '../common/OfficialLogoWatermark';
 
 interface PortalNavigationProps {
   lang: Language;
@@ -15,38 +17,43 @@ export const PortalNavigation: React.FC<PortalNavigationProps> = ({
   onSelectTab
 }) => {
   const [storeState, setStoreState] = useState<PortalState>(portalStore.getState());
+  const [authSession, setAuthSession] = useState<PortalUserSession | null>(portalAuth.getSession());
 
   useEffect(() => {
-    const unsub = portalStore.subscribe(() => {
+    const unsubStore = portalStore.subscribe(() => {
       setStoreState({ ...portalStore.getState() });
     });
-    return unsub;
+    const unsubAuth = portalAuth.subscribe(() => {
+      setAuthSession(portalAuth.getSession());
+    });
+    return () => {
+      unsubStore();
+      unsubAuth();
+    };
   }, []);
 
   const currentCustomer = storeState.customers.find((c) => c.id === storeState.currentCustomerId) || null;
-  const isDistributorAuth = storeState.isDistributorAuth;
-  const isAdminAuth = storeState.isAdminAuth;
+  const isDistributorAuth = storeState.isDistributorAuth || (authSession?.role === 'distributor' || authSession?.role === 'admin');
+  const isAdminAuth = storeState.isAdminAuth || authSession?.role === 'admin';
 
-  const handleLogoutCustomer = (e: React.MouseEvent) => {
+  const handleLogout = (e: React.MouseEvent) => {
     e.stopPropagation();
+    portalAuth.logout();
     portalStore.setCurrentCustomer(null);
-  };
-
-  const handleLockDistributor = (e: React.MouseEvent) => {
-    e.stopPropagation();
     portalStore.lockDistributor();
-  };
-
-  const handleLockAdmin = (e: React.MouseEvent) => {
-    e.stopPropagation();
     portalStore.lockAdmin();
   };
 
   return (
     <div className="bg-slate-950 text-white border-b border-slate-800 sticky top-0 z-50 shadow-md">
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 flex items-center justify-between h-12">
-        {/* Left: Private & Official Navigation Switchers */}
-        <div className="flex items-center gap-1 sm:gap-2 overflow-x-auto py-1 text-xs no-scrollbar">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 flex items-center justify-between h-14">
+        {/* Left: Official Logo + Navigation Tabs */}
+        <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto py-1 text-xs no-scrollbar">
+          {/* Official Brand Mini-Seal */}
+          <div className="hidden sm:flex items-center mr-1">
+            <OfficialLogoBadge size={32} />
+          </div>
+
           {/* Main Website / Public Information */}
           <button
             type="button"
@@ -67,25 +74,16 @@ export const PortalNavigation: React.FC<PortalNavigationProps> = ({
             onClick={() => onSelectTab('customer')}
             className={`px-3 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
               activeTab === 'customer'
-                ? 'bg-orange-600 text-white shadow-xs'
+                ? 'bg-orange-600 text-white shadow-xs ring-1 ring-orange-400/30'
                 : 'text-slate-300 hover:text-white hover:bg-slate-800'
             }`}
           >
-            <Lock className={`w-3.5 h-3.5 ${currentCustomer ? 'text-emerald-400' : 'text-slate-400'}`} />
+            <Lock className={`w-3.5 h-3.5 ${currentCustomer || authSession?.role === 'customer' ? 'text-emerald-400' : 'text-slate-400'}`} />
             <span>
-              {lang === 'kn' ? 'ಗ್ರಾಹಕರ ಪೋರ್ಟಲ್ (ಖಾಸಗಿ)' : 'Customer Portal (Private)'}
+              {lang === 'kn' ? 'ಗ್ರಾಹಕರ ಪೋರ್ಟಲ್' : 'Customer Portal'}
             </span>
-            {currentCustomer && (
-              <span className="flex items-center gap-1 ml-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span
-                  onClick={handleLogoutCustomer}
-                  title="Lock Session / Logout"
-                  className="p-0.5 rounded hover:bg-red-800/80 text-slate-300 hover:text-white transition-colors"
-                >
-                  <LogOut className="w-3 h-3 text-red-300" />
-                </span>
-              </span>
+            {(currentCustomer || authSession?.role === 'customer') && (
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
             )}
           </button>
 
@@ -95,25 +93,16 @@ export const PortalNavigation: React.FC<PortalNavigationProps> = ({
             onClick={() => onSelectTab('distributor')}
             className={`px-3 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
               activeTab === 'distributor'
-                ? 'bg-blue-600 text-white shadow-xs'
+                ? 'bg-blue-600 text-white shadow-xs ring-1 ring-blue-400/30'
                 : 'text-slate-300 hover:text-white hover:bg-slate-800'
             }`}
           >
             <Truck className={`w-3.5 h-3.5 ${isDistributorAuth ? 'text-emerald-400' : 'text-blue-400'}`} />
             <span>
-              {lang === 'kn' ? 'ವಿತರಕರ ಡೆಸ್ಕ್ (ಖಾಸಗಿ)' : 'Distributor Desk (Private)'}
+              {lang === 'kn' ? 'ವಿತರಕರ ಡೆಸ್ಕ್' : 'Distributor Desk'}
             </span>
             {isDistributorAuth && (
-              <span className="flex items-center gap-1 ml-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span
-                  onClick={handleLockDistributor}
-                  title="Lock Distributor Desk"
-                  className="p-0.5 rounded hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
-                >
-                  <LogOut className="w-3 h-3 text-slate-300" />
-                </span>
-              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
             )}
           </button>
 
@@ -123,25 +112,16 @@ export const PortalNavigation: React.FC<PortalNavigationProps> = ({
             onClick={() => onSelectTab('admin')}
             className={`px-3 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
               activeTab === 'admin'
-                ? 'bg-purple-600 text-white shadow-xs'
+                ? 'bg-purple-600 text-white shadow-xs ring-1 ring-purple-400/30'
                 : 'text-slate-300 hover:text-white hover:bg-slate-800'
             }`}
           >
             <Shield className={`w-3.5 h-3.5 ${isAdminAuth ? 'text-emerald-400' : 'text-purple-400'}`} />
             <span>
-              {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಪ್ಯಾನೆಲ್ (ಆಫಿಷಿಯಲ್)' : 'Admin Panel (Official)'}
+              {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಪ್ಯಾನೆಲ್' : 'Admin Command'}
             </span>
             {isAdminAuth && (
-              <span className="flex items-center gap-1 ml-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span
-                  onClick={handleLockAdmin}
-                  title="Lock Admin Panel"
-                  className="p-0.5 rounded hover:bg-slate-700 text-slate-300 hover:text-white transition-colors"
-                >
-                  <LogOut className="w-3 h-3 text-slate-300" />
-                </span>
-              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
             )}
           </button>
 
@@ -157,19 +137,39 @@ export const PortalNavigation: React.FC<PortalNavigationProps> = ({
           >
             <Mail className="w-3.5 h-3.5 text-red-400" />
             <span>
-              {lang === 'kn' ? 'ಜಿಮೇಲ್ ಡೆಸ್ಕ್ (Gmail Desk)' : 'Gmail Desk (Official)'}
+              {lang === 'kn' ? 'ಜಿಮೇಲ್ ಡೆಸ್ಕ್' : 'Official Mail'}
             </span>
           </button>
         </div>
 
-        {/* Right Info: Confidentiality & Official Verification Seal */}
-        <div className="hidden lg:flex items-center gap-3 text-xs">
-          <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1 rounded-full text-slate-300 font-bold">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[10px] uppercase tracking-wider text-slate-300">
-              {lang === 'kn' ? '🔒 ಅಧಿಕೃತ & ಗೌಪ್ಯ ಡೇಟಾ • 256-Bit SSL' : '🔒 Official & Confidential Data • 256-Bit SSL'}
-            </span>
-          </div>
+        {/* Right Info: Authenticated User Status or Security Policy */}
+        <div className="flex items-center gap-2 text-xs shrink-0">
+          {authSession ? (
+            <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-full text-slate-300">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wide">
+                {authSession.role}
+              </span>
+              <span className="hidden md:inline text-[10px] text-slate-400 truncate max-w-[140px]">
+                {authSession.displayName || authSession.email}
+              </span>
+              <button
+                type="button"
+                onClick={handleLogout}
+                title="Sign Out Session"
+                className="p-1 rounded-full hover:bg-slate-800 text-slate-400 hover:text-red-400 transition"
+              >
+                <LogOut className="w-3 h-3" />
+              </button>
+            </div>
+          ) : (
+            <div className="hidden lg:flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1 rounded-full text-slate-300 font-bold">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[10px] uppercase tracking-wider text-slate-300">
+                {lang === 'kn' ? '🔒 ಅಧಿಕೃತ RBAC ಎನ್‌ಕ್ರಿಪ್ಶನ್' : '🔒 Official Role-Based Portals'}
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </div>

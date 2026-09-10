@@ -224,12 +224,30 @@
         }
       },
       "required": ["uid", "email", "createdAt"]
+    },
+    "verificationOtp": {
+      "title": "Verification OTP",
+      "description": "One-time passcode and verification token for official email authentication",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "otp": { "type": "string", "maxLength": 6 },
+        "role": { "type": "string" },
+        "purpose": { "type": "string" },
+        "expiresAt": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["email", "otp", "role", "expiresAt", "createdAt"]
     }
   },
   "firestore": {
     "/users/{userId}": {
       "schema": "userProfile",
       "description": "User profile information and saved customer preferences"
+    },
+    "/verification_otps/{otpId}": {
+      "schema": "verificationOtp",
+      "description": "Official email verification OTP tokens with expiry"
     },
     "/inquiries/{inquiryId}": {
       "schema": "inquiry",

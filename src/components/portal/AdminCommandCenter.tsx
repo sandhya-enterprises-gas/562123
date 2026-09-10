@@ -22,11 +22,24 @@ import {
   Truck,
   UserCheck,
   Eye,
-  EyeOff
+  EyeOff,
+  Image,
+  Sliders,
+  Upload,
+  RefreshCcw
 } from 'lucide-react';
 import { Language, CustomerAccount, AuditReportItem, UserRole } from '../../types';
 import { portalStore, PortalState } from '../../data/portalStore';
+import { portalAuth } from '../../lib/portalAuth';
 import { BUSINESS_INFO } from '../../data/content';
+import {
+  OfficialLogoWatermark,
+  OfficialLogoBadge,
+  getOfficialLogoUrl,
+  setOfficialLogoUrl,
+  getWatermarkOpacity,
+  setWatermarkOpacity
+} from '../common/OfficialLogoWatermark';
 
 interface AdminCommandCenterProps {
   lang: Language;
@@ -34,7 +47,21 @@ interface AdminCommandCenterProps {
 
 export const AdminCommandCenter: React.FC<AdminCommandCenterProps> = ({ lang }) => {
   const [storeState, setStoreState] = useState<PortalState>(portalStore.getState());
-  const [adminTab, setAdminTab] = useState<'audit' | 'customers' | 'rates' | 'applicants'>('audit');
+  const [adminTab, setAdminTab] = useState<'audit' | 'customers' | 'rates' | 'applicants' | 'branding'>('audit');
+
+  // Branding & Logo Management State
+  const [currentLogo, setCurrentLogo] = useState(getOfficialLogoUrl());
+  const [customLogoInput, setCustomLogoInput] = useState('');
+  const [opacityValue, setOpacityValue] = useState(getWatermarkOpacity());
+  const [logoSaveSuccess, setLogoSaveSuccess] = useState(false);
+
+  // Sync with portalAuth session on load
+  useEffect(() => {
+    const session = portalAuth.getSession();
+    if (session && session.role === 'admin' && !storeState.isAdminAuth) {
+      portalStore.authenticateAdmin('9500');
+    }
+  }, [storeState.isAdminAuth]);
 
   // Security Auth Gate State
   const [adminPin, setAdminPin] = useState('');
@@ -204,34 +231,40 @@ export const AdminCommandCenter: React.FC<AdminCommandCenterProps> = ({ lang }) 
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 space-y-6">
+    <div className="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 space-y-6">
+      {/* Subtle Company Logo Watermark in Admin Command Background */}
+      <OfficialLogoWatermark opacity={0.035} />
+
       {/* Admin Command Header */}
-      <div className="bg-slate-900 text-white p-4 sm:p-5 rounded-xl border border-slate-800 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded bg-purple-600">
-              <ShieldAlert className="w-4 h-4 text-white" />
+      <div className="relative z-10 bg-slate-900 text-white p-4 sm:p-5 rounded-xl border border-slate-800 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="flex items-start gap-3.5">
+          <OfficialLogoBadge size={44} />
+          <div>
+            <div className="flex items-center gap-2">
+              <div className="p-1 rounded bg-purple-600">
+                <ShieldAlert className="w-3.5 h-3.5 text-white" />
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-purple-400">
+                ADMIN CONTROL CENTER • ಆಡಳಿತಾಧಿಕಾರಿ ಪ್ಯಾನೆಲ್
+              </span>
             </div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-purple-400">
-              ADMIN CONTROL CENTER • ಆಡಳಿತಾಧಿಕಾರಿ ಪ್ಯಾನೆಲ್
-            </span>
-          </div>
-          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mt-1">
-            {lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಸಮಗ್ರ ಆಡಳಿತ ವರದಿ & ಪರಿಶೋಧನೆ' : 'Executive Audit & Change Oversight Console'}
-          </h1>
-          <p className="text-xs text-slate-300">
-            {lang === 'kn'
-              ? 'ಡಿಸ್ಟ್ರಿಬ್ಯೂಟರ್ ಹಾಗೂ ಗ್ರಾಹಕರು ಮಾಡಿದ ಪ್ರತಿಯೊಂದು ಬದಲಾವಣೆ, ನಗದು ಸಂಗ್ರಹಣೆ ಹಾಗೂ ಖಾಲಿ ಸಿಲಿಂಡರ್ ಲೆಕ್ಕದ ಸಂಪೂರ್ಣ ವರದಿ'
-              : 'Real-time audit trail of all distributor actions, customer orders, payment reconciliations & cylinder assets'}
-          </p>
-          <div className="flex flex-wrap items-center gap-2 pt-1 text-[10px] text-slate-400 font-mono">
-            <span className="text-amber-300 font-sans font-bold">
-              {lang === 'kn' ? `ಪ್ರೊ: ${BUSINESS_INFO.proprietorKn}` : `Pro: ${BUSINESS_INFO.proprietor}`}
-            </span>
-            <span>•</span>
-            <span>GSTIN: <strong className="text-slate-200">{BUSINESS_INFO.gstin}</strong></span>
-            <span>•</span>
-            <span>UDYAM: <strong className="text-slate-200">{BUSINESS_INFO.udyam}</strong></span>
+            <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mt-1">
+              {lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಸಮಗ್ರ ಆಡಳಿತ ವರದಿ & ಪರಿಶೋಧನೆ' : 'Executive Audit & Change Oversight Console'}
+            </h1>
+            <p className="text-xs text-slate-300">
+              {lang === 'kn'
+                ? 'ಡಿಸ್ಟ್ರಿಬ್ಯೂಟರ್ ಹಾಗೂ ಗ್ರಾಹಕರು ಮಾಡಿದ ಪ್ರತಿಯೊಂದು ಬದಲಾವಣೆ, ನಗದು ಸಂಗ್ರಹಣೆ ಹಾಗೂ ಖಾಲಿ ಸಿಲಿಂಡರ್ ಲೆಕ್ಕದ ಸಂಪೂರ್ಣ ವರದಿ'
+                : 'Real-time audit trail of all distributor actions, customer orders, payment reconciliations & cylinder assets'}
+            </p>
+            <div className="flex flex-wrap items-center gap-2 pt-1 text-[10px] text-slate-400 font-mono">
+              <span className="text-amber-300 font-sans font-bold">
+                {lang === 'kn' ? `ಪ್ರೊ: ${BUSINESS_INFO.proprietorKn}` : `Pro: ${BUSINESS_INFO.proprietor}`}
+              </span>
+              <span>•</span>
+              <span>GSTIN: <strong className="text-slate-200">{BUSINESS_INFO.gstin}</strong></span>
+              <span>•</span>
+              <span>UDYAM: <strong className="text-slate-200">{BUSINESS_INFO.udyam}</strong></span>
+            </div>
           </div>
         </div>
 
@@ -344,6 +377,16 @@ export const AdminCommandCenter: React.FC<AdminCommandCenterProps> = ({ lang }) 
           <span className="px-1.5 py-0.2 rounded-full bg-blue-100 text-blue-800 text-[10px]">
             {storeState.distributorApplicants?.length || 0}
           </span>
+        </button>
+
+        <button
+          onClick={() => setAdminTab('branding')}
+          className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap ${
+            adminTab === 'branding' ? 'border-purple-600 text-purple-600' : 'border-transparent text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Image className="w-3.5 h-3.5" />
+          <span>{lang === 'kn' ? 'ಲೋಗೋ & ವಾಟರ್‌ಮಾರ್ಕ್ ಬ್ರ್ಯಾಂಡಿಂಗ್' : 'Official Logo & Watermark'}</span>
         </button>
       </div>
 
@@ -619,6 +662,207 @@ export const AdminCommandCenter: React.FC<AdminCommandCenterProps> = ({ lang }) 
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 4: Official Branding & Logo Watermark Management */}
+      {adminTab === 'branding' && (
+        <div className="space-y-6">
+          {/* Top Explanatory Banner */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700 text-[11px] font-black uppercase tracking-wider mb-1">
+                <Image className="w-3.5 h-3.5" />
+                Dynamic Enterprise Identity System
+              </div>
+              <h2 className="text-lg font-black text-slate-900">
+                Official Company Logo & Watermark Branding
+              </h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Manage the high-resolution official company logo dynamically rendered as background watermarks, invoice headers, and portal security seals across Customer, Distributor, and Admin consoles.
+              </p>
+            </div>
+
+            {logoSaveSuccess && (
+              <div className="px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-bold flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                Logo settings saved & updated across all portals!
+              </div>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left: Upload & Logo Controls */}
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-5">
+              <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                <Upload className="w-4 h-4 text-purple-600" />
+                Official Logo Upload & Source
+              </h3>
+
+              {/* File Upload Area */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
+                  Upload New Official Logo (JPG, PNG, WEBP, SVG)
+                </label>
+                <div className="border-2 border-dashed border-slate-300 hover:border-purple-500 rounded-2xl p-6 text-center bg-slate-50 transition cursor-pointer relative">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                          const result = reader.result as string;
+                          setCurrentLogo(result);
+                          setOfficialLogoUrl(result);
+                          setLogoSaveSuccess(true);
+                          setTimeout(() => setLogoSaveSuccess(false), 3000);
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                  />
+                  <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-600 mx-auto flex items-center justify-center mb-2">
+                    <Upload className="w-6 h-6" />
+                  </div>
+                  <p className="text-xs font-bold text-slate-800">
+                    Click to browse or drag and drop official company logo
+                  </p>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Maximum 5MB • High resolution transparent PNG or JPG recommended
+                  </p>
+                </div>
+              </div>
+
+              {/* Or Direct Image URL */}
+              <div>
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Or Set via Image URL
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="url"
+                    value={customLogoInput}
+                    onChange={(e) => setCustomLogoInput(e.target.value)}
+                    placeholder="https://domain.com/official_logo.png"
+                    className="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-purple-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (customLogoInput) {
+                        setCurrentLogo(customLogoInput);
+                        setOfficialLogoUrl(customLogoInput);
+                        setLogoSaveSuccess(true);
+                        setTimeout(() => setLogoSaveSuccess(false), 3000);
+                      }
+                    }}
+                    className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-black uppercase tracking-wider transition"
+                  >
+                    Apply URL
+                  </button>
+                </div>
+              </div>
+
+              {/* Watermark Opacity Slider */}
+              <div className="pt-2 border-t border-slate-100">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                    <Sliders className="w-3.5 h-3.5 text-purple-600" />
+                    Background Watermark Opacity
+                  </label>
+                  <span className="font-mono text-xs font-black text-purple-700 px-2 py-0.5 rounded bg-purple-50">
+                    {Math.round(opacityValue * 100)}%
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min="0.01"
+                  max="0.15"
+                  step="0.005"
+                  value={opacityValue}
+                  onChange={(e) => {
+                    const val = parseFloat(e.target.value);
+                    setOpacityValue(val);
+                    setWatermarkOpacity(val);
+                  }}
+                  className="w-full accent-purple-600 cursor-pointer"
+                />
+                <div className="flex justify-between text-[10px] text-slate-400 font-mono mt-1">
+                  <span>Subtle (1%)</span>
+                  <span>Standard (4%)</span>
+                  <span>High (15%)</span>
+                </div>
+              </div>
+
+              {/* Reset to Default */}
+              <div className="pt-2 flex justify-between items-center">
+                <span className="text-[11px] text-slate-500">
+                  Current logo asset: <strong className="text-slate-700">{currentLogo.slice(0, 40)}...</strong>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOfficialLogoUrl('');
+                    setCurrentLogo('/assets/sandhya_official_logo.jpg');
+                    setWatermarkOpacity(0.04);
+                    setOpacityValue(0.04);
+                    setLogoSaveSuccess(true);
+                    setTimeout(() => setLogoSaveSuccess(false), 3000);
+                  }}
+                  className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition"
+                >
+                  <RefreshCcw className="w-3 h-3" />
+                  Reset to Default Logo
+                </button>
+              </div>
+            </div>
+
+            {/* Right: Live Preview in Simulated Portal Card */}
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+              <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                <Image className="w-4 h-4 text-purple-600" />
+                Live Watermark & Header Preview
+              </h3>
+
+              {/* Live Preview Container */}
+              <div className="relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-900 text-white p-6 min-h-[300px] flex flex-col justify-between shadow-inner">
+                {/* Simulated Watermark */}
+                <OfficialLogoWatermark opacity={opacityValue} />
+
+                {/* Simulated Portal Content */}
+                <div className="relative z-10 space-y-4">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <OfficialLogoBadge size={48} showText={true} />
+                    <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase tracking-wider border border-emerald-500/30">
+                      Live Preview
+                    </span>
+                  </div>
+
+                  <div className="bg-slate-800/80 backdrop-blur-xs rounded-xl p-4 border border-slate-700/60 space-y-2 text-xs">
+                    <div className="flex justify-between font-bold text-slate-300">
+                      <span>Simulated Tax Invoice / Ledger Entry:</span>
+                      <span className="font-mono text-amber-400">₹6,800.00</span>
+                    </div>
+                    <p className="text-slate-400 text-[11px]">
+                      Notice how the uploaded official logo renders behind data grids and cards with optical clarity, maintaining readability without distracting from commercial gas order entries.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="relative z-10 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                  <span>GSTIN: {BUSINESS_INFO.gstin}</span>
+                  <span>HSN: 27111900</span>
+                </div>
+              </div>
+
+              <div className="bg-slate-50 rounded-xl p-3 border border-slate-200 text-xs text-slate-600">
+                <span className="font-bold text-slate-800">Automatic Propagation:</span> Any logo updated or uploaded here is stored securely and dynamically projected as the background watermark across all three portals (Customer, Distributor, and Admin).
+              </div>
+            </div>
           </div>
         </div>
       )}

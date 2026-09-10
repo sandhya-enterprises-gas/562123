@@ -23,7 +23,9 @@ import {
 } from 'lucide-react';
 import { Language, OrderRecord, PaymentMode, OrderStatus, CustomerAccount } from '../../types';
 import { portalStore, PortalState } from '../../data/portalStore';
+import { portalAuth } from '../../lib/portalAuth';
 import { BUSINESS_INFO } from '../../data/content';
+import { OfficialLogoWatermark, OfficialLogoBadge } from '../common/OfficialLogoWatermark';
 
 interface DistributorDeskProps {
   lang: Language;
@@ -33,6 +35,17 @@ export const DistributorDesk: React.FC<DistributorDeskProps> = ({ lang }) => {
   const [storeState, setStoreState] = useState<PortalState>(portalStore.getState());
   const [distributorStaffName, setDistributorStaffName] = useState('Kumar (Dispatch Incharge)');
   const [selectedOrder, setSelectedOrder] = useState<OrderRecord | null>(null);
+
+  // Sync with portalAuth session on load
+  useEffect(() => {
+    const session = portalAuth.getSession();
+    if (session && (session.role === 'distributor' || session.role === 'admin') && !storeState.isDistributorAuth) {
+      portalStore.authenticateDistributor('1234');
+      if (session.displayName) {
+        setDistributorStaffName(`${session.displayName} (Verified Dispatch)`);
+      }
+    }
+  }, [storeState.isDistributorAuth]);
 
   // Security Auth Gate State
   const [accessCode, setAccessCode] = useState('');
@@ -232,34 +245,40 @@ export const DistributorDesk: React.FC<DistributorDeskProps> = ({ lang }) => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 space-y-6">
+    <div className="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 space-y-6">
+      {/* Subtle Company Logo Watermark in Distributor Desk Background */}
+      <OfficialLogoWatermark opacity={0.035} />
+
       {/* Header Banner */}
-      <div className="bg-slate-900 text-white p-4 sm:p-5 rounded-xl border border-slate-800 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded bg-blue-600">
-              <Truck className="w-4 h-4 text-white" />
+      <div className="relative z-10 bg-slate-900 text-white p-4 sm:p-5 rounded-xl border border-slate-800 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="flex items-start gap-3.5">
+          <OfficialLogoBadge size={44} />
+          <div>
+            <div className="flex items-center gap-2">
+              <div className="p-1 rounded bg-blue-600">
+                <Truck className="w-3.5 h-3.5 text-white" />
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-blue-400">
+                DISTRIBUTOR DISPATCH & BILLING DESK • ಡಿಸ್ಟ್ರಿಬ್ಯೂಟರ್ ಪ್ಯಾನೆಲ್
+              </span>
             </div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-blue-400">
-              DISTRIBUTOR DISPATCH & BILLING DESK • ಡಿಸ್ಟ್ರಿಬ್ಯೂಟರ್ ಪ್ಯಾನೆಲ್
-            </span>
-          </div>
-          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mt-1">
-            {lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ವಿತರಕರ ನಿರ್ವಹಣಾ ವೇದಿಕೆ' : 'Distributor Operations & Delivery Console'}
-          </h1>
-          <p className="text-xs text-slate-300">
-            {lang === 'kn'
-              ? 'ಆರ್ಡರ್‌ಗಳ ಸ್ವೀಕಾರ, ಡೆಲಿವರಿ ಸ್ಥಿತಿ ಬದಲಾವಣೆ, ನಗದು/ಆನ್‌ಲೈನ್ ಪಾವತಿ ದಾಖಲಿಸುವಿಕೆ & MT ಖಾಲಿ ಸಿಲಿಂಡರ್ ಸಂಗ್ರಹ'
-              : 'Dispatch management, status updates, live Cash/UPI receipt logging, and MT Cylinder reconciliation'}
-          </p>
-          <div className="flex flex-wrap items-center gap-2 pt-1 text-[10px] text-slate-400 font-mono">
-            <span className="text-amber-300 font-sans font-bold">
-              {lang === 'kn' ? `ಪ್ರೊ: ${BUSINESS_INFO.proprietorKn}` : `Pro: ${BUSINESS_INFO.proprietor}`}
-            </span>
-            <span>•</span>
-            <span>GSTIN: <strong className="text-slate-200">{BUSINESS_INFO.gstin}</strong></span>
-            <span>•</span>
-            <span>UDYAM: <strong className="text-slate-200">{BUSINESS_INFO.udyam}</strong></span>
+            <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mt-1">
+              {lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ವಿತರಕರ ನಿರ್ವಹಣಾ ವೇದಿಕೆ' : 'Distributor Operations & Delivery Console'}
+            </h1>
+            <p className="text-xs text-slate-300">
+              {lang === 'kn'
+                ? 'ಆರ್ಡರ್‌ಗಳ ಸ್ವೀಕಾರ, ಡೆಲಿವರಿ ಸ್ಥಿತಿ ಬದಲಾವಣೆ, ನಗದು/ಆನ್‌ಲೈನ್ ಪಾವತಿ ದಾಖಲಿಸುವಿಕೆ & MT ಖಾಲಿ ಸಿಲಿಂಡರ್ ಸಂಗ್ರಹ'
+                : 'Dispatch management, status updates, live Cash/UPI receipt logging, and MT Cylinder reconciliation'}
+            </p>
+            <div className="flex flex-wrap items-center gap-2 pt-1 text-[10px] text-slate-400 font-mono">
+              <span className="text-amber-300 font-sans font-bold">
+                {lang === 'kn' ? `ಪ್ರೊ: ${BUSINESS_INFO.proprietorKn}` : `Pro: ${BUSINESS_INFO.proprietor}`}
+              </span>
+              <span>•</span>
+              <span>GSTIN: <strong className="text-slate-200">{BUSINESS_INFO.gstin}</strong></span>
+              <span>•</span>
+              <span>UDYAM: <strong className="text-slate-200">{BUSINESS_INFO.udyam}</strong></span>
+            </div>
           </div>
         </div>
 

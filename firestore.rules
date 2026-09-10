@@ -72,8 +72,16 @@ service cloud.firestore {
     // Authenticated User Profiles
     match /users/{userId} {
       allow read: if isValidId(userId);
-      allow create, update: if isSignedIn() && request.auth.uid == userId;
+      allow create: if isValidId(userId);
+      allow update: if isValidId(userId);
       allow delete: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Official Verification OTPs & Tokens
+    match /verification_otps/{otpId} {
+      allow read: if isValidId(otpId);
+      allow create, update: if isValidId(otpId);
+      allow delete: if isSignedIn();
     }
 
     // Rate Inquiries Collection

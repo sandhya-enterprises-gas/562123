@@ -24,7 +24,9 @@ import {
 } from 'lucide-react';
 import { Language, CustomerAccount, OrderRecord, LedgerEntry } from '../../types';
 import { portalStore, PortalState } from '../../data/portalStore';
+import { portalAuth } from '../../lib/portalAuth';
 import { BUSINESS_INFO } from '../../data/content';
+import { OfficialLogoWatermark, OfficialLogoBadge } from '../common/OfficialLogoWatermark';
 
 interface CustomerPortalProps {
   lang: Language;
@@ -33,6 +35,21 @@ interface CustomerPortalProps {
 export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
   const [storeState, setStoreState] = useState<PortalState>(portalStore.getState());
   const [activeTab, setActiveTab] = useState<'dashboard' | 'reorder' | 'ledger'>('dashboard');
+
+  // Sync with portalAuth session on load
+  useEffect(() => {
+    const session = portalAuth.getSession();
+    if (session && session.role === 'customer' && !storeState.currentCustomerId) {
+      const match = storeState.customers.find(
+        (c) => c.email === session.email || c.phone === session.phone || c.id === session.uid
+      );
+      if (match) {
+        portalStore.setCurrentCustomer(match.id);
+      } else if (storeState.customers.length > 0) {
+        portalStore.setCurrentCustomer(storeState.customers[0].id);
+      }
+    }
+  }, [storeState.currentCustomerId, storeState.customers]);
 
   // Auth Forms State
   const [authMode, setAuthMode] = useState<'login' | 'register' | 'forgot'>('login');
@@ -189,36 +206,42 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 space-y-6">
+    <div className="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 space-y-6">
+      {/* Subtle Company Logo Watermark in Customer Portal Background */}
+      <OfficialLogoWatermark opacity={0.035} />
+
       {/* Customer Portal Brand Header */}
-      <div className="bg-slate-900 text-white p-4 sm:p-5 rounded-xl border border-slate-800 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded bg-orange-600">
-              <Flame className="w-4 h-4 text-white" />
+      <div className="relative z-10 bg-slate-900 text-white p-4 sm:p-5 rounded-xl border border-slate-800 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="flex items-start gap-3.5">
+          <OfficialLogoBadge size={44} />
+          <div>
+            <div className="flex items-center gap-2">
+              <div className="p-1 rounded bg-orange-600">
+                <Flame className="w-3.5 h-3.5 text-white" />
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-widest text-orange-400">
+                {currentCustomer ? 'VERIFIED CUSTOMER ACCOUNT' : 'COMMERCIAL CUSTOMER ACCESS'} • ಖಾಸಗಿ ಪೋರ್ಟಲ್
+              </span>
             </div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-orange-400">
-              {currentCustomer ? 'VERIFIED CUSTOMER ACCOUNT' : 'COMMERCIAL CUSTOMER ACCESS'} • ಖಾಸಗಿ ಪೋರ್ಟಲ್
-            </span>
-          </div>
-          <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mt-1">
-            {currentCustomer ? currentCustomer.businessName : (lang === 'kn' ? 'ಗ್ರಾಹಕರ ಅಧಿಕೃತ ಖಾತೆ ಪ್ರವೇಶ' : 'Commercial Customer Login & Registration')}
-          </h1>
-          <p className="text-xs text-slate-300">
-            {currentCustomer
-              ? `${currentCustomer.area} (PIN: ${currentCustomer.pincode}) • Preferred: ${currentCustomer.preferredBrand} • Contact: ${currentCustomer.contactPerson} (${currentCustomer.phone})`
-              : (lang === 'kn'
-                ? '1-ಕ್ಲಿಕ್ ಸಿಲಿಂಡರ್ ಆರ್ಡರ್, ಬಾಕಿ ಹಣದ ಲೆಕ್ಕ (Balance), ಖಾಲಿ ಸಿಲಿಂಡರ್ (MT) ಲೆಡ್ಜರ್ ಮತ್ತು ಪಾವತಿ ವಿವರ'
-                : '1-Click Cylinder Request, Balance Outstanding, MT Empty Returns & Cash/Online Payment Ledger')}
-          </p>
-          <div className="flex flex-wrap items-center gap-2 pt-1 text-[10px] text-slate-400 font-mono">
-            <span className="text-amber-300 font-sans font-bold">
-              {lang === 'kn' ? `ಪ್ರೊ: ${BUSINESS_INFO.proprietorKn}` : `Pro: ${BUSINESS_INFO.proprietor}`}
-            </span>
-            <span>•</span>
-            <span>GSTIN: <strong className="text-slate-200">{BUSINESS_INFO.gstin}</strong></span>
-            <span>•</span>
-            <span>UDYAM: <strong className="text-slate-200">{BUSINESS_INFO.udyam}</strong></span>
+            <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mt-1">
+              {currentCustomer ? currentCustomer.businessName : (lang === 'kn' ? 'ಗ್ರಾಹಕರ ಅಧಿಕೃತ ಖಾತೆ ಪ್ರವೇಶ' : 'Commercial Customer Login & Registration')}
+            </h1>
+            <p className="text-xs text-slate-300">
+              {currentCustomer
+                ? `${currentCustomer.area} (PIN: ${currentCustomer.pincode}) • Preferred: ${currentCustomer.preferredBrand} • Contact: ${currentCustomer.contactPerson} (${currentCustomer.phone})`
+                : (lang === 'kn'
+                  ? '1-ಕ್ಲಿಕ್ ಸಿಲಿಂಡರ್ ಆರ್ಡರ್, ಬಾಕಿ ಹಣದ ಲೆಕ್ಕ (Balance), ಖಾಲಿ ಸಿಲಿಂಡರ್ (MT) ಲೆಡ್ಜರ್ ಮತ್ತು ಪಾವತಿ ವಿವರ'
+                  : '1-Click Cylinder Request, Balance Outstanding, MT Empty Returns & Cash/Online Payment Ledger')}
+            </p>
+            <div className="flex flex-wrap items-center gap-2 pt-1 text-[10px] text-slate-400 font-mono">
+              <span className="text-amber-300 font-sans font-bold">
+                {lang === 'kn' ? `ಪ್ರೊ: ${BUSINESS_INFO.proprietorKn}` : `Pro: ${BUSINESS_INFO.proprietor}`}
+              </span>
+              <span>•</span>
+              <span>GSTIN: <strong className="text-slate-200">{BUSINESS_INFO.gstin}</strong></span>
+              <span>•</span>
+              <span>UDYAM: <strong className="text-slate-200">{BUSINESS_INFO.udyam}</strong></span>
+            </div>
           </div>
         </div>
 

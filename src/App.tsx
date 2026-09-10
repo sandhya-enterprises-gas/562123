@@ -22,6 +22,7 @@ import { GmailHub } from './components/gmail/GmailHub';
 import { OfficialCustomerShowcase } from './components/OfficialCustomerShowcase';
 import { OfficialDistributorShowcase } from './components/OfficialDistributorShowcase';
 import { OfficialFAQ } from './components/OfficialFAQ';
+import { PortalAccessGuard } from './components/portal/PortalAccessGuard';
 
 export default function App() {
   // Default to Kannada (or stored preference)
@@ -146,22 +147,62 @@ export default function App() {
 
         {/* VIEW 2: Commercial Customer Portal */}
         {activePortalTab === 'customer' && (
-          <CustomerPortal lang={lang} />
+          <PortalAccessGuard
+            requiredRole="customer"
+            portalTitleEn="Commercial Customer Portal"
+            portalTitleKn="ವಾಣಿಜ್ಯ ಗ್ರಾಹಕರ ಪೋರ್ಟಲ್"
+            portalSubtitleEn="Self-service commercial cylinder booking, passbook ledger, and digital GST receipts."
+            portalSubtitleKn="ವಾಣಿಜ್ಯ ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್, ಪಾಸ್‌ಬುಕ್ ಲೆಡ್ಜರ್ ಮತ್ತು ಡಿಜಿಟಲ್ ಜಿಎಸ್‌ಟಿ ರಸೀದಿಗಳು."
+            lang={lang}
+            onNavigateToRole={(role) => setActivePortalTab(role as ActivePortalTab)}
+          >
+            <CustomerPortal lang={lang} />
+          </PortalAccessGuard>
         )}
 
         {/* VIEW 3: Distributor Dispatch & Delivery Desk */}
         {activePortalTab === 'distributor' && (
-          <DistributorDesk lang={lang} />
+          <PortalAccessGuard
+            requiredRole="distributor"
+            portalTitleEn="Distributor Operations & Delivery Desk"
+            portalTitleKn="ವಿತರಕರ ಕಾರ್ಯಾಚರಣೆ ಮತ್ತು ಡೆಲಿವರಿ ಡೆಸ್ಕ್"
+            portalSubtitleEn="Restricted to authorized Sandhya Enterprises delivery personnel and route supervisors."
+            portalSubtitleKn="ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಅಧಿಕೃತ ಡೆಲಿವರಿ ಸಿಬ್ಬಂದಿಗೆ ಮಾತ್ರ ಸೀಮಿತ."
+            lang={lang}
+            onNavigateToRole={(role) => setActivePortalTab(role as ActivePortalTab)}
+          >
+            <DistributorDesk lang={lang} />
+          </PortalAccessGuard>
         )}
 
         {/* VIEW 4: Admin Command Center & Change Audit */}
         {activePortalTab === 'admin' && (
-          <AdminCommandCenter lang={lang} />
+          <PortalAccessGuard
+            requiredRole="admin"
+            portalTitleEn="Executive Management Command Center"
+            portalTitleKn="ಆಡಳಿತ ಮಂಡಳಿ ಕಮಾಂಡ್ ಸೆಂಟರ್"
+            portalSubtitleEn="Master control for cylinder pricing, ledger balance audits, staff allocations, and official correspondence."
+            portalSubtitleKn="ಸಿಲಿಂಡರ್ ದರ ಪರಿಷ್ಕರಣೆ, ಲೆಡ್ಜರ್ ಆಡಿಟ್ ಮತ್ತು ಅಧಿಕೃತ ವ್ಯವಹಾರಗಳ ಮಾಸ್ಟರ್ ನಿಯಂತ್ರಣ."
+            lang={lang}
+            onNavigateToRole={(role) => setActivePortalTab(role as ActivePortalTab)}
+          >
+            <AdminCommandCenter lang={lang} />
+          </PortalAccessGuard>
         )}
 
         {/* VIEW 5: Official Gmail Communications & Invoicing Desk */}
         {activePortalTab === 'gmail' && (
-          <GmailHub lang={lang} />
+          <PortalAccessGuard
+            requiredRole="admin"
+            portalTitleEn="Official Gmail Communications Desk"
+            portalTitleKn="ಅಧಿಕೃತ ಜಿಮೇಲ್ ಸಂವಹನ ಡೆಸ್ಕ್"
+            portalSubtitleEn="Dispatches from official email address works.with.sandhya.enterprises@gmail.com"
+            portalSubtitleKn="ಅಧಿಕೃತ works.with.sandhya.enterprises@gmail.com ಇಮೇಲ್ ಸಂವಹನ."
+            lang={lang}
+            onNavigateToRole={(role) => setActivePortalTab(role as ActivePortalTab)}
+          >
+            <GmailHub lang={lang} />
+          </PortalAccessGuard>
         )}
       </main>
 
