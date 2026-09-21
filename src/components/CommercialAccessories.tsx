@@ -74,11 +74,11 @@ export const CommercialAccessories: React.FC<CommercialAccessoriesProps> = ({
                   {lang === 'kn' ? 'ಸ್ಟಾಕ್ ಲಭ್ಯವಿದೆ • ISI' : 'GENUINE ISI HARDWARE'}
                 </span>
                 <a
-                  href={`tel:${BUSINESS_INFO.phonePrimary}`}
+                  href={`tel:${BUSINESS_INFO.phoneOtherEnquiry}`}
                   className="inline-flex items-center gap-1 text-xs font-black uppercase text-slate-900 hover:text-orange-600"
                 >
                   <PhoneCall className="w-3 h-3 text-orange-600" />
-                  <span>8152889500</span>
+                  <span>{BUSINESS_INFO.phoneOtherEnquiry}</span>
                 </a>
               </div>
             </div>

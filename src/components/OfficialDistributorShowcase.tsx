@@ -60,7 +60,7 @@ export const OfficialDistributorShowcase: React.FC<OfficialDistributorShowcasePr
     setIsSubmitted(true);
     setSubmissionMessage(
       lang === 'kn'
-        ? `ಧನ್ಯವಾದಗಳು ${applicantName}! ನಿಮ್ಮ ಅರ್ಜಿಯನ್ನು ದಾಖಲಿಸಲಾಗಿದೆ. ನಮ್ಮ ಅಧಿಕೃತ ತಂಡವು 8152889500 ಮೂಲಕ ನಿಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಲಿದೆ.`
+        ? `ಧನ್ಯವಾದಗಳು ${applicantName}! ನಿಮ್ಮ ಅರ್ಜಿಯನ್ನು ದಾಖಲಿಸಲಾಗಿದೆ. ನಮ್ಮ ಅಧಿಕೃತ ತಂಡವು ${BUSINESS_INFO.phoneOtherEnquiry} ಮೂಲಕ ನಿಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಲಿದೆ.`
         : `Thank you ${applicantName}! Your partnership application is recorded. Sandhya Onboarding team will call you shortly.`
     );
 
@@ -68,7 +68,7 @@ export const OfficialDistributorShowcase: React.FC<OfficialDistributorShowcasePr
     const waText = encodeURIComponent(
       `Hello Sandhya Enterprises, I am applying to become an Official Distributor / Delivery Partner.\nName: ${applicantName}\nPhone: ${applicantPhone}\nArea: ${applicantArea}\nWork Model: ${applicantWorkType}\nVehicle: ${applicantVehicle}\nPlease approve my onboarding.`
     );
-    window.open(`https://wa.me/918152889500?text=${waText}`, '_blank');
+    window.open(`https://wa.me/91${BUSINESS_INFO.phoneWhatsApp}?text=${waText}`, '_blank');
   };
 
   return (

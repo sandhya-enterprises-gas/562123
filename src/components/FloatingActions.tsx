@@ -40,11 +40,12 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({
         <MessageCircle className="w-6 h-6" />
       </a>
 
-      {/* Call Button */}
+      {/* Call Button - Rate Enquiry */}
       <a
         id="floating-call-btn"
-        href={`tel:${BUSINESS_INFO.phonePrimary}`}
-        aria-label="Call Sandhya Enterprises"
+        href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`}
+        aria-label="Call Sandhya Enterprises Rate Enquiry"
+        title={lang === 'kn' ? 'ದರ ವಿಚಾರಣೆ ಕರೆ: 7676398782' : 'Rate Enquiry: 7676398782'}
         className="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-orange-600 hover:bg-orange-700 text-white flex items-center justify-center shadow-lg transition-colors border border-orange-500"
       >
         <PhoneCall className="w-5 h-5" />

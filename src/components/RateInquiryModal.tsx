@@ -153,11 +153,11 @@ export const RateInquiryModal: React.FC<RateInquiryModalProps> = ({
             </button>
 
             <a
-              href={`tel:${BUSINESS_INFO.phonePrimary}`}
+              href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`}
               className="w-full sm:w-auto py-2 px-3 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors"
             >
               <PhoneCall className="w-3.5 h-3.5 text-orange-400" />
-              <span>8152889500</span>
+              <span>{BUSINESS_INFO.phoneRateEnquiry}</span>
             </a>
           </div>
 

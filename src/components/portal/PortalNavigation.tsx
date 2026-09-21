@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Globe, User, Truck, Shield, Lock, Unlock, LogOut, CheckCircle2, Mail, Key } from 'lucide-react';
+import { Globe, User, Truck, Shield, Lock, Unlock, LogOut, CheckCircle2, Mail, Key, ArrowLeft, HardDrive, ClipboardList } from 'lucide-react';
 import { ActivePortalTab, Language } from '../../types';
 import { portalStore, PortalState } from '../../data/portalStore';
 import { portalAuth, PortalUserSession } from '../../lib/portalAuth';
@@ -48,24 +48,40 @@ export const PortalNavigation: React.FC<PortalNavigationProps> = ({
     <div className="bg-slate-950 text-white border-b border-slate-800 sticky top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 flex items-center justify-between h-14">
         {/* Left: Official Logo + Navigation Tabs */}
-        <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto py-1 text-xs no-scrollbar">
-          {/* Official Brand Mini-Seal */}
-          <div className="hidden sm:flex items-center mr-1">
-            <OfficialLogoBadge size={32} />
-          </div>
-
-          {/* Main Website / Public Information */}
+        <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto py-1 text-xs no-scrollbar">
+          {/* Official Brand Logo - Perfectly aligned next to 'ಮುಖ್ಯ ವೆಬ್‌ಸೈಟ್' button */}
           <button
             type="button"
+            id="nav-brand-logo-btn"
             onClick={() => onSelectTab('website')}
-            className={`px-3 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
-              activeTab === 'website'
-                ? 'bg-orange-600 text-white shadow-xs'
-                : 'text-slate-300 hover:text-white hover:bg-slate-800'
-            }`}
+            title={lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ - ಅಧಿಕೃತ ಮುದ್ರೆ' : 'Sandhya Enterprises - Official Seal'}
+            className="flex items-center gap-2 shrink-0 group focus:outline-none transition-transform active:scale-95 text-left"
           >
-            <Globe className="w-3.5 h-3.5" />
-            <span>{lang === 'kn' ? 'ಮುಖ್ಯ ವೆಬ್‌ಸೈಟ್' : 'Public Portal'}</span>
+            <OfficialLogoBadge
+              size={36}
+              className="transition-all group-hover:ring-2 group-hover:ring-amber-400/50 rounded-full"
+            />
+            <div className="hidden md:flex flex-col text-left leading-tight pr-1">
+              <span className="font-black text-[11px] sm:text-[12px] tracking-tight uppercase text-white group-hover:text-amber-300 transition-colors">
+                Sandhya
+              </span>
+              <span className="text-[8px] sm:text-[9px] font-extrabold text-amber-400 tracking-wider">
+                LPG AGENCY
+              </span>
+            </div>
+          </button>
+
+          <div className="h-5 w-px bg-slate-800 hidden sm:block shrink-0" />
+
+          {/* Main Website / Return Action */}
+          <button
+            type="button"
+            id="nav-btn-website"
+            onClick={() => onSelectTab('website')}
+            className="px-3 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap shrink-0 shadow-xs ring-1 ring-orange-400/40"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>{lang === 'kn' ? 'ಮುಖ್ಯ ವೆಬ್‌ಸೈಟ್‌ಗೆ ಹಿಂತಿರುಗಿ' : '← Back to Website'}</span>
           </button>
 
           {/* Customer Portal (Private Account Gate) */}
@@ -138,6 +154,38 @@ export const PortalNavigation: React.FC<PortalNavigationProps> = ({
             <Mail className="w-3.5 h-3.5 text-red-400" />
             <span>
               {lang === 'kn' ? 'ಜಿಮೇಲ್ ಡೆಸ್ಕ್' : 'Official Mail'}
+            </span>
+          </button>
+
+          {/* Google Drive Vault */}
+          <button
+            type="button"
+            onClick={() => onSelectTab('drive')}
+            className={`px-3 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
+              activeTab === 'drive'
+                ? 'bg-blue-600 text-white shadow-xs'
+                : 'text-slate-300 hover:text-white hover:bg-slate-800'
+            }`}
+          >
+            <HardDrive className="w-3.5 h-3.5 text-blue-400" />
+            <span>
+              {lang === 'kn' ? 'ಡ್ರೈವ್ ದಾಖಲೆಗಳು' : 'Drive Docs'}
+            </span>
+          </button>
+
+          {/* Google Forms Hub */}
+          <button
+            type="button"
+            onClick={() => onSelectTab('forms')}
+            className={`px-3 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
+              activeTab === 'forms'
+                ? 'bg-purple-600 text-white shadow-xs'
+                : 'text-slate-300 hover:text-white hover:bg-slate-800'
+            }`}
+          >
+            <ClipboardList className="w-3.5 h-3.5 text-purple-400" />
+            <span>
+              {lang === 'kn' ? 'ಗೂಗಲ್ ಫಾರ್ಮ್ಸ್' : 'Google Forms'}
             </span>
           </button>
         </div>

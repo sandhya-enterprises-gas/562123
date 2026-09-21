@@ -149,6 +149,11 @@ export const SandhyaLogo: React.FC<LogoProps> = ({
             >
               Sandhya Enterprises
             </span>
+            {withBadge && (
+              <span className="bg-orange-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded tracking-wider">
+                COMMERCIAL
+              </span>
+            )}
           </div>
           <span
             className={`font-bold tracking-tight ${

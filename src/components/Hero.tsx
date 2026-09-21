@@ -31,8 +31,8 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
               <Flame className="w-3.5 h-3.5 text-orange-400" />
               <span>
                 {lang === 'kn'
-                  ? 'ಕಮರ್ಷಿಯಲ್ ಎಲ್‌ಪಿಜಿ ಪೂರೈಕೆ ತಜ್ಞರು (ESTD. 2010)'
-                  : 'COMMERCIAL LPG SUPPLIER & SERVICE SPECIALISTS (ESTD. 2010)'}
+                  ? 'ಕಮರ್ಷಿಯಲ್ ಎಲ್‌ಪಿಜಿ ತಜ್ಞರು (ESTD. 2010)'
+                  : 'COMMERCIAL LPG SPECIALISTS (ESTD. 2010)'}
               </span>
             </div>
 
@@ -44,7 +44,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
                     <span className="text-orange-500">ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್</span>
                     <br />
                     <span className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-100">
-                      ಕಮರ್ಷಿಯಲ್ ಎಲ್‌ಪಿಜಿ ಗ್ಯಾಸ್ ಪೂರೈಕೆ & ಸರ್ವಿಸ್
+                      ಕಮರ್ಷಿಯಲ್ ಎಲ್‌ಪಿಜಿ & ಸರ್ವಿಸ್
                     </span>
                   </>
                 ) : (
@@ -52,7 +52,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
                     <span className="text-orange-500">SANDHYA ENTERPRISES</span>
                     <br />
                     <span className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-100">
-                      Commercial & Industrial LPG Specialists
+                      Commercial LPG & Pipeline Services
                     </span>
                   </>
                 )}
@@ -60,26 +60,26 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
 
               <p className="text-slate-300 text-xs sm:text-sm md:text-base leading-relaxed max-w-2xl font-normal pt-1">
                 {lang === 'kn'
-                  ? 'ನೆಲಮಂಗಲ, ತುಮಕೂರು ಹೆದ್ದಾರಿ, ಶಿರಾ ಹಾಗೂ ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರ ವ್ಯಾಪ್ತಿಯ ಹೋಟೆಲ್, ರೆಸ್ಟೋರೆಂಟ್, ಕ್ಯಾಟರಿಂಗ್ ಮತ್ತು ಇಂಡಸ್ಟ್ರಿಯಲ್ ಅಗತ್ಯಗಳಿಗೆ ಅಧಿಕೃತ ಭಾರತ್ ಗ್ಯಾಸ್, ಗೋ ಗ್ಯಾಸ್ ಹಾಗೂ ಪವರ್ ಗ್ಯಾಸ್ ಸಿಲಿಂಡರ್ ಪೂರೈಕೆ.'
-                  : 'Doorstep supply of Bharat Gas, Go Gas & Power Gas commercial cylinders, industrial pipelines & 24/7 technical leak support across Nelamangala & Tumkur corridors.'}
+                  ? 'ಹೋಟೆಲ್ & ಕೈಗಾರಿಕೆಗಳಿಗೆ ಭಾರತ್ ಗ್ಯಾಸ್, ಗೋ ಗ್ಯಾಸ್ ಹಾಗೂ ಪವರ್ ಗ್ಯಾಸ್ ಅಧಿಕೃತ ಪೂರೈಕೆ ಮತ್ತು 24/7 ಸರ್ವಿಸ್.'
+                  : 'Authorized commercial LPG supply, pipeline installation & 24/7 safety service across Nelamangala & Tumkur.'}
               </p>
             </div>
 
             {/* High Density Rate Advisory Box */}
-            <div className="bg-orange-500/10 border-l-4 border-orange-500 p-3.5 rounded-r-lg border-y border-r border-orange-500/20">
+            <div className="bg-orange-500/10 border-l-4 border-orange-500 p-3 rounded-r-lg border-y border-r border-orange-500/20">
               <div className="flex items-start gap-2.5">
                 <AlertTriangle className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
                 <div className="text-xs">
                   <span className="font-black text-orange-400 uppercase tracking-wide">
-                    {lang === 'kn' ? 'ಪ್ರಮುಖ ಸೂಚನೆ: ' : 'IMPORTANT NOTICE: '}
+                    {lang === 'kn' ? 'ದರ ಸೂಚನೆ: ' : 'RATE NOTICE: '}
                   </span>
                   <span className="text-slate-200">
                     {lang === 'kn'
-                      ? 'ಪ್ರತಿ ತಿಂಗಳು ಗ್ಯಾಸ್ ದರ ಪರಿಷ್ಕರಣೆಯಾಗುವುದರಿಂದ, ಇಂದಿನ ರಿಯಾಯಿತಿ ದರಕ್ಕಾಗಿ ಮೊದಲು ಕರೆ ಮಾಡಿ: '
-                      : 'Every Month Rates Are Subject to Change. First Call and Ask Today\'s Best Price: '}
+                      ? 'ಪ್ರತಿ ತಿಂಗಳ 1ನೇ ತಾರೀಖು ದರ ಪರಿಷ್ಕರಣೆಯಾಗುತ್ತದೆ. ಇಂದಿನ ರಿಯಾಯಿತಿ ದರಕ್ಕೆ ಕರೆ ಮಾಡಿ: '
+                      : 'Rates update on 1st of every month. Call for today\'s best price: '}
                   </span>
-                  <a href={`tel:${BUSINESS_INFO.phonePrimary}`} className="font-black text-orange-400 underline hover:text-white ml-1">
-                    +91 {BUSINESS_INFO.phonePrimary}
+                  <a href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`} className="font-black text-orange-400 underline hover:text-white ml-1">
+                    +91 {BUSINESS_INFO.phoneRateEnquiry}
                   </a>
                 </div>
               </div>
@@ -89,11 +89,11 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-1">
               <a
                 id="hero-primary-call-btn"
-                href={`tel:${BUSINESS_INFO.phonePrimary}`}
+                href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`}
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-orange-600 hover:bg-orange-700 text-white font-black text-xs uppercase tracking-wider shadow-xs transition-colors active:scale-95"
               >
                 <PhoneCall className="w-4 h-4" />
-                <span>{lang === 'kn' ? 'ಕರೆ ಮಾಡಿ: 8152889500' : 'CALL 8152889500'}</span>
+                <span>{lang === 'kn' ? 'ದರ ವಿಚಾರಣೆ: 7676398782' : 'RATE CALL 7676398782'}</span>
               </a>
 
               <a
@@ -108,7 +108,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs uppercase tracking-wider shadow-xs transition-colors active:scale-95"
               >
                 <MessageCircle className="w-4 h-4" />
-                <span>{lang === 'kn' ? 'ವಾಟ್ಸಾಪ್: 8152889500' : 'WHATSAPP 8152889500'}</span>
+                <span>{lang === 'kn' ? 'ವಾಟ್ಸಾಪ್: 8073407706' : 'WHATSAPP 8073407706'}</span>
               </a>
 
               <button
@@ -217,14 +217,14 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
               {/* Action Bar */}
               <div className="pt-2 border-t border-slate-700 flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">Dispatch Line:</span>
-                  <span className="text-xs font-black text-orange-400">+91 8152889500</span>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">{lang === 'kn' ? '24/7 ಸಹಾಯವಾಣಿ ಮಾತ್ರ:' : '24/7 Helpline Only:'}</span>
+                  <span className="text-xs font-black text-orange-400">+91 {BUSINESS_INFO.phoneHelpline}</span>
                 </div>
                 <a
-                  href={`tel:${BUSINESS_INFO.phonePrimary}`}
+                  href={`tel:${BUSINESS_INFO.phoneHelpline}`}
                   className="px-3 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs uppercase tracking-wider transition-colors"
                 >
-                  {lang === 'kn' ? 'ಕರೆ ಮಾಡಿ' : 'CALL NOW'}
+                  {lang === 'kn' ? 'ಕರೆ ಮಾಡಿ' : 'CALL HELPLINE'}
                 </a>
               </div>
             </div>

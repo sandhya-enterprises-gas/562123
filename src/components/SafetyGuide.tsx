@@ -71,10 +71,10 @@ export const SafetyGuide: React.FC<SafetyGuideProps> = ({ lang }) => {
             </div>
             <div>
               <div className="text-[10px] font-black uppercase tracking-widest text-red-300">
-                {lang === 'kn' ? '24/7 ತುರ್ತು ಲೀಕೇಜ್ ಸಹಾಯವಾಣಿ' : '24/7 EMERGENCY GAS LEAK HOTLINE'}
+                {lang === 'kn' ? '24/7 ಸಹಾಯವಾಣಿ ಮಾತ್ರ (ತುರ್ತು / ಲೀಕೇಜ್)' : '24/7 HELPLINE ONLY (EMERGENCY LEAK)'}
               </div>
               <div className="text-base sm:text-lg font-black text-white">
-                +91 8152889500
+                +91 {BUSINESS_INFO.phoneHelpline}
               </div>
               <div className="text-xs text-slate-300">
                 Email: <span className="text-white font-semibold">{BUSINESS_INFO.emailEmergency}</span>
@@ -84,11 +84,11 @@ export const SafetyGuide: React.FC<SafetyGuideProps> = ({ lang }) => {
 
           <div className="flex items-center gap-2 w-full md:w-auto">
             <a
-              href={`tel:${BUSINESS_INFO.phonePrimary}`}
+              href={`tel:${BUSINESS_INFO.phoneHelpline}`}
               className="flex-1 md:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider rounded-lg transition-colors text-center"
             >
               <PhoneCall className="w-3.5 h-3.5" />
-              <span>{lang === 'kn' ? 'ತುರ್ತು ಕರೆ' : 'EMERGENCY CALL'}</span>
+              <span>{lang === 'kn' ? 'ಸಹಾಯವಾಣಿ ಕರೆ' : 'CALL HELPLINE'}</span>
             </a>
             <a
               href={`https://wa.me/91${BUSINESS_INFO.phoneWhatsApp}`}

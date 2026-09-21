@@ -100,10 +100,10 @@ export const ServicesSpecialties: React.FC<ServicesSpecialtiesProps> = ({
 
               <div className="mt-4 pt-3 border-t border-slate-700 flex items-center justify-between">
                 <a
-                  href={`tel:${BUSINESS_INFO.phonePrimary}`}
+                  href={`tel:${BUSINESS_INFO.phoneOtherEnquiry}`}
                   className="text-xs font-black uppercase tracking-wider text-orange-400 hover:text-orange-300 flex items-center gap-1"
                 >
-                  <span>{lang === 'kn' ? 'ಸರ್ವಿಸ್: 8152889500' : 'Book: 8152889500'}</span>
+                  <span>{lang === 'kn' ? `ಸರ್ವಿಸ್: ${BUSINESS_INFO.phoneOtherEnquiry}` : `Book: ${BUSINESS_INFO.phoneOtherEnquiry}`}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </a>
 
@@ -144,10 +144,10 @@ export const ServicesSpecialties: React.FC<ServicesSpecialtiesProps> = ({
             </p>
             <div className="flex items-center gap-2 pt-1 flex-wrap">
               <a
-                href={`tel:${BUSINESS_INFO.phonePrimary}`}
+                href={`tel:${BUSINESS_INFO.phoneHelpline}`}
                 className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider shadow-xs transition-colors"
               >
-                {lang === 'kn' ? 'ತುರ್ತು ಕರೆ: 8152889500' : 'EMERGENCY: 8152889500'}
+                {lang === 'kn' ? `ಸಹಾಯವಾಣಿ: ${BUSINESS_INFO.phoneHelpline}` : `HELPLINE: ${BUSINESS_INFO.phoneHelpline}`}
               </a>
               <a
                 href={`mailto:${BUSINESS_INFO.emailEmergency}`}

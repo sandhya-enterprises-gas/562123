@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, PhoneCall, MessageCircle, Mail, ExternalLink, Globe, Instagram, Facebook, ShieldCheck, Clock, Navigation } from 'lucide-react';
+import { MapPin, PhoneCall, MessageCircle, Mail, ExternalLink, Globe, Instagram, Facebook, ShieldCheck, Clock, Navigation, ShieldAlert } from 'lucide-react';
 import { Language } from '../types';
 import { BUSINESS_INFO } from '../data/content';
 
@@ -113,51 +113,73 @@ export const ContactAndLocation: React.FC<ContactAndLocationProps> = ({ lang }) 
               </div>
             </div>
 
-            {/* Calling & WhatsApp Contacts */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {/* Primary Call */}
-              <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs flex flex-col justify-between">
+            {/* Calling & WhatsApp Contacts - 3 Distinct Channels */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              {/* 1. Rate Enquiry */}
+              <div className="p-3.5 rounded-xl bg-white border border-orange-200 shadow-2xs flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center gap-1.5 text-[10px] font-black text-slate-500 uppercase tracking-wider">
-                    <PhoneCall className="w-3.5 h-3.5 text-orange-600" />
-                    <span>{lang === 'kn' ? 'ಬುಕಿಂಗ್ & ದರ ವಿಚಾರಣೆ' : 'Direct Booking'}</span>
+                  <div className="flex items-center gap-1.5 text-[10px] font-black text-orange-600 uppercase tracking-wider">
+                    <PhoneCall className="w-3.5 h-3.5" />
+                    <span>{lang === 'kn' ? 'ದರ ವಿಚಾರಣೆ' : 'Rate Enquiry'}</span>
                   </div>
-                  <div className="text-base font-black text-slate-900 mt-1">
-                    +91 {BUSINESS_INFO.phonePrimary}
+                  <div className="text-sm font-black text-slate-900 mt-1">
+                    +91 {BUSINESS_INFO.phoneRateEnquiry}
                   </div>
-                  <p className="text-[11px] text-slate-500 mt-0.5">
-                    {lang === 'kn' ? 'ಬೆಳಿಗ್ಗೆ 7 - ರಾತ್ರಿ 9' : '7:00 AM - 9:00 PM'}
+                  <p className="text-[10px] text-slate-500 mt-0.5 leading-tight">
+                    {lang === 'kn' ? 'ಇಂದಿನ ರಿಯಾಯಿತಿ ದರಕ್ಕಾಗಿ' : 'Today\'s wholesale prices'}
                   </p>
                 </div>
                 <a
-                  href={`tel:${BUSINESS_INFO.phonePrimary}`}
-                  className="mt-3 w-full py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-black uppercase tracking-wider text-center transition-colors"
+                  href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`}
+                  className="mt-2.5 w-full py-1.5 bg-orange-600 hover:bg-orange-700 text-white rounded-lg text-xs font-black uppercase tracking-wider text-center transition-colors"
                 >
-                  {lang === 'kn' ? 'ಈಗ ಕರೆ ಮಾಡಿ' : 'Call 8152889500'}
+                  {lang === 'kn' ? 'ದರ ಕರೆ' : 'Call Rates'}
                 </a>
               </div>
 
-              {/* WhatsApp Support */}
-              <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs flex flex-col justify-between">
+              {/* 2. Other Enquiry / WhatsApp */}
+              <div className="p-3.5 rounded-xl bg-white border border-emerald-200 shadow-2xs flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-1.5 text-[10px] font-black text-emerald-700 uppercase tracking-wider">
                     <MessageCircle className="w-3.5 h-3.5" />
-                    <span>{lang === 'kn' ? 'ವಾಟ್ಸಾಪ್ ಸಹಾಯವಾಣಿ' : 'WhatsApp Support'}</span>
+                    <span>{lang === 'kn' ? 'ಇತರ ವಿಚಾರಣೆ / WhatsApp' : 'Other / WhatsApp'}</span>
                   </div>
-                  <div className="text-base font-black text-slate-900 mt-1">
+                  <div className="text-sm font-black text-slate-900 mt-1">
                     +91 {BUSINESS_INFO.phoneWhatsApp}
                   </div>
-                  <p className="text-[11px] text-slate-500 mt-0.5">
-                    {lang === 'kn' ? 'ತ್ವರಿತ ಸಂದೇಶ & ದರ ಪಟ್ಟಿ' : 'Instant Chat & Location'}
+                  <p className="text-[10px] text-slate-500 mt-0.5 leading-tight">
+                    {lang === 'kn' ? 'ಆರ್ಡರ್ & ಸಾಮಾನ್ಯ ಮಾಹಿತಿ' : 'Orders & general queries'}
                   </p>
                 </div>
                 <a
                   href={`https://wa.me/91${BUSINESS_INFO.phoneWhatsApp}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-3 w-full py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-black uppercase tracking-wider text-center transition-colors"
+                  className="mt-2.5 w-full py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-black uppercase tracking-wider text-center transition-colors"
                 >
-                  {lang === 'kn' ? 'ವಾಟ್ಸಾಪ್ ಚಾಟ್' : 'WhatsApp Chat'}
+                  {lang === 'kn' ? 'ವಾಟ್ಸಾಪ್' : 'WhatsApp'}
+                </a>
+              </div>
+
+              {/* 3. Helpline Only */}
+              <div className="p-3.5 rounded-xl bg-white border border-slate-200 shadow-2xs flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center gap-1.5 text-[10px] font-black text-red-600 uppercase tracking-wider">
+                    <ShieldAlert className="w-3.5 h-3.5" />
+                    <span>{lang === 'kn' ? 'ಸಹಾಯವಾಣಿ ಮಾತ್ರ' : 'Helpline Only'}</span>
+                  </div>
+                  <div className="text-sm font-black text-slate-900 mt-1">
+                    +91 {BUSINESS_INFO.phoneHelpline}
+                  </div>
+                  <p className="text-[10px] text-slate-500 mt-0.5 leading-tight">
+                    {lang === 'kn' ? '24/7 ತುರ್ತು & ಲೀಕೇಜ್' : '24/7 emergency & leak'}
+                  </p>
+                </div>
+                <a
+                  href={`tel:${BUSINESS_INFO.phoneHelpline}`}
+                  className="mt-2.5 w-full py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-black uppercase tracking-wider text-center transition-colors"
+                >
+                  {lang === 'kn' ? 'ಸಹಾಯವಾಣಿ' : 'Helpline'}
                 </a>
               </div>
             </div>

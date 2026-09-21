@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flame, PhoneCall, MessageCircle, Mail, MapPin, Globe, Instagram, Facebook, ShieldCheck, Heart } from 'lucide-react';
+import { Flame, PhoneCall, MessageCircle, Mail, MapPin, Globe, Instagram, Facebook, ShieldCheck, Heart, ShieldAlert } from 'lucide-react';
 import { Language } from '../types';
 import { SandhyaLogo } from './SandhyaLogo';
 import { BUSINESS_INFO } from '../data/content';
@@ -28,8 +28,8 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
                 {lang === 'kn' ? 'ಮುಖ್ಯ ಸೂಚನೆ: ' : 'Pricing Policy: '}
               </span>
               {lang === 'kn'
-                ? 'ಪ್ರತಿ ತಿಂಗಳು ಗ್ಯಾಸ್ ದರ ಪರಿಷ್ಕರಣೆಯಾಗುವುದರಿಂದ, ಇಂದಿನ ದರಕ್ಕಾಗಿ 8152889500 ಗೆ ಕರೆ ಮಾಡಿ.'
-                : 'Rates revise every month. Call 8152889500 to get today\'s best wholesale price.'}
+                ? 'ಪ್ರತಿ ತಿಂಗಳು ಗ್ಯಾಸ್ ದರ ಪರಿಷ್ಕರಣೆಯಾಗುವುದರಿಂದ, ಇಂದಿನ ದರಕ್ಕಾಗಿ 7676398782 ಗೆ ಕರೆ ಮಾಡಿ.'
+                : 'Rates revise every month. Call Rate Enquiry 7676398782 to get today\'s best wholesale price.'}
             </div>
 
             {/* Official Registration, GST & MSME Badge */}
@@ -128,17 +128,28 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
                 <MapPin className="w-3.5 h-3.5 text-orange-500 flex-shrink-0 mt-0.5" />
                 <span className="leading-snug">{BUSINESS_INFO.address.fullAddressEn}</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <PhoneCall className="w-3.5 h-3.5 text-orange-500 flex-shrink-0" />
-                <a href={`tel:${BUSINESS_INFO.phonePrimary}`} className="text-white hover:text-orange-400 font-bold">
-                  +91 {BUSINESS_INFO.phonePrimary}
-                </a>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <MessageCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                <a href={`https://wa.me/91${BUSINESS_INFO.phoneWhatsApp}`} className="text-white hover:text-emerald-400 font-bold">
-                  +91 {BUSINESS_INFO.phoneWhatsApp} (WhatsApp)
-                </a>
+              <div className="space-y-1.5 pt-1">
+                <div className="flex items-center gap-1.5">
+                  <PhoneCall className="w-3.5 h-3.5 text-orange-400 flex-shrink-0" />
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">{lang === 'kn' ? 'ದರ ವಿಚಾರಣೆ:' : 'Rate Enquiry:'}</span>
+                  <a href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`} className="text-white hover:text-orange-400 font-bold ml-auto font-mono">
+                    +91 {BUSINESS_INFO.phoneRateEnquiry}
+                  </a>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <MessageCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">{lang === 'kn' ? 'ಇತರ / WhatsApp:' : 'Other / WhatsApp:'}</span>
+                  <a href={`https://wa.me/91${BUSINESS_INFO.phoneWhatsApp}`} className="text-white hover:text-emerald-400 font-bold ml-auto font-mono">
+                    +91 {BUSINESS_INFO.phoneWhatsApp}
+                  </a>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <ShieldAlert className="w-3.5 h-3.5 text-red-400 flex-shrink-0" />
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">{lang === 'kn' ? 'ಸಹಾಯವಾಣಿ ಮಾತ್ರ:' : 'Helpline Only:'}</span>
+                  <a href={`tel:${BUSINESS_INFO.phoneHelpline}`} className="text-white hover:text-red-400 font-bold ml-auto font-mono">
+                    +91 {BUSINESS_INFO.phoneHelpline}
+                  </a>
+                </div>
               </div>
               <div className="flex items-start gap-1.5">
                 <Mail className="w-3.5 h-3.5 text-slate-400 flex-shrink-0 mt-0.5" />

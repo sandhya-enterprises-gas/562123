@@ -19,6 +19,8 @@ import { CustomerPortal } from './components/portal/CustomerPortal';
 import { DistributorDesk } from './components/portal/DistributorDesk';
 import { AdminCommandCenter } from './components/portal/AdminCommandCenter';
 import { GmailHub } from './components/gmail/GmailHub';
+import { GoogleDriveHub } from './components/drive/GoogleDriveHub';
+import { GoogleFormsHub } from './components/forms/GoogleFormsHub';
 import { OfficialCustomerShowcase } from './components/OfficialCustomerShowcase';
 import { OfficialDistributorShowcase } from './components/OfficialDistributorShowcase';
 import { OfficialFAQ } from './components/OfficialFAQ';
@@ -47,12 +49,14 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900 antialiased selection:bg-amber-500 selection:text-white">
-      {/* Universal Multi-Portal Navigation Bar */}
-      <PortalNavigation
-        lang={lang}
-        activeTab={activePortalTab}
-        onSelectTab={setActivePortalTab}
-      />
+      {/* Universal Multi-Portal Navigation Bar (Active within Portal Workspaces) */}
+      {activePortalTab !== 'website' && (
+        <PortalNavigation
+          lang={lang}
+          activeTab={activePortalTab}
+          onSelectTab={setActivePortalTab}
+        />
+      )}
 
       {/* Rate Alert Notification Banner at Top (Visible on public portal) */}
       {activePortalTab === 'website' && (
@@ -62,14 +66,16 @@ export default function App() {
         />
       )}
 
-      {/* Main Sticky Header */}
-      <Header
-        lang={lang}
-        onLanguageChange={handleLanguageChange}
-        onOpenInquiryModal={() => handleOpenInquiry()}
-        activePortalTab={activePortalTab}
-        onNavigatePortal={setActivePortalTab}
-      />
+      {/* Main Sticky Header (Visible on public website) */}
+      {activePortalTab === 'website' && (
+        <Header
+          lang={lang}
+          onLanguageChange={handleLanguageChange}
+          onOpenInquiryModal={() => handleOpenInquiry()}
+          activePortalTab={activePortalTab}
+          onNavigatePortal={setActivePortalTab}
+        />
+      )}
 
       {/* Main Content Area */}
       <main className="flex-1">
@@ -203,6 +209,16 @@ export default function App() {
           >
             <GmailHub lang={lang} />
           </PortalAccessGuard>
+        )}
+
+        {/* VIEW 6: Official Google Drive Vault */}
+        {activePortalTab === 'drive' && (
+          <GoogleDriveHub lang={lang} />
+        )}
+
+        {/* VIEW 7: Official Google Forms Hub */}
+        {activePortalTab === 'forms' && (
+          <GoogleFormsHub lang={lang} />
         )}
       </main>
 

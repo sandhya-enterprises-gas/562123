@@ -35,9 +35,16 @@ export const RateAlertBanner: React.FC<RateAlertBannerProps> = ({
               {lang === 'kn'
                 ? 'ಪ್ರತಿ ತಿಂಗಳು ಗ್ಯಾಸ್ ದರದಲ್ಲಿ ವ್ಯತ್ಯಾಸವಿರುತ್ತದೆ. ಇಂದಿನ ನಿಖರ ರಿಯಾಯಿತಿ ದರಕ್ಕಾಗಿ ಕರೆ ಮಾಡಿ: '
                 : 'Please Call and Confirm Today\'s Discounted Commercial Price: '}
-              <a href={`tel:${BUSINESS_INFO.phonePrimary}`} className="font-black text-orange-700 underline hover:text-orange-950">
-                8152889500
+              <a href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`} className="font-black text-orange-700 underline hover:text-orange-950">
+                +91 {BUSINESS_INFO.phoneRateEnquiry}
               </a>
+              <span className="mx-1 text-orange-400">|</span>
+              <span className="text-[11px] text-orange-800">
+                {lang === 'kn' ? 'ಸಹಾಯವಾಣಿ: ' : 'Helpline: '}
+                <a href={`tel:${BUSINESS_INFO.phoneHelpline}`} className="font-bold underline text-orange-900">
+                  {BUSINESS_INFO.phoneHelpline}
+                </a>
+              </span>
             </p>
           </div>
         </div>
@@ -46,11 +53,11 @@ export const RateAlertBanner: React.FC<RateAlertBannerProps> = ({
         <div className="flex items-center gap-2 w-full md:w-auto self-end md:self-center flex-shrink-0">
           <a
             id="banner-call-btn"
-            href={`tel:${BUSINESS_INFO.phonePrimary}`}
+            href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`}
             className="flex-1 md:flex-initial inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-black text-xs uppercase tracking-wider shadow-2xs transition-colors"
           >
             <PhoneCall className="w-3.5 h-3.5" />
-            <span>8152889500</span>
+            <span>{lang === 'kn' ? 'ದರ ಕರೆ: ' : 'Rate Call: '}{BUSINESS_INFO.phoneRateEnquiry}</span>
           </a>
 
           <a
@@ -65,7 +72,7 @@ export const RateAlertBanner: React.FC<RateAlertBannerProps> = ({
             className="flex-1 md:flex-initial inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-black text-xs uppercase tracking-wider shadow-2xs transition-colors"
           >
             <MessageCircle className="w-3.5 h-3.5" />
-            <span>WhatsApp</span>
+            <span>WhatsApp {BUSINESS_INFO.phoneWhatsApp}</span>
           </a>
 
           {onOpenInquiryModal && (

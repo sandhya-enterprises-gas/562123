@@ -33,6 +33,7 @@ import {
   SendEmailPayload
 } from '../../lib/gmailService';
 import type { User } from 'firebase/auth';
+import { BUSINESS_INFO } from '../../data/content';
 
 interface GmailHubProps {
   lang: Language;
@@ -159,7 +160,7 @@ Billing Rate: As per today's official commercial rate
 Empty Cylinders to Return (MT): 10 Empties
 Delivery Vehicle / Truck: KA-52 Express Dispatch
 Estimated Arrival: Within 2 hours
-Helpline / Urgent Support: +91 8152889500 / +91 9902641042
+Helpline / Urgent Support: +91 ${BUSINESS_INFO.phoneHelpline} | Other Enquiry: +91 ${BUSINESS_INFO.phoneOtherEnquiry}
 
 SAFETY CHECKLIST AT DELIVERY:
 1. Ensure O-Ring leak test is conducted with soap solution.
@@ -170,7 +171,7 @@ Thank you for choosing Sandhya Enterprises for your commercial kitchen energy ne
 Warm regards,
 Sandhya Enterprises Dispatch Desk
 Nelamangala Town, Bangalore Rural - 562123
-Phone: 8152889500 / 9902641042`
+Helpline: ${BUSINESS_INFO.phoneHelpline} | Rate Enquiry: ${BUSINESS_INFO.phoneRateEnquiry}`
       );
     } else if (type === 'tax_invoice') {
       setComposeSubject('GST Tax Invoice & Monthly Cylinder Account Statement - Sandhya Enterprises');
@@ -197,7 +198,7 @@ Account Name: Sandhya Enterprises (Pro: Ramakrishnaiah)
 Bank: State Bank of India, Nelamangala Branch
 UPI ID: 8152889500@upi
 
-For billing ledger reconciliation, reply directly to this email or call our accounts desk at 8152889500.
+For billing ledger reconciliation, reply directly to this email or call our accounts desk at ${BUSINESS_INFO.phoneOtherEnquiry}.
 
 Sincerely,
 Accounts & Billing Department (Pro: Ramakrishnaiah)
@@ -222,7 +223,7 @@ Emergency Shut-off Valve: Accessible & Tested Functional
 Fire Safety & Distance Norms: Compliant with Gas Cylinders Rules 2016
 Next Scheduled Safety Audit: 6 Months from today
 
-In case of any odor of gas or emergency, immediately close all manifold valves and dial our 24/7 technical hotline: 8152889500.
+In case of any odor of gas or emergency, immediately close all manifold valves and dial our 24/7 helpline: ${BUSINESS_INFO.phoneHelpline}.
 
 Safety Officer & Technical Lead
 Sandhya Enterprises Commercial LPG Solutions`

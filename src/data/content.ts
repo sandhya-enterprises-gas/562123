@@ -10,21 +10,24 @@ export const BUSINESS_INFO = {
   taglineEn: 'Commercial & Domestic LPG Supplier & Service Specialists',
   taglineKn: 'ವಾಣಿಜ್ಯ ಮತ್ತು ಗೃಹಬಳಕೆಯ ಎಲ್‌ಪಿಜಿ ಸಿಲಿಂಡರ್ ಪೂರೈಕೆದಾರರು ಮತ್ತು ಸರ್ವಿಸ್ ತಜ್ಞರು',
   established: 2010,
-  phonePrimary: '8152889500',
-  phoneWhatsApp: '8152889500',
-  phoneSecondary: '8152889500',
+  phoneRateEnquiry: '7676398782',
+  phoneHelpline: '8152889500',
+  phoneOtherEnquiry: '8073407706',
+  phoneWhatsApp: '8073407706',
+  phonePrimary: '7676398782',
+  phoneSecondary: '8073407706',
   emailOfficial: 'works.with.sandhya.enterprises@gmail.com',
   emailEmergency: 'shamrocky80@gmail.com',
   address: {
-    line1: 'Official Commercial Agency Hub & Regional Depot',
-    line1Kn: 'ಅಧಿಕೃತ ಕಮರ್ಷಿಯಲ್ ಗ್ಯಾಸ್ ಏಜೆನ್ಸಿ ಹಬ್ ಮತ್ತು ಡಿಪೋ',
-    area: 'Nelamangala, Nelamangala Rural & Bengaluru Rural',
-    areaKn: 'ನೆಲಮಂಗಲ, ನೆಲಮಂಗಲ ಗ್ರಾಮಾಂತರ ಮತ್ತು ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರ',
+    line1: 'Sharapurapalya',
+    line1Kn: 'ಶರಾಪುರಪಾಳ್ಯ',
+    area: 'Nelamangala, Bengaluru Rural',
+    areaKn: 'ನೆಲಮಂಗಲ, ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರ',
     city: 'Karnataka',
     cityKn: 'ಕರ್ನಾಟಕ',
     pincode: '562123',
-    fullAddressEn: 'Nelamangala, Nelamangala Rural & Bengaluru Rural, Karnataka - 562123',
-    fullAddressKn: 'ನೆಲಮಂಗಲ, ನೆಲಮಂಗಲ ಗ್ರಾಮಾಂತರ ಮತ್ತು ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರ, ಕರ್ನಾಟಕ - 562123'
+    fullAddressEn: 'Sharapurapalya, Nelamangala, Bengaluru Rural, Karnataka - 562123',
+    fullAddressKn: 'ಶರಾಪುರಪಾಳ್ಯ, ನೆಲಮಂಗಲ, ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರ, ಕರ್ನಾಟಕ - 562123'
   },
   serviceRegions: [
     { en: 'Nelamangala Town & Rural (Daily Delivery - 562123)', kn: 'ನೆಲಮಂಗಲ ಟೌನ್ & ಗ್ರಾಮಾಂತರ (ದೈನಂದಿನ ಡೆಲಿವರಿ - 562123)' },
@@ -43,180 +46,186 @@ export const BUSINESS_INFO = {
 
 export const RATE_NOTICE = {
   en: {
-    badge: 'Important Pricing Notice',
-    title: 'Monthly Rate Revisions: No Fixed Rates Published',
-    desc: 'As per government and petroleum oil market directives, Commercial LPG cylinder rates are revised on the 1st of every month. To guarantee you receive the lowest and most competitive bulk pricing for today, please call or WhatsApp our booking desk directly.',
-    actionCall: 'Call for Today\'s Rate: 8152889500',
-    actionWhatsApp: 'WhatsApp Rate Inquiry: 8152889500'
+    badge: 'Pricing Notice',
+    title: 'Monthly Rate Revisions: Call for Today\'s Price',
+    desc: 'LPG prices revise on the 1st of every month. For today\'s best rate, call Rate Enquiry: 7676398782. For general enquiries or WhatsApp: 8073407706. 24/7 Helpline: 8152889500.',
+    actionCall: 'Rate Enquiry: 7676398782',
+    actionWhatsApp: 'WhatsApp: 8073407706',
+    rateEnquiryPhone: '7676398782',
+    otherEnquiryPhone: '8073407706',
+    helplinePhone: '8152889500'
   },
   kn: {
-    badge: 'ಪ್ರಮುಖ ದರ ಪ್ರಕಟಣೆ',
-    title: 'ಪ್ರತಿ ತಿಂಗಳು ಗ್ಯಾಸ್ ಸಿಲಿಂಡರ್ ದರಗಳು ಬದಲಾಗುತ್ತವೆ - ಕರೆ ಮಾಡಿ ವಿಚಾರಿಸಿ',
-    desc: 'ಸರ್ಕಾರಿ ಮತ್ತು ತೈಲ ಕಂಪನಿಗಳ ನಿಯಮಾವಳಿಯಂತೆ ಪ್ರತಿ ತಿಂಗಳ 1ನೇ ತಾರೀಖು ಕಮರ್ಷಿಯಲ್ ಗ್ಯಾಸ್ ದರಗಳು ಪರಿಷ್ಕರಣೆಯಾಗುತ್ತವೆ. ಇಂದಿನ ನಿಖರವಾದ ಸ್ಪರ್ಧಾತ್ಮಕ ಮತ್ತು ರಿಯಾಯಿತಿ ದರ ತಿಳಿಯಲು ನೇರವಾಗಿ ಕರೆ ಮಾಡಿ ಅಥವಾ ವಾಟ್ಸಾಪ್ ಮಾಡಿ.',
-    actionCall: 'ಇಂದಿನ ದರಕ್ಕಾಗಿ ಕರೆ ಮಾಡಿ: 8152889500',
-    actionWhatsApp: 'ವಾಟ್ಸಾಪ್ ಮೂಲಕ ದರ ವಿಚಾರಿಸಿ: 8152889500'
+    badge: 'ದರ ಸೂಚನೆ',
+    title: 'ಪ್ರತಿ ತಿಂಗಳ 1ನೇ ತಾರೀಖು ದರ ಬದಲಾವಣೆ',
+    desc: 'ತಿಂಗಳ 1ನೇ ತಾರೀಖು ದರ ಪರಿಷ್ಕರಣೆಯಾಗುತ್ತದೆ. ಇಂದಿನ ದರ ವಿಚಾರಣೆಗೆ ಕರೆ: 7676398782. ಇತರ ವಿಚಾರಣೆ ಅಥವಾ ವಾಟ್ಸಾಪ್: 8073407706. ತುರ್ತು ಸಹಾಯವಾಣಿ: 8152889500.',
+    actionCall: 'ದರ ವಿಚಾರಣೆ: 7676398782',
+    actionWhatsApp: 'ವಾಟ್ಸಾಪ್: 8073407706',
+    rateEnquiryPhone: '7676398782',
+    otherEnquiryPhone: '8073407706',
+    helplinePhone: '8152889500'
   }
 };
 
-// Official Customer Benefits as mandated (Pure Kannada & Official English)
+// Official Customer Benefits - Smart & Short
 export const OFFICIAL_CUSTOMER_BENEFITS = {
   kn: {
-    title: 'ಗ್ರಾಹಕರಿಗೆ (For Customers)',
-    subtitle: 'ಹೋಟೆಲ್‌ಗಳು, ಬೇಕರಿಗಳು, ಕಲ್ಯಾಣ ಮಂಟಪಗಳು ಮತ್ತು ಕೈಗಾರಿಕೆಗಳಿಗೆ ಅಧಿಕೃತ ಮತ್ತು ಸುರಕ್ಷಿತ ಸೇವೆ',
+    title: 'ಗ್ರಾಹಕರಿಗೆ ಸೇವೆಗಳು (For Customers)',
+    subtitle: 'ಹೋಟೆಲ್ & ಕೈಗಾರಿಕೆಗಳಿಗೆ ಅಧಿಕೃತ, ಸುರಕ್ಷಿತ ಹಾಗೂ ನಿಖರ ತೂಕದ ಗ್ಯಾಸ್ ಪೂರೈಕೆ.',
     items: [
       {
         id: 'conn',
         title: 'ತಕ್ಷಣದ LPG ಕನೆಕ್ಷನ್',
-        desc: 'ಯಾವುದೇ ರೇಷನ್ ಕಾರ್ಡ್ ಅಥವಾ ಹೆಚ್ಚಿನ ದಾಖಲೆಗಳ ಅಗತ್ಯವಿಲ್ಲದೆ ಹೋಟೆಲ್, ಬೇಕರಿ ಹಾಗೂ ಕೈಗಾರಿಕೆಗಳಿಗೆ ತಕ್ಷಣವೇ ಗ್ಯಾಸ್ ಕನೆಕ್ಷನ್ ದೊರೆಯುತ್ತದೆ.',
-        badge: 'ದಾಖಲೆ ರಹಿತ'
+        desc: 'ದಾಖಲೆಗಳ ಗೋಜಿಲ್ಲದೆ ಹೋಟೆಲ್ & ಬೇಕರಿಗಳಿಗೆ ತಕ್ಷಣ ಗ್ಯಾಸ್ ಸಂಪರ್ಕ.',
+        badge: 'ತಕ್ಷಣ ಕನೆಕ್ಷನ್'
       },
       {
         id: 'weight',
-        title: '100% ತೂಕ ಮತ್ತು ಸುರಕ್ಷತೆ',
-        desc: 'ಪ್ರಮಾಣೀಕೃತ ಸಿಲಿಂಡರ್ಗಳು, ನಿಖರವಾದ ತೂಕ ಹಾಗೂ ಗ್ಯಾಸ್ ಸೋರಿಕೆಯಿಲ್ಲದ ಸಂಪೂರ್ಣ ಸುರಕ್ಷತೆಯ ಭರವಸೆ.',
-        badge: 'ಖಾತರಿ ತೂಕ'
+        title: '100% ಖಾತರಿ ತೂಕ',
+        desc: 'ಪ್ರಮಾಣೀಕೃತ ಸಿಲಿಂಡರ್, ನಿಖರ ತೂಕ ಮತ್ತು ಸೋರಿಕೆ ರಹಿತ ಸುರಕ್ಷತೆ.',
+        badge: '100% ಸುರಕ್ಷತೆ'
       },
       {
         id: 'portfolio',
-        title: 'ವಿವಿಧ ಮಾದರಿಯ ಸಿಲಿಂಡರ್ಗಳು',
-        desc: '12kg, 17kg, 19kg, 33kg ಮತ್ತು 45kg (LOT/VOT) ವಾಣಿಜ್ಯ ಮತ್ತು ಕೈಗಾರಿಕಾ ಸಿಲಿಂಡರ್ಗಳು ಲಭ್ಯ.',
+        title: 'ವಿವಿಧ ಶ್ರೇಣಿಯ ಸಿಲಿಂಡರ್',
+        desc: '12kg, 17kg, 19kg, 33kg & 45kg (LOT/VOT) ಸಿಲಿಂಡರ್‌ಗಳು ಲಭ್ಯ.',
         badge: '12kg - 45kg'
       },
       {
         id: 'gogas-elite',
-        title: 'ಗೋಗ್ಯಾಸ್ ಲೈಟ್ವೇಟ್ ಸಿಲಿಂಡರ್ (GoGas Elite)',
-        desc: 'ಪಾರದರ್ಶಕ ಸಿಲಿಂಡರ್ (ಗ್ಯಾಸ್ ಮಟ್ಟವನ್ನು ಹೊರಗಿನಿಂದಲೇ ನೋಡಬಹುದು), ತುಕ್ಕು ಹಿಡಿಯುವುದಿಲ್ಲ ಮತ್ತು ಅತ್ಯಂತ ಸುರಕ್ಷಿತ.',
+        title: 'ಗೋಗ್ಯಾಸ್ ಎಲೈಟ್ ಕಾಂಪೋಸಿಟ್',
+        desc: 'ಗ್ಯಾಸ್ ಮಟ್ಟ ಕಾಣುವ, ತುಕ್ಕು ಹಿಡಿಯದ ಲೈಟ್‌ವೇಟ್ ಸಿಲಿಂಡರ್.',
         badge: 'ಕಾಂಪೋಸಿಟ್'
       },
       {
         id: 'delivery',
-        title: 'ತ್ವರಿತ ಡೋರ್ಸ್ಟೆಪ್ ಡೆಲಿವರಿ',
-        desc: 'ನೆಲಮಂಗಲ, ತುಮಕೂರು ರಸ್ತೆ, ಸಿರಾ ಮತ್ತು ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರ ಪ್ರದೇಶಗಳಿಗೆ ಶೀಘ್ರ ಡೆಲಿವರಿ ಸೇವೆ.',
+        title: 'ವೇಗದ ಡೋರ್‌ಸ್ಟೆಪ್ ಡೆಲಿವರಿ',
+        desc: 'ನೆಲಮಂಗಲ & ಹೆದ್ದಾರಿ ಕಾರಿಡಾರ್‌ಗೆ ನಿಗದಿತ ಸಮಯಕ್ಕೆ ಡೆಲಿವರಿ.',
         badge: 'ಎಕ್ಸ್‌ಪ್ರೆಸ್'
       },
       {
         id: 'tech-support',
-        title: '24/7 ತಾಂತ್ರಿಕ ಬೆಂಬಲ',
-        desc: 'ತುರ್ತು ಗ್ಯಾಸ್ ಸೋರಿಕೆ ಮತ್ತು ಗ್ಯಾಸ್ ಪೈಪ್ಲೈನ್ ತೊಂದರೆಗಳಿಗೆ 24 ಗಂಟೆಯೂ ತಾಂತ್ರಿಕ ಸೇವೆ ಲಭ್ಯ.',
-        badge: '24/7 ಸೇವೆ'
+        title: '24/7 ತಾಂತ್ರಿಕ ಸೇವೆ',
+        desc: 'ಪೈಪ್‌ಲೈನ್ ಮತ್ತು ತುರ್ತು ಲೀಕೇಜ್ ಪರಿಹಾರಕ್ಕೆ 24 ಗಂಟೆ ಲಭ್ಯ.',
+        badge: '24/7 ಹೆಲ್ಪ್‌ಲೈನ್'
       }
     ]
   },
   en: {
     title: 'For Commercial Customers',
-    subtitle: 'Guaranteed safety, accurate weight, and zero-delay supply for commercial kitchens & industries',
+    subtitle: 'Certified, safe, and timely LPG supply for commercial kitchens & industries.',
     items: [
       {
         id: 'conn',
         title: 'Instant Commercial Connection',
-        desc: 'Hassle-free connection for hotels, bakeries, and industries without documentation delays.',
-        badge: 'No Ration Card Req.'
+        desc: 'Quick connection for hotels & bakeries with zero documentation delay.',
+        badge: 'Zero Delays'
       },
       {
         id: 'weight',
         title: '100% Weight & Safety Guarantee',
-        desc: 'Fully certified cylinders ensuring accurate gas quantity and complete leak safety.',
+        desc: 'Certified cylinders with accurate gas weight and zero leak risk.',
         badge: '100% Certified'
       },
       {
         id: 'portfolio',
-        title: 'Wide Cylinder Portfolio',
-        desc: 'Available in 12kg, 17kg, 19kg, 33kg, and 45kg (LOT/VOT) commercial & industrial capacities.',
-        badge: '12kg to 45kg Range'
+        title: 'Full Cylinder Range',
+        desc: '12kg, 17kg, 19kg, 33kg, and 45kg (LOT/VOT) industrial options.',
+        badge: '12kg to 45kg'
       },
       {
         id: 'gogas-elite',
-        title: 'GoGas Elite Composite Cylinders',
-        desc: 'Rust-proof, lightweight, and transparent body to visually inspect LPG levels.',
+        title: 'GoGas Elite Composite',
+        desc: 'Rust-proof, ultra-light, with visible LPG level indicator.',
         badge: 'Composite Tech'
       },
       {
         id: 'delivery',
-        title: 'Express Regional Delivery',
-        desc: 'Prompt doorstep delivery covering Nelamangala, Tumkur Road, Sira, and Bengaluru Rural corridors.',
-        badge: 'Express Corridor'
+        title: 'Express Doorstep Delivery',
+        desc: 'Prompt delivery across Nelamangala & highway corridors.',
+        badge: 'Express Delivery'
       },
       {
         id: 'tech-support',
-        title: '24/7 Emergency Technical Support',
-        desc: 'Round-the-clock technical assistance for pipeline networks and leak issues.',
+        title: '24/7 Emergency Support',
+        desc: 'Round-the-clock technician dispatch for pipeline & leak safety.',
         badge: '24/7 Hotline'
       }
     ]
   }
 };
 
-// Official Distributor & Delivery Partner Benefits (Pure Kannada & Official English)
+// Official Distributor & Delivery Partner Benefits - Smart & Short
 export const OFFICIAL_DISTRIBUTOR_BENEFITS = {
   kn: {
-    title: 'ಡಿಸ್ಟ್ರಿಬ್ಯೂಟರ್ಸ್ ಮತ್ತು ಡೆಲಿವರಿ ಪಾರ್ಟ್ನೆರ್ಗೆ (For Distributors & Delivery Partners)',
-    subtitle: 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಜೊತೆ ಕೈಜೋಡಿಸಿ - ನಿಮ್ಮ ಸ್ವಂತ ಆದಾಯ ಮತ್ತು ಬಿಸಿನೆಸ್ ಬೆಳೆಸಿಕೊಳ್ಳಿ',
+    title: 'ಡಿಸ್ಟ್ರಿಬ್ಯೂಟರ್ & ಡೆಲಿವರಿ ಪಾರ್ಟ್ನರ್ಸ್',
+    subtitle: 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಜೊತೆ ಕೈಜೋಡಿಸಿ - ಉತ್ತಮ ಕಮಿಷನ್ ಮತ್ತು ನಿಯಮಿತ ಆದಾಯ ಪಡೆಯಿರಿ.',
     items: [
       {
         id: 'margins',
-        title: 'ಹೆಚ್ಚಿನ ಲಾಭಾಂಶ ಮತ್ತು ಕಮಿಷನ್',
-        desc: 'ಪ್ರತಿ ಸಿಲಿಂಡರ್ ಮಾರಾಟದ ಮೇಲೆಯೂ ಅತ್ಯುತ್ತಮ ಮಾರ್ಜಿನ್ ಮತ್ತು ಸಮಯಕ್ಕೆ ಸರಿಯಾದ ಪಾವತಿ ವ್ಯವಸ್ಥೆ.',
-        badge: 'ಉನ್ನತ ಕಮಿಷನ್'
+        title: 'ಉತ್ತಮ ಕಮಿಷನ್ & ಮಾರ್ಜಿನ್',
+        desc: 'ಪ್ರತಿ ಸಿಲಿಂಡರ್ ಮಾರಾಟಕ್ಕೂ ಆಕರ್ಷಕ ಕಮಿಷನ್ ಮತ್ತು ಸಮಯಕ್ಕೆ ಸರಿಯಾದ ಪಾವತಿ.',
+        badge: 'ಹೆಚ್ಚಿನ ಕಮಿಷನ್'
       },
       {
         id: 'flexibility',
-        title: 'ಸಮಯದ ಸೌಲಭ್ಯ (Flexibility)',
-        desc: 'ನಿಮ್ಮ ಅನುಕೂಲಕ್ಕೆ ತಕ್ಕಂತೆ ಫುಲ್-ಟೈಮ್ ಅಥವಾ ಪಾರ್ಟ್-ಟೈಮ್ ಡೆಲಿವರಿ ಪಾರ್ಟ್ನೆರ್ ಆಗಿ ಕೆಲಸ ಮಾಡಿ.',
+        title: 'ಸಮಯದ ಹೊಂದಾಣಿಕೆ',
+        desc: 'ನಿಮ್ಮ ಅನುಕೂಲಕ್ಕೆ ತಕ್ಕಂತೆ ಫುಲ್-ಟೈಮ್ ಅಥವಾ ಪಾರ್ಟ್-ಟೈಮ್ ಕೆಲಸ ಮಾಡಿ.',
         badge: 'ಫುಲ್ / ಪಾರ್ಟ್ ಟೈಮ್'
       },
       {
         id: 'support',
         title: 'ಸಂಪೂರ್ಣ ಬಿಸಿನೆಸ್ ಬೆಂಬಲ',
-        desc: 'ಹೊಸ ಏಜೆನ್ಸಿಗಳಿಗೆ ಮಾರ್ಕೆಟಿಂಗ್ ಬೆಂಬಲ, ಸುರಕ್ಷತಾ ತರಬೇತಿ ಮತ್ತು ಕಾರ್ಯಾಚರಣೆಯ ಮಾರ್ಗದರ್ಶನ.',
-        badge: 'ತಾಂತ್ರಿಕ ತರಬೇತಿ'
+        desc: 'ಸುರಕ್ಷತಾ ತರಬೇತಿ, ಗ್ರಾಹಕ ಸಂಪರ್ಕ ಮತ್ತು ಏಜೆನ್ಸಿ ಮಾರ್ಗದರ್ಶನ.',
+        badge: 'ಏಜೆನ್ಸಿ ಬೆಂಬಲ'
       },
       {
         id: 'onboarding',
-        title: 'ಸುಲಭ ನೋಂದಣಿ ಪ್ರಕ್ರಿಯೆ',
-        desc: 'ಸಂಕೀರ್ಣ ನಿಯಮಗಳಿಲ್ಲದೆ ತಕ್ಷಣವೇ ವಿತರಕರಾಗಿ ಅಥವಾ ಡೆಲಿವರಿ ಪಾರ್ಟ್ನೆರ್ ಆಗಿ ನೋಂದಾಯಿಸಿಕೊಳ್ಳಿ.',
-        badge: 'ತಕ್ಷಣದ ನೋಂದಣಿ'
+        title: 'ಸುಲಭ ಮತ್ತು ತ್ವರಿತ ನೋಂದಣಿ',
+        desc: 'ಸರಳ ಪ್ರಕ್ರಿಯೆ ಮೂಲಕ ತಕ್ಷಣವೇ ಪಾರ್ಟ್ನರ್ ಆಗಿ ಕಾರ್ಯಾರಂಭ ಮಾಡಿ.',
+        badge: 'ತ್ವರಿತ ನೋಂದಣಿ'
       },
       {
         id: 'bulk',
-        title: 'ಬಲ್ಕ್ ಆರ್ಡರ್ ಸರಬರಾಜು',
-        desc: 'ರಾಷ್ಟ್ರೀಯ ಹೆದ್ದಾರಿ ಮತ್ತು ಕೈಗಾರಿಕಾ ಪ್ರದೇಶಗಳ ಬೃಹತ್ ಹೋಟೆಲ್ಗಳು ಹಾಗೂ ಕಾರ್ಖಾನೆಗಳಿಗೆ ಸರಬರಾಜು ಮಾಡುವ ಸೌಲಭ್ಯ.',
+        title: 'ಬಲ್ಕ್ ಆರ್ಡರ್ ಅವಕಾಶ',
+        desc: 'ಹೆದ್ದಾರಿ ಹೋಟೆಲ್ ಮತ್ತು ಕಾರ್ಖಾನೆಗಳಿಗೆ ನಿಯಮಿತ ಸರಬರಾಜು ಅವಕಾಶ.',
         badge: 'ಹೆದ್ದಾರಿ ಬಲ್ಕ್'
       }
     ]
   },
   en: {
-    title: 'For Distributors & Delivery Partners',
-    subtitle: 'Partner with Sandhya Enterprises: High per-cylinder earnings, flexible schedules, and direct agency backing',
+    title: 'For Distributors & Partners',
+    subtitle: 'Partner with Sandhya Enterprises for high per-cylinder earnings and flexible hours.',
     items: [
       {
         id: 'margins',
-        title: 'High Profit Margins & Incentives',
-        desc: 'Exceptional per-cylinder margins with transparent and timely payout structures.',
+        title: 'High Profit Margins',
+        desc: 'Attractive per-cylinder commissions with transparent, timely payouts.',
         badge: 'Top Margins'
       },
       {
         id: 'flexibility',
-        title: 'Flexible Work Model',
-        desc: 'Choose between full-time or part-time delivery operating schedules.',
-        badge: 'Full / Part Time'
+        title: 'Flexible Schedule',
+        desc: 'Choose full-time or part-time delivery shifts as per your availability.',
+        badge: 'Flexible Hours'
       },
       {
         id: 'support',
-        title: 'End-to-End Business Support',
-        desc: 'Comprehensive assistance including local marketing, safety training, and operational setup.',
-        badge: 'Full Agency Support'
+        title: 'Full Agency Support',
+        desc: 'Complete safety training, route guidance, and operational assistance.',
+        badge: 'Full Backing'
       },
       {
         id: 'onboarding',
-        title: 'Streamlined Onboarding',
-        desc: 'Quick and simple registration process to become an official distributor or delivery partner.',
-        badge: 'Fast Onboarding'
+        title: 'Fast Onboarding',
+        desc: 'Quick verification and zero complicated formalities to start earning.',
+        badge: 'Fast Start'
       },
       {
         id: 'bulk',
-        title: 'Bulk Supply Capabilities',
-        desc: 'Opportunity to serve large-scale commercial clients across industrial hubs and highway corridors.',
-        badge: 'Highway & Industrial'
+        title: 'Bulk Supply Routes',
+        desc: 'Serve high-volume highway hotels, wedding halls, and factories.',
+        badge: 'Bulk Routes'
       }
     ]
   }
@@ -227,27 +236,27 @@ export const CYLINDER_PRODUCTS: CylinderProduct[] = [
     id: 'bharat-19kg',
     brand: 'Bharat Gas',
     brandKey: 'bharat',
-    nameEn: 'Bharat Gas 19kg Commercial LPG Cylinder',
-    nameKn: 'ಭಾರತ್ ಗ್ಯಾಸ್ 19 ಕೆ.ಜಿ ಕಮರ್ಷಿಯಲ್ ಸಿಲಿಂಡರ್',
+    nameEn: 'Bharat Gas 19kg Commercial LPG',
+    nameKn: 'ಭಾರತ್ ಗ್ಯಾಸ್ 19 ಕೆ.ಜಿ ಕಮರ್ಷಿಯಲ್',
     capacity: '19 KG',
-    typeEn: 'Commercial Heavy Duty (VOT / Red-Blue Band)',
-    typeKn: 'ಕಮರ್ಷಿಯಲ್ ಬಳಕೆಗಾಗಿ (VOT / ಕೆಂಪು-ನೀಲಿ ಬ್ಯಾಂಡ್)',
-    idealForEn: 'Restaurants, Hotels, Bakeries, Highway Dhabas, Fast Food Kitchens',
-    idealForKn: 'ರೆಸ್ಟೋರೆಂಟ್‌ಗಳು, ಹೋಟೆಲ್‌ಗಳು, ಬೇಕರಿಗಳು, ಹೈವೇ ದಾಬಾಗಳು, ಫಾಸ್ಟ್ ಫುಡ್',
+    typeEn: 'Commercial Heavy Duty (VOT)',
+    typeKn: 'ಕಮರ್ಷಿಯಲ್ ಹೆವಿ ಡ್ಯೂಟಿ (VOT)',
+    idealForEn: 'Hotels, Restaurants, Bakeries, Dhabas',
+    idealForKn: 'ಹೋಟೆಲ್, ರೆಸ್ಟೋರೆಂಟ್, ಬೇಕರಿ, ದಾಬಾ',
     featuresEn: [
-      'High calorific flame efficiency with uniform blue flame',
-      'Govt. certified BPCL standard cylinder with tamper-proof seal',
-      'Monthly quota & non-quota regular doorstep supply',
-      'Fast replacement guarantee across Nelamangala & Tumkur'
+      'Pure blue flame & high thermal output',
+      'Certified cylinder with tamper-proof seal',
+      'Daily doorstep express supply',
+      'Emergency refill backup'
     ],
     featuresKn: [
-      'ಏಕರೂಪದ ನೀಲಿ ಜ್ವಾಲೆಯೊಂದಿಗೆ ಗರಿಷ್ಠ ಉಷ್ಣ ದಕ್ಷತೆ',
-      'BPCL ಪ್ರಮಾಣೀಕೃತ ಸಿಲಿಂಡರ್ ಮತ್ತು ಸುರಕ್ಷತಾ ಸೀಲ್',
-      'ನೆಲಮಂಗಲ, ತುಮಕೂರು ಭಾಗದಲ್ಲಿ ನಿಯಮಿತ ಡೋರ್‌ಸ್ಟೆಪ್ ಡೆಲಿವರಿ',
-      'ತುರ್ತು ಗ್ಯಾಸ್ ಖಾಲಿಯಾದಾಗ ತ್ವರಿತ ರೀಫಿಲ್ ಸೌಲಭ್ಯ'
+      'ಸ್ವಚ್ಛ ನೀಲಿ ಜ್ವಾಲೆ & ಗರಿಷ್ಠ ಶಾಖ',
+      'ಪ್ರಮಾಣೀಕೃತ ಸಿಲಿಂಡರ್ & ಅಧಿಕೃತ ಸೀಲ್',
+      'ದೈನಂದಿನ ಎಕ್ಸ್‌ಪ್ರೆಸ್ ಡೆಲಿವರಿ',
+      'ತುರ್ತು ರೀಫಿಲ್ ಸೌಲಭ್ಯ'
     ],
-    badgeEn: 'Best Seller for Hotels',
-    badgeKn: 'ಹೋಟೆಲ್‌ಗಳಿಗೆ ನಂಬರ್ 1 ಆಯ್ಕೆ',
+    badgeEn: 'Hotel Favorite',
+    badgeKn: 'ಹೋಟೆಲ್‌ಗಳ ಮೊದಲ ಆಯ್ಕೆ',
     color: {
       primary: '#dc2626', // Red
       secondary: '#991b1b',
@@ -259,27 +268,27 @@ export const CYLINDER_PRODUCTS: CylinderProduct[] = [
     id: 'gogas-elite',
     brand: 'Go Gas',
     brandKey: 'gogas',
-    nameEn: 'GoGas Elite Composite Lightweight Cylinders',
-    nameKn: 'ಗೋಗ್ಯಾಸ್ ಎಲೈಟ್ ಲೈಟ್‌ವೇಟ್ ಕಾಂಪೋಸಿಟ್ ಸಿಲಿಂಡರ್',
+    nameEn: 'GoGas Elite Composite Cylinder',
+    nameKn: 'ಗೋಗ್ಯಾಸ್ ಎಲೈಟ್ ಕಾಂಪೋಸಿಟ್ ಸಿಲಿಂಡರ್',
     capacity: '10kg & 17kg',
-    typeEn: 'Next-Gen Composite LPG (Visible Gas Level / 100% Rust-Proof)',
-    typeKn: 'ಪಾರದರ್ಶಕ ಲೈಟ್‌ವೇಟ್ ಸಿಲಿಂಡರ್ (ಗ್ಯಾಸ್ ಮಟ್ಟ ಕಾಣುವ ವಿನ್ಯಾಸ)',
-    idealForEn: 'Modern Cafes, Bakeries, Food Trucks, Cloud Kitchens, High-End Dining',
-    idealForKn: 'ಆಧುನಿಕ ಕೆಫೆಗಳು, ಬೇಕರಿಗಳು, ಫುಡ್ ಟ್ರಕ್‌ಗಳು, ಕ್ಲೌಡ್ ಕಿಚನ್‌ಗಳು',
+    typeEn: 'Lightweight Composite LPG',
+    typeKn: 'ಲೈಟ್‌ವೇಟ್ ಕಾಂಪೋಸಿಟ್ ಎಲ್‌ಪಿಜಿ',
+    idealForEn: 'Cafes, Bakeries, Food Trucks, Cloud Kitchens',
+    idealForKn: 'ಕೆಫೆ, ಬೇಕರಿ, ಫುಡ್ ಟ್ರಕ್, ಕ್ಲೌಡ್ ಕಿಚನ್',
     featuresEn: [
-      'Rust-proof, ultra-lightweight fiberglass composite casing',
-      'Translucent outer body: visually check exact remaining LPG level',
-      'Explosion-proof 3-layer construction compliant with international standards',
-      'No floor rust stains; easy handling for kitchen staff'
+      'Rust-proof lightweight fiberglass body',
+      'Translucent body: visible LPG level',
+      '100% explosion-proof certified',
+      'Zero floor rust stains'
     ],
     featuresKn: [
-      'ತುಕ್ಕು ಹಿಡಿಯುವುದಿಲ್ಲ, ಅತ್ಯಂತ ಹಗುರವಾದ ಫೈಬರ್‌ಗ್ಲಾಸ್ ಬಾಡಿ',
-      'ಪಾರದರ್ಶಕ ಸಿಲಿಂಡರ್ - ಗ್ಯಾಸ್ ಮಟ್ಟವನ್ನು ಹೊರಗಿನಿಂದಲೇ ನೋಡಬಹುದು',
-      'ಸ್ಫೋಟ-ನಿರೋಧಕ ಅತ್ಯುನ್ನತ ಜಾಗತಿಕ ಸುರಕ್ಷತಾ ವಿನ್ಯಾಸ',
-      'ನೆಲದ ಮೇಲೆ ತುಕ್ಕು ಕಲೆಗಳು ಬೀಳುವುದಿಲ್ಲ, ಸಾಗಿಸಲು ಅತ್ಯಂತ ಸುಲಭ'
+      'ತುಕ್ಕು ಹಿಡಿಯದ ಹಗುರ ಫೈಬರ್‌ಗ್ಲಾಸ್ ಬಾಡಿ',
+      'ಪಾರದರ್ಶಕ: ಗ್ಯಾಸ್ ಮಟ್ಟ ಹೊರಗಿಂದಲೇ ಕಾಣುತ್ತದೆ',
+      '100% ಸ್ಫೋಟ-ನಿರೋಧಕ ವಿನ್ಯಾಸ',
+      'ನೆಲದ ಮೇಲೆ ಕಲೆಗಳಿಲ್ಲ'
     ],
-    badgeEn: 'GoGas Elite Tech',
-    badgeKn: 'ಪಾರದರ್ಶಕ & ತುಕ್ಕು ರಹಿತ',
+    badgeEn: 'Composite Tech',
+    badgeKn: 'ಪಾರದರ್ಶಕ & ಲೈಟ್‌ವೇಟ್',
     color: {
       primary: '#0284c7', // Sky Blue
       secondary: '#0369a1',
@@ -291,27 +300,27 @@ export const CYLINDER_PRODUCTS: CylinderProduct[] = [
     id: 'bharat-45kg',
     brand: 'Bharat Gas',
     brandKey: 'bharat',
-    nameEn: 'Bharat Gas 45kg / 47.5kg Industrial LPG (LOT / VOT)',
-    nameKn: 'ಭಾರತ್ ಗ್ಯಾಸ್ 45 / 47.5 ಕೆ.ಜಿ ಇಂಡಸ್ಟ್ರಿಯಲ್ ಸಿಲಿಂಡರ್ (LOT/VOT)',
+    nameEn: 'Bharat Gas 45kg / 47.5kg Industrial',
+    nameKn: 'ಭಾರತ್ ಗ್ಯಾಸ್ 45 / 47.5 ಕೆ.ಜಿ ಇಂಡಸ್ಟ್ರಿಯಲ್',
     capacity: '45 KG / 47.5 KG',
-    typeEn: 'Industrial & Bulk Commercial Consumption (Liquid Off-Take)',
-    typeKn: 'ಕೈಗಾರಿಕಾ ಮತ್ತು ಬೃಹತ್ ಬಳಕೆಗಾಗಿ (LOT/VOT)',
-    idealForEn: 'Large Industries, Food Processing, Marriage Halls, Mega Bakeries',
-    idealForKn: 'ದೊಡ್ಡ ಕಾರ್ಖಾನೆಗಳು, ಆಹಾರ ಸಂಸ್ಕರಣಾ ಘಟಕಗಳು, ಕಲ್ಯಾಣ ಮಂಟಪಗಳು',
+    typeEn: 'Industrial Bulk LOT / VOT',
+    typeKn: 'ಕೈಗಾರಿಕಾ ಬಲ್ಕ್ LOT / VOT',
+    idealForEn: 'Industries, Marriage Halls, Bulk Bakeries',
+    idealForKn: 'ಕಾರ್ಖಾನೆಗಳು, ಕಲ್ಯಾಣ ಮಂಟಪ, ಬೃಹತ್ ಬೇಕರಿ',
     featuresEn: [
-      'Liquid Off-Take (LOT) technology for maximum high continuous gas flow',
-      'Zero leftover residue inside cylinder body',
-      'Ideal for multi-cylinder manifold systems',
-      'Bulk delivery with free technical pipeline inspection'
+      'Liquid Off-Take (LOT) high flow',
+      'Zero leftover gas residue',
+      'Best for multi-cylinder manifolds',
+      'Free pipeline inspection'
     ],
     featuresKn: [
-      'ಲಿಕ್ವಿಡ್ ಆಫ್-ಟೇಕ್ (LOT) ತಂತ್ರಜ್ಞಾನ - ನಿರಂತರ ಬೃಹತ್ ಗ್ಯಾಸ್ ಸರಬರಾಜು',
-      'ಸಿಲಿಂಡರ್‌ನಲ್ಲಿ ಗ್ಯಾಸ್ ಉಳಿಯದ ಸಂಪೂರ್ಣ ದಹನ',
-      'ಮ್ಯಾನಿಫೋಲ್ಡ್ ಪೈಪ್‌ಲೈನ್ ಸಿಸ್ಟಮ್‌ಗೆ ಅತ್ಯುತ್ತಮ',
-      'ಉಚಿತ ಸುರಕ್ಷತಾ ತಪಾಸಣೆ ಮತ್ತು ತಾಂತ್ರಿಕ ಬೆಂಬಲ'
+      'ಲಿಕ್ವಿಡ್ ಆಫ್-ಟೇಕ್ (LOT) ಅಧಿಕ ಹರಿವು',
+      'ಸಿಲಿಂಡರ್‌ನಲ್ಲಿ ಗ್ಯಾಸ್ ಉಳಿಯದ ದಹನ',
+      'ಮ್ಯಾನಿಫೋಲ್ಡ್ ಸಿಸ್ಟಮ್‌ಗೆ ಸೂಕ್ತ',
+      'ಉಚಿತ ಪೈಪ್‌ಲೈನ್ ತಪಾಸಣೆ'
     ],
     badgeEn: 'Industrial LOT',
-    badgeKn: 'ಕೈಗಾರಿಕಾ ಬೃಹತ್ ಬಳಕೆ',
+    badgeKn: 'ಕೈಗಾರಿಕಾ LOT',
     color: {
       primary: '#b91c1c',
       secondary: '#7f1d1d',
@@ -323,26 +332,26 @@ export const CYLINDER_PRODUCTS: CylinderProduct[] = [
     id: 'gogas-commercial',
     brand: 'Go Gas',
     brandKey: 'gogas',
-    nameEn: 'Go Gas Commercial Series (17kg / 33kg / 45kg)',
-    nameKn: 'ಗೋ ಗ್ಯಾಸ್ ಕಮರ್ಷಿಯಲ್ ಸರಣಿ (17kg / 33kg / 45kg)',
+    nameEn: 'Go Gas Commercial (17kg / 33kg / 45kg)',
+    nameKn: 'ಗೋ ಗ್ಯಾಸ್ ಕಮರ್ಷಿಯಲ್ (17kg / 33kg / 45kg)',
     capacity: '17 KG / 33 KG / 45 KG',
-    typeEn: 'Private Commercial LPG Cylinder Range',
-    typeKn: 'ಪ್ರೈವೇಟ್ ಕಮರ್ಷಿಯಲ್ ಎಲ್‌ಪಿಜಿ ಶ್ರೇಣಿ',
-    idealForEn: 'Catering Centers, Cloud Kitchens, Canteens, Industrial Heating',
-    idealForKn: 'ಕ್ಯಾಟರಿಂಗ್ ಸೇವೆಗಳು, ಕ್ಲೌಡ್ ಕಿಚನ್‌ಗಳು, ಕ್ಯಾಂಟೀನ್ ಮತ್ತು ಕೈಗಾರಿಕೆಗಳು',
+    typeEn: 'Private Commercial LPG',
+    typeKn: 'ಪ್ರೈವೇಟ್ ಕಮರ್ಷಿಯಲ್ ಎಲ್‌ಪಿಜಿ',
+    idealForEn: 'Catering, Cloud Kitchens, Canteens',
+    idealForKn: 'ಕ್ಯಾಟರಿಂಗ್, ಕ್ಲೌಡ್ ಕಿಚನ್, ಕ್ಯಾಂಟೀನ್',
     featuresEn: [
-      'Flexible documentation & instant commercial connection without ration card',
-      'Competitive private LPG pricing with 24/7 dedicated buffer stock',
-      'Clean burning blue flame with zero soot or black smoke',
-      'Doorstep swap and immediate dispatch across highway corridors'
+      'Instant connection without ration card',
+      'Competitive private LPG bulk price',
+      'Soot-free clean blue flame',
+      'Prompt doorstep delivery'
     ],
     featuresKn: [
-      'ಯಾವುದೇ ರೇಷನ್ ಕಾರ್ಡ್ ಇಲ್ಲದೆ ತಕ್ಷಣದ ಹೊಸ ಕಮರ್ಷಿಯಲ್ ಕನೆಕ್ಷನ್',
-      'ಖಾಸಗಿ ವಲಯದ ಅತ್ಯುತ್ತಮ ಹಾಗೂ ಸ್ಪರ್ಧಾತ್ಮಕ ಬಲ್ಕ್ ದರ',
-      'ಶುದ್ಧ ಅನಿಲ ಪ್ರವಾಹ - ಪಾತ್ರೆಗಳ ಮೇಲೆ ಕಪ್ಪು ಕಲೆ ರಹಿತ ದಹನ',
-      'ಕರೆ ಮಾಡಿದ ಕೂಡಲೇ ಹೆದ್ದಾರಿ ಮತ್ತು ಗ್ರಾಮಾಂತರ ಪ್ರದೇಶಕ್ಕೆ ಡೆಲಿವರಿ'
+      'ದಾಖಲೆಗಳಿಲ್ಲದೆ ತಕ್ಷಣ ಹೊಸ ಕನೆಕ್ಷನ್',
+      'ಖಾಸಗಿ ವಲಯದ ಅತ್ಯುತ್ತಮ ಬಲ್ಕ್ ದರ',
+      'ಕಪ್ಪು ಕಲೆ ರಹಿತ ಶುದ್ಧ ನೀಲಿ ಜ್ವಾಲೆ',
+      'ತಕ್ಷಣದ ಡೋರ್‌ಸ್ಟೆಪ್ ಡೆಲಿವರಿ'
     ],
-    badgeEn: 'Instant Connection',
+    badgeEn: 'Instant Setup',
     badgeKn: 'ತ್ವರಿತ ಕನೆಕ್ಷನ್',
     color: {
       primary: '#2563eb', // Blue
@@ -355,29 +364,29 @@ export const CYLINDER_PRODUCTS: CylinderProduct[] = [
     id: 'powergas-commercial',
     brand: 'Power Gas',
     brandKey: 'powergas',
-    nameEn: 'Power Gas Commercial & Industrial (19kg / 33kg / 45kg)',
-    nameKn: 'ಪವರ್ ಗ್ಯಾಸ್ ಕಮರ್ಷಿಯಲ್ & ಇಂಡಸ್ಟ್ರಿಯಲ್ (19kg / 33kg / 45kg)',
+    nameEn: 'Power Gas High Pressure (19kg / 33kg / 45kg)',
+    nameKn: 'ಪವರ್ ಗ್ಯಾಸ್ ಹೈ ಪ್ರೆಶರ್ (19kg / 33kg / 45kg)',
     capacity: '19 KG / 33 KG / 45 KG',
-    typeEn: 'High Pressure Heavy Commercial LPG',
-    typeKn: 'ಹೈ ಪ್ರೆಶರ್ ಕಮರ್ಷಿಯಲ್ ಎಲ್‌ಪಿಜಿ',
-    idealForEn: 'Highway Dhabas, Heavy Wok Kitchens, Sweet Stalls, Metallurgy',
-    idealForKn: 'ಹೈವೇ ದಾಬಾಗಳು, ಸ್ವೀಟ್ ಸ್ಟಾಲ್‌ಗಳು, ಭಾರಿ ಭೋಜನಾಲಯಗಳು',
+    typeEn: 'High Pressure Heavy Commercial',
+    typeKn: 'ಹೈ ಪ್ರೆಶರ್ ಕಮರ್ಷಿಯಲ್',
+    idealForEn: 'Highway Dhabas, Heavy Kitchens, Bhatti',
+    idealForKn: 'ಹೈವೇ ದಾಬಾ, ಭಾರಿ ಕಿಚನ್, ಭಟ್ಟಿ',
     featuresEn: [
-      'Heavy-duty commercial burner compatibility for high-speed cooking',
-      'High-pressure output ensuring intense thermal energy',
-      'Reliable supply during peak festival and wedding seasons',
-      'Double leak-check valve inspection before every dispatch'
+      'Heavy commercial burner compatibility',
+      'High thermal heat output',
+      'Steady festival/bulk supply',
+      'Dual safety leak check'
     ],
     featuresKn: [
-      'ಭಾರಿ ಕಮರ್ಷಿಯಲ್ ಬರ್ನರ್‌ಗಳಿಗೆ ಸೂಕ್ತವಾದ ಹೈ ಪ್ರೆಶರ್',
-      'ಹಬ್ಬ ಹರಿದಿನಗಳು ಹಾಗೂ ಮದುವೆ ಸೀಸನ್‌ನಲ್ಲಿ ತಡೆರಹಿತ ಸರಬರಾಜು',
-      'ಪ್ರತಿಯೊಂದು ಸಿಲಿಂಡರ್ ಡಬಲ್ ಸುರಕ್ಷತಾ ತಪಾಸಣೆ ನಂತರವೇ ಪೂರೈಕೆ',
-      'ವಿಶೇಷ ಬಲ್ಕ್ ರಿಯಾಯಿತಿ ದರಗಳು ಲಭ್ಯ'
+      'ಕಮರ್ಷಿಯಲ್ ಬರ್ನರ್‌ಗೆ ಸೂಕ್ತ ಪ್ರೆಶರ್',
+      'ಶಕ್ತಿಶಾಲಿ ಅಧಿಕ ಶಾಖದ ಜ್ವಾಲೆ',
+      'ಹಬ್ಬದ ಸೀಸನ್‌ನಲ್ಲೂ ತಡೆರಹಿತ ಸರಬರಾಜು',
+      'ಡಬಲ್ ಸುರಕ್ಷತಾ ತಪಾಸಣೆ'
     ],
     badgeEn: 'High Pressure',
-    badgeKn: 'ಶಕ್ತಿಶಾಲಿ ಜ್ವಾಲೆ',
+    badgeKn: 'ಹೈ ಪ್ರೆಶರ್',
     color: {
-      primary: '#d97706', // Amber / Yellow
+      primary: '#d97706', // Amber
       secondary: '#b45309',
       bg: 'bg-amber-50',
       border: 'border-amber-200'
@@ -387,27 +396,27 @@ export const CYLINDER_PRODUCTS: CylinderProduct[] = [
     id: 'gogas-12kg',
     brand: 'Go Gas',
     brandKey: 'gogas',
-    nameEn: 'Go Gas 12kg Commercial & Lab Cylinder',
-    nameKn: 'ಗೋ ಗ್ಯಾಸ್ 12 ಕೆ.ಜಿ ಕಮರ್ಷಿಯಲ್ & ಲ್ಯಾಬ್ ಸಿಲಿಂಡರ್ (12KG)',
+    nameEn: 'Go Gas 12kg Commercial & Lab',
+    nameKn: 'ಗೋ ಗ್ಯಾಸ್ 12 ಕೆ.ಜಿ ಕಮರ್ಷಿಯಲ್ & ಲ್ಯಾಬ್',
     capacity: '12 KG',
-    typeEn: 'Compact Commercial & Testing Laboratory LPG (12KG)',
-    typeKn: 'ಕಾಂಪ್ಯಾಕ್ಟ್ ಕಮರ್ಷಿಯಲ್ & ಲ್ಯಾಬ್ ಸಿಲಿಂಡರ್ (12KG)',
-    idealForEn: 'Testing Laboratories, Food Kiosks, Mobile Stalls, Small Cafes',
-    idealForKn: 'ಲ್ಯಾಬೋರೇಟರಿ, ಫುಡ್ ಕಿಯಾಸ್ಕ್‌ಗಳು, ಮೊಬೈಲ್ ಕ್ಯಾಂಟೀನ್‌ಗಳು, ಸಣ್ಣ ಕೆಫೆಗಳು',
+    typeEn: 'Compact Commercial (12KG)',
+    typeKn: 'ಕಾಂಪ್ಯಾಕ್ಟ್ ಕಮರ್ಷಿಯಲ್ (12KG)',
+    idealForEn: 'Laboratories, Kiosks, Food Stalls, Small Cafes',
+    idealForKn: 'ಲ್ಯಾಬ್, ಫುಡ್ ಕಿಯಾಸ್ಕ್, ಸಣ್ಣ ಕೆಫೆ',
     featuresEn: [
-      'Compact 12kg commercial size designed for tight kitchen setups',
-      'Easy carry handle and quick connect commercial valve',
-      'Accurate factory filled weight with tamper proof seal',
-      'Immediate counter pickup or doorstep delivery across corridors'
+      'Compact size for compact spaces',
+      'Easy carry handle with quick valve',
+      'Factory-sealed accurate weight',
+      'Quick counter pickup or delivery'
     ],
     featuresKn: [
-      'ಸಣ್ಣ ಜಾಗಗಳಿಗೆ ಸೂಕ್ತವಾದ ಕಾಂಪ್ಯಾಕ್ಟ್ 12 ಕೆ.ಜಿ ಅಧಿಕೃತ ಗಾತ್ರ',
-      'ಸಾಗಿಸಲು ಸುಲಭವಾದ ಹ್ಯಾಂಡಲ್ ಮತ್ತು ಕ್ವಿಕ್ ಕನೆಕ್ಟ್ ವಾಲ್ವ್',
-      'ನಿಖರವಾದ ತೂಕ ಮತ್ತು ಅಧಿಕೃತ ಸುರಕ್ಷತಾ ಸೀಲ್',
-      'ತಕ್ಷಣದ ಡೆಲಿವರಿ ಅಥವಾ ಕೌಂಟರ್ ಪಿಕ್‌ಅಪ್ ಸೌಲಭ್ಯ'
+      'ಸಣ್ಣ ಜಾಗಗಳಿಗೆ ಸೂಕ್ತವಾದ ಗಾತ್ರ',
+      'ಸಾಗಿಸಲು ಸುಲಭವಾದ ಹ್ಯಾಂಡಲ್',
+      'ಸೀಲ್ ಮಾಡಿದ ನಿಖರ ತೂಕ',
+      'ಕೌಂಟರ್ ಪಿಕ್‌ಅಪ್ ಅಥವಾ ಡೆಲಿವರಿ'
     ],
-    badgeEn: 'Go Gas 12kg',
-    badgeKn: 'ಗೋ ಗ್ಯಾಸ್ 12 ಕೆ.ಜಿ',
+    badgeEn: 'Compact 12kg',
+    badgeKn: 'ಕಾಂಪ್ಯಾಕ್ಟ್ 12 ಕೆ.ಜಿ',
     color: {
       primary: '#059669', // Emerald
       secondary: '#047857',
@@ -421,142 +430,142 @@ export const SERVICES_LIST: ServiceItem[] = [
   {
     id: 'fast-delivery',
     iconName: 'Truck',
-    titleEn: 'Fast & On-Time Doorstep Delivery',
-    titleKn: 'ವೇಗದ ಮತ್ತು ಸಕಾಲಿಕ ಡೆಲಿವರಿ (Fast & On-Time Delivery)',
-    descEn: 'We understand that commercial kitchens cannot pause. Our dedicated fleet ensures prompt same-day and scheduled deliveries across Nelamangala, Tumkur, Sira, and Bangalore Rural corridors.',
-    descKn: 'ಹೋಟೆಲ್ ಮತ್ತು ಕೈಗಾರಿಕೆಗಳಲ್ಲಿ ಗ್ಯಾಸ್ ನಿಲ್ಲಬಾರದು ಎಂಬುದನ್ನು ಅರಿತು, ನಾವು ನೆಲಮಂಗಲ, ತುಮಕೂರು, ಶಿರಾ ಭಾಗಗಳಿಗೆ ಸಮಯಕ್ಕೆ ಸರಿಯಾಗಿ ವೇಗದ ಡೆಲಿವರಿ ನೀಡುತ್ತೇವೆ.',
-    highlightsEn: ['Same-day express dispatch', 'Dedicated delivery trucks', 'Weekend & festival support', 'Live dispatch coordination'],
-    highlightsKn: ['ಅದೇ ದಿನ ವೇಗದ ರವಾನೆ', 'ಸ್ವಂತ ಸರಬರಾಜು ವಾಹನಗಳ ನೆಟ್‌ವರ್ಕ್', 'ಹಬ್ಬ ಮತ್ತು ವಾರಾಂತ್ಯದಲ್ಲೂ ಸೇವೆ', 'ನೇರ ಫೋನ್ ಟ್ರ್ಯಾಕಿಂಗ್']
+    titleEn: 'On-Time Doorstep Delivery',
+    titleKn: 'ಸಕಾಲಿಕ ಡೋರ್‌ಸ್ಟೆಪ್ ಡೆಲಿವರಿ',
+    descEn: 'Prompt same-day delivery across Nelamangala and highway corridors so your kitchen never stops.',
+    descKn: 'ಅಡುಗೆ ನಿಲ್ಲದಂತೆ ನೆಲಮಂಗಲ ಮತ್ತು ಹೆದ್ದಾರಿ ವ್ಯಾಪ್ತಿಯಲ್ಲಿ ಅದೇ ದಿನ ತ್ವರಿತ ಡೆಲಿವರಿ.',
+    highlightsEn: ['Same-day dispatch', 'Dedicated fleet', 'Weekend service', 'Live phone coordination'],
+    highlightsKn: ['ಅದೇ ದಿನ ಡೆಲಿವರಿ', 'ಸ್ವಂತ ವಾಹನ ಸೇವೆ', 'ವಾರಾಂತ್ಯದಲ್ಲೂ ಲಭ್ಯ', 'ನೇರ ಫೋನ್ ಬೆಂಬಲ']
   },
   {
     id: 'pipeline-installation',
     iconName: 'Wrench',
-    titleEn: 'Commercial Gas Pipeline Installation',
-    titleKn: 'ಗ್ಯಾಸ್ ಪೈಪ್‌ಲೈನ್ ಇನ್‌ಸ್ಟಾಲೇಶನ್ (Commercial Pipeline)',
-    descEn: 'End-to-end copper and high-pressure carbon steel gas pipeline installation for hotels, restaurants, industrial plants, and multi-burner commercial kitchens with safety valves.',
-    descKn: 'ಹೋಟೆಲ್‌ಗಳು, ರೆಸ್ಟೋರೆಂಟ್‌ಗಳು ಮತ್ತು ಕಾರ್ಖಾನೆಗಳಿಗೆ ಸುಧಾರಿತ ತಂತ್ರಜ್ಞಾನದ ಕಾಪರ್ ಮತ್ತು ಸ್ಟೀಲ್ ಗ್ಯಾಸ್ ಪೈಪ್‌ಲೈನ್ ಅಳವಡಿಕೆ ಹಾಗೂ ಮ್ಯಾನಿಫೋಲ್ಡ್ ಸಿಸ್ಟಮ್ ಸರ್ವಿಸ್.',
-    highlightsEn: ['Copper manifold setups', 'High-pressure regulators', 'Auto changeover manifolds', 'Safety leak pressure tests'],
-    highlightsKn: ['ಕಾಪರ್ ಮ್ಯಾನಿಫೋಲ್ಡ್ ಸಿಸ್ಟಮ್', 'ಹೈ ಪ್ರೆಶರ್ ರೆಗ್ಯುಲೇಟರ್‌ಗಳು', 'ಆಟೋ ಚೇಂಜ್‌ಓವರ್ ಸೌಲಭ್ಯ', 'ಪ್ರೆಶರ್ ಟೆಸ್ಟಿಂಗ್ ಪ್ರಮಾಣಪತ್ರ']
+    titleEn: 'Commercial Pipeline & Manifolds',
+    titleKn: 'ಕಮರ್ಷಿಯಲ್ ಗ್ಯಾಸ್ ಪೈಪ್‌ಲೈನ್',
+    descEn: 'End-to-end copper & steel pipeline fitting with manifolds and safety pressure tests.',
+    descKn: 'ಕಾಪರ್ & ಸ್ಟೀಲ್ ಪೈಪ್‌ಲೈನ್ ಅಳವಡಿಕೆ, ಮ್ಯಾನಿಫೋಲ್ಡ್ ಸಿಸ್ಟಮ್ ಮತ್ತು ಪ್ರೆಶರ್ ಟೆಸ್ಟಿಂಗ್.',
+    highlightsEn: ['Copper manifolds', 'High-pressure regulators', 'Auto changeovers', 'Pressure safety tests'],
+    highlightsKn: ['ಕಾಪರ್ ಮ್ಯಾನಿಫೋಲ್ಡ್', 'ಹೈ ಪ್ರೆಶರ್ ರೆಗ್ಯುಲೇಟರ್', 'ಆಟೋ ಚೇಂಜ್‌ಓವರ್', 'ಸುರಕ್ಷತಾ ಪರೀಕ್ಷೆ']
   },
   {
     id: 'emergency-leak-inspection',
     iconName: 'ShieldAlert',
-    titleEn: 'Emergency Gas Leakage Inspection & Safety Audit',
-    titleKn: 'ತುರ್ತು ಲೀಕೇಜ್ ತಪಾಸಣೆ & ಸುರಕ್ಷತೆ (24/7 Safety)',
-    descEn: 'Immediate response team for suspected gas smell, leakage inspection, valve replacements, and periodic commercial safety audits to prevent kitchen fire hazards.',
-    descKn: 'ಗ್ಯಾಸ್ ವಾಸನೆ ಅಥವಾ ಲೀಕೇಜ್ ಕಂಡುಬಂದಲ್ಲಿ ತಕ್ಷಣದ ತುರ್ತು ತಪಾಸಣೆ, ವಾಲ್ವ್ ಬದಲಾವಣೆ ಮತ್ತು ಅಗ್ನಿ ಸುರಕ್ಷತಾ ತಪಾಸಣೆ ಸೇವೆ ದಿನದ 24 ಗಂಟೆಯೂ ಲಭ್ಯ.',
-    highlightsEn: ['Immediate emergency visit', 'Electronic leak detection', 'Regulator & O-ring replacement', 'Safety training for kitchen staff'],
-    highlightsKn: ['ತುರ್ತು ಸ್ಥಳ ಪರಿಶೀಲನೆ', 'ಎಲೆಕ್ಟ್ರಾನಿಕ್ ಲೀಕ್ ಡಿಟೆಕ್ಟರ್ ಬಳಕೆ', 'ರೆಗ್ಯುಲೇಟರ್ & ಓ-ರಿಂಗ್ ಬದಲಾವಣೆ', 'ಅಡುಗೆ ಸಿಬ್ಬಂದಿಗೆ ಸುರಕ್ಷತಾ ಮಾಹಿತಿ']
+    titleEn: '24/7 Leak Check & Safety Audit',
+    titleKn: '24/7 ತುರ್ತು ಲೀಕೇಜ್ ತಪಾಸಣೆ',
+    descEn: 'Immediate response team for gas odor, valve replacements, and safety audits.',
+    descKn: 'ಗ್ಯಾಸ್ ವಾಸನೆ, ಲೀಕೇಜ್ ಹಾಗೂ ವಾಲ್ವ್ ಸಮಸ್ಯೆಗೆ ತಕ್ಷಣದ ತುರ್ತು ತಪಾಸಣೆ.',
+    highlightsEn: ['Immediate visit', 'Electronic leak check', 'Regulator replacement', 'Staff safety guidance'],
+    highlightsKn: ['ತಕ್ಷಣ ಭೇಟಿ', 'ಎಲೆಕ್ಟ್ರಾನಿಕ್ ಡಿಟೆಕ್ಟರ್', 'ರೆಗ್ಯುಲೇಟರ್ ಬದಲಾವಣೆ', 'ಸುರಕ್ಷತಾ ಸಲಹೆ']
   },
   {
     id: 'competitive-pricing',
     iconName: 'BadgePercent',
-    titleEn: 'Best & Highly Competitive Bulk Pricing',
-    titleKn: 'ಹೋಲಿಕೆಯಲ್ಲಿ ಅತ್ಯುತ್ತಮ ಮತ್ತು ಸ್ಪರ್ಧಾತ್ಮಕ ದರಗಳು',
-    descEn: 'Transparent, best-in-market bulk pricing for high-volume commercial consumers, catering organizations, marriage halls, and manufacturing units.',
-    descKn: 'ಹೆಚ್ಚು ಸಿಲಿಂಡರ್ ಬಳಸುವ ಹೋಟೆಲ್‌ಗಳು, ಕ್ಯಾಟರಿಂಗ್ ಮತ್ತು ಕೈಗಾರಿಕೆಗಳಿಗೆ ಮಾರುಕಟ್ಟೆಯಲ್ಲಿಯೇ ಅತ್ಯಂತ ಆಕರ್ಷಕ ಮತ್ತು ಸ್ಪರ್ಧಾತ್ಮಕ ಬಲ್ಕ್ ದರಗಳ ಸೌಲಭ್ಯ.',
-    highlightsEn: ['Monthly updated lowest quotes', 'Bulk volume special rates', 'GST billing with proper invoices', 'Zero hidden delivery charges'],
-    highlightsKn: ['ತಿಂಗಳ ತಾಜಾ ರಿಯಾಯಿತಿ ದರಗಳು', 'ಬಲ್ಕ್ ಆರ್ಡರ್‌ಗಳಿಗೆ ವಿಶೇಷ ಬೆಲೆ', 'ಜಿಎಸ್‌ಟಿ ಇನ್‌ವಾಯ್ಸ್ ಬಿಲ್ಲಿಂಗ್', 'ಯಾವುದೇ ಅಡಗಿದ ಶುಲ್ಕಗಳಿಲ್ಲ']
+    titleEn: 'Best Bulk Pricing & GST Bills',
+    titleKn: 'ಅತ್ಯುತ್ತಮ ಬಲ್ಕ್ ದರ & GST ಬಿಲ್ಲಿಂಗ್',
+    descEn: 'Lowest monthly bulk rates for high-volume consumers with proper GST invoices.',
+    descKn: 'ಹೆಚ್ಚು ಸಿಲಿಂಡರ್ ಬಳಸುವ ಗ್ರಾಹಕರಿಗೆ ಮಾರುಕಟ್ಟೆಯ ಅತ್ಯಂತ ಕಡಿಮೆ ಬಲ್ಕ್ ಬೆಲೆ & ಅಧಿಕೃತ ಬಿಲ್.',
+    highlightsEn: ['Lowest monthly rates', 'Volume discounts', 'GST tax invoices', 'No hidden charges'],
+    highlightsKn: ['ತಿಂಗಳ ಕಡಿಮೆ ದರ', 'ಬಲ್ಕ್ ರಿಯಾಯಿತಿ', 'ಜಿಎಸ್‌ಟಿ ಇನ್‌ವಾಯ್ಸ್', 'ಅಡಗಿದ ಶುಲ್ಕವಿಲ್ಲ']
   }
 ];
 
 export const CUSTOMER_SEGMENTS: CustomerSegment[] = [
   {
     id: 'hotels-restaurants',
-    titleEn: 'Hotels, Restaurants & Bakeries',
-    titleKn: 'ಹೋಟೆಲ್‌ಗಳು, ರೆಸ್ಟೋರೆಂಟ್‌ಗಳು ಮತ್ತು ಬೇಕರಿಗಳು 🍔',
-    descEn: 'Uninterrupted commercial LPG supply with uniform blue flame to power busy hotel kitchens, tandoor ovens, woks, and bakery boilers.',
-    descKn: 'ಹೋಟೆಲ್‌ಗಳು, ಬೇಕರಿಗಳು ಹಾಗೂ ರೆಸ್ಟೋರೆಂಟ್‌ಗಳಿಗೆ ನಿರಂತರವಾದ ನೀಲಿ ಜ್ವಾಲೆಯ ಕಮರ್ಷಿಯಲ್ ಸಿಲಿಂಡರ್‌ಗಳ ಸರಬರಾಜು.',
+    titleEn: 'Hotels & Restaurants',
+    titleKn: 'ಹೋಟೆಲ್ & ರೆಸ್ಟೋರೆಂಟ್‌ಗಳು',
+    descEn: 'Non-stop high flame supply for burners, tandoors, and bakery ovens.',
+    descKn: 'ಬರ್ನರ್, ತಂದೂರ್ ಮತ್ತು ಓವನ್‌ಗಳಿಗೆ ತಡೆರಹಿತ ನೀಲಿ ಜ್ವಾಲೆಯ ಸಿಲಿಂಡರ್ ಪೂರೈಕೆ.',
     icon: 'UtensilsCrossed',
-    tagEn: 'High Priority Supply',
-    tagKn: 'ಅಗ್ರ ಆದ್ಯತೆಯ ಸರಬರಾಜು'
+    tagEn: 'High Priority',
+    tagKn: 'ಅಗ್ರ ಆದ್ಯತೆ'
   },
   {
     id: 'dhabas-catering',
-    titleEn: 'Highway Dhabas & Catering Services',
-    titleKn: 'ಹೈವೇ ದಾಬಾಗಳು ಮತ್ತು ಕ್ಯಾಟರಿಂಗ್ ಸರ್ವಿಸ್‌ಗಳು 🍛',
-    descEn: 'Heavy duty high-pressure cylinders and portable multi-manifold solutions customized for outdoor catering, events, and highway food joints.',
-    descKn: 'ಹೆದ್ದಾರಿ ದಾಬಾಗಳು ಮತ್ತು ಮದುವೆ ಸಮಾರಂಭಗಳ ಬೃಹತ್ ಅಡುಗೆಗೆ ಬೇಕಾದ ಹೈ-ಪ್ರೆಶರ್ ಸಿಲಿಂಡರ್ ಹಾಗೂ ಪೋರ್ಟಬಲ್ ಸೆಟಪ್.',
+    titleEn: 'Highway Dhabas & Caterers',
+    titleKn: 'ಹೈವೇ ದಾಬಾ & ಕ್ಯಾಟರಿಂಗ್',
+    descEn: 'Heavy-duty high pressure cylinders and portable manifolds for outdoor events.',
+    descKn: 'ಹೆದ್ದಾರಿ ದಾಬಾಗಳು ಮತ್ತು ಸಮಾರಂಭಗಳಿಗೆ ಹೈ-ಪ್ರೆಶರ್ ಸಿಲಿಂಡರ್ ಪೂರೈಕೆ.',
     icon: 'Truck',
-    tagEn: 'Express Highway Delivery',
-    tagKn: 'ಹೆದ್ದಾರಿ ಎಕ್ಸ್‌ಪ್ರೆಸ್ ಡೆಲಿವರಿ'
+    tagEn: 'Express Delivery',
+    tagKn: 'ಎಕ್ಸ್‌ಪ್ರೆಸ್ ಡೆಲಿವರಿ'
   },
   {
     id: 'kalyana-mantapa',
-    titleEn: 'Marriage Halls & Party Conventions',
-    titleKn: 'ಕಲ್ಯಾಣ ಮಂಟಪಗಳು ಮತ್ತು ಪಾರ್ಟಿ ಹಾಲ್ಗಳು 🏢',
-    descEn: 'Large capacity 19kg & 47.5kg cylinder banks with safety regulators ensuring smooth cooking operations during mega marriage feasts and parties.',
-    descKn: 'ಮದುವೆ ಸಮಾರಂಭಗಳು ಮತ್ತು ಪಾರ್ಟಿಗಳಿಗೆ ದೊಡ್ಡ ಪ್ರಮಾಣದ ಸಿಲಿಂಡರ್‌ಗಳು ಹಾಗೂ ಸುರಕ್ಷಿತ ಪೈಪ್‌ಲೈನ್ ಸಂಪರ್ಕ.',
+    titleEn: 'Marriage Halls & Parties',
+    titleKn: 'ಕಲ್ಯಾಣ ಮಂಟಪ & ಸಮಾರಂಭ',
+    descEn: 'High volume 19kg & 47.5kg cylinder banks for mega feasts and functions.',
+    descKn: 'ಮದುವೆ ಸಮಾರಂಭಗಳಿಗೆ ದೊಡ್ಡ ಪ್ರಮಾಣದ ಸಿಲಿಂಡರ್‌ಗಳು & ಸುರಕ್ಷಿತ ಬ್ಯಾಂಕ್.',
     icon: 'Building2',
-    tagEn: 'Event Bulk Booking',
-    tagKn: 'ಸಮಾರಂಭ ಬಲ್ಕ್ ಬುಕಿಂಗ್'
+    tagEn: 'Bulk Booking',
+    tagKn: 'ಬಲ್ಕ್ ಬುಕಿಂಗ್'
   },
   {
     id: 'industries-factories',
-    titleEn: 'Industries & Small Factories (Industrial Bulk)',
-    titleKn: 'ಕೈಗಾರಿಕೆಗಳು ಮತ್ತು ಸಣ್ಣ ಫ್ಯಾಕ್ಟರಿಗಳು 🏭',
-    descEn: 'Liquid Off-Take (LOT) bulk supply for powder coating, heating furnaces, metal cutting, textile processing, and manufacturing operations.',
-    descKn: 'ಪೌಡರ್ ಕೋಟಿಂಗ್, ಹೀಟಿಂಗ್, ಮೆಟಲ್ ಕಟಿಂಗ್ ಮತ್ತು ಫ್ಯಾಕ್ಟರಿ ಉತ್ಪಾದನೆಗೆ ಅಗತ್ಯವಿರುವ ಕೈಗಾರಿಕಾ ಬಲ್ಕ್ LOT ಎಲ್‌ಪಿಜಿ ಪೂರೈಕೆ.',
+    titleEn: 'Industries & Factories',
+    titleKn: 'ಕೈಗಾರಿಕೆಗಳು & ಫ್ಯಾಕ್ಟರಿ',
+    descEn: 'Liquid Off-Take (LOT) bulk supply for powder coating, heating, and metal cutting.',
+    descKn: 'ಪೌಡರ್ ಕೋಟಿಂಗ್, ಹೀಟಿಂಗ್ ಮತ್ತು ಮೆಟಲ್ ಕಟಿಂಗ್‌ಗೆ ಕೈಗಾರಿಕಾ LOT ಗ್ಯಾಸ್ ಪೂರೈಕೆ.',
     icon: 'Factory',
-    tagEn: 'Industrial LOT Supply',
-    tagKn: 'ಕೈಗಾರಿಕಾ LOT ಪೂರೈಕೆ'
+    tagEn: 'Industrial LOT',
+    tagKn: 'ಕೈಗಾರಿಕಾ LOT'
   }
 ];
 
 export const ACCESSORIES: AccessoryItem[] = [
   {
     id: 'acc-1',
-    nameEn: 'Commercial Heavy-Duty Double / Triple Burner Stoves',
-    nameKn: 'ಕಮರ್ಷಿಯಲ್ ಹೆವಿ ಡ್ಯೂಟಿ ಡಬಲ್ / ಟ್ರಿಪಲ್ ಬರ್ನರ್ ಸ್ಟೌಗಳು',
+    nameEn: 'Commercial Heavy Burner Stoves',
+    nameKn: 'ಕಮರ್ಷಿಯಲ್ ಹೆವಿ ಬರ್ನರ್ ಸ್ಟೌ',
     categoryEn: 'Stoves & Burners',
     categoryKn: 'ಸ್ಟೌ ಮತ್ತು ಬರ್ನರ್‌ಗಳು',
-    descEn: 'Cast iron high-BTU commercial burners designed for heavy cookware and intense cooking loads.'
-    ,descKn: 'ಭಾರಿ ತೂಕದ ಪಾತ್ರೆಗಳಿಗೆ ಮತ್ತು ಹೆಚ್ಚು ಹೊತ್ತು ಅಡುಗೆ ಮಾಡಲು ಬಳಸುವ ಕ್ಯಾಸ್ಟ್ ಐರನ್ ಕಮರ್ಷಿಯಲ್ ಬರ್ನರ್‌ಗಳು.'
+    descEn: 'Cast iron high-BTU burners built for heavy cookware and intense cooking loads.',
+    descKn: 'ಭಾರಿ ಪಾತ್ರೆಗಳಿಗೆ ಮತ್ತು ಹೆಚ್ಚು ಹೊತ್ತು ಅಡುಗೆ ಮಾಡಲು ಬಳಸುವ ಗಟ್ಟಿ ಕ್ಯಾಸ್ಟ್ ಐರನ್ ಬರ್ನರ್‌ಗಳು.'
   },
   {
     id: 'acc-2',
-    nameEn: 'High-Pressure Commercial Regulators (ISI Certified)',
-    nameKn: 'ಹೈ ಪ್ರೆಶರ್ ಕಮರ್ಷಿಯಲ್ ರೆಗ್ಯುಲೇಟರ್‌ಗಳು (ISI ಪ್ರಮಾಣೀಕೃತ)',
+    nameEn: 'High-Pressure Commercial Regulators',
+    nameKn: 'ಹೈ ಪ್ರೆಶರ್ ಕಮರ್ಷಿಯಲ್ ರೆಗ್ಯುಲೇಟರ್',
     categoryEn: 'Regulators & Valves',
     categoryKn: 'ರೆಗ್ಯುಲೇಟರ್ ಮತ್ತು ವಾಲ್ವ್‌ಗಳು',
-    descEn: 'Heavy duty brass pressure regulators with precise flow control knob and surge protection.',
+    descEn: 'Heavy duty brass pressure regulators with precision flow control knob.',
     descKn: 'ಅಧಿಕ ಒತ್ತಡ ನಿಯಂತ್ರಣ ನೀಡುವ ಹಾಗೂ ಸುರಕ್ಷತೆ ಖಚಿತಪಡಿಸುವ ಭದ್ರ ಹಿತ್ತಾಳೆ ರೆಗ್ಯುಲೇಟರ್‌ಗಳು.'
   },
   {
     id: 'acc-3',
-    nameEn: 'Suraksha Steel-Braided Commercial Gas Hose Pipes',
-    nameKn: 'ಸುರಕ್ಷಾ ಸ್ಟೀಲ್ ಬ್ರೇಡೆಡ್ ಕಮರ್ಷಿಯಲ್ ಗ್ಯಾಸ್ ಪೈಪ್‌ಗಳು',
+    nameEn: 'Suraksha Steel-Braided Gas Hose',
+    nameKn: 'ಸುರಕ್ಷಾ ಸ್ಟೀಲ್ ಬ್ರೇಡೆಡ್ ಗ್ಯಾಸ್ ಪೈಪ್',
     categoryEn: 'Safety Hoses',
     categoryKn: 'ಸುರಕ್ಷತಾ ಪೈಪ್‌ಗಳು',
-    descEn: 'Rodent-proof, fire-resistant multi-layered flexible steel braided LPG hose with zero leakage risk.',
-    descKn: 'ಇಲಿ ಕಡಿಯದ, ಬೆಂಕಿ ನಿರೋಧಕ ಮತ್ತು ಉಕ್ಕಿನ ರಕ್ಷಾ ಕವಚ ಹೊಂದಿರುವ ಅಧಿಕೃತ ಗ್ಯಾಸ್ ಪೈಪ್‌ಗಳು.'
+    descEn: 'Rodent-proof, fire-resistant steel braided hose with zero leak risk.',
+    descKn: 'ಇಲಿ ಕಡಿಯದ, ಬೆಂಕಿ ನಿರೋಧಕ ಉಕ್ಕಿನ ಕವಚದ ಸುರಕ್ಷಿತ ಗ್ಯಾಸ್ ಪೈಪ್.'
   },
   {
     id: 'acc-4',
-    nameEn: 'Commercial Copper Pigtails & Manifold Valves',
-    nameKn: 'ಕಾಪರ್ ಪಿಗ್‌ಟೇಲ್ಸ್ & ಮ್ಯಾನಿಫೋಲ್ಡ್ ವಾಲ್ವ್‌ಗಳು',
+    nameEn: 'Commercial Copper Pigtails',
+    nameKn: 'ಕಾಪರ್ ಪಿಗ್‌ಟೇಲ್ಸ್ & ವಾಲ್ವ್‌ಗಳು',
     categoryEn: 'Pipeline Fittings',
     categoryKn: 'ಪೈಪ್‌ಲೈನ್ ಫಿಟ್ಟಿಂಗ್ಸ್',
-    descEn: 'High grade flexible copper tubing for connecting multi-cylinder banks to central cooking line.',
-    descKn: 'ಬಹು ಸಿಲಿಂಡರ್‌ಗಳನ್ನು ಒಂದೇ ಕೇಂದ್ರ ಪೈಪ್‌ಲೈನ್‌ಗೆ ಜೋಡಿಸಲು ಬಳಸುವ ಗಟ್ಟಿ ಕಾಪರ್ ಟ್ಯೂಬ್‌ಗಳು.'
+    descEn: 'High grade copper tubing to connect multi-cylinder banks safely.',
+    descKn: 'ಬಹು ಸಿಲಿಂಡರ್‌ಗಳನ್ನು ಒಂದೇ ಪೈಪ್‌ಲೈನ್‌ಗೆ ಜೋಡಿಸಲು ಗಟ್ಟಿ ಕಾಪರ್ ಟ್ಯೂಬ್‌ಗಳು.'
   },
   {
     id: 'acc-5',
-    nameEn: 'Industrial Gas Leak Detectors & Pressure Gauges',
-    nameKn: 'ಗ್ಯಾಸ್ ಲೀಕ್ ಡಿಟೆಕ್ಟರ್ & ಪ್ರೆಶರ್ ಮೀಟರ್‌ಗಳು',
+    nameEn: 'Gas Leak Detectors & Gauges',
+    nameKn: 'ಗ್ಯಾಸ್ ಲೀಕ್ ಡಿಟೆಕ್ಟರ್ & ಮೀಟರ್',
     categoryEn: 'Safety Equipment',
     categoryKn: 'ಸುರಕ್ಷತಾ ಉಪಕರಣಗಳು',
-    descEn: 'Electronic LPG sensory alarms and precision dial gauges to monitor pipeline cylinder pressure in real time.',
-    descKn: 'ಪೈಪ್‌ಲೈನ್‌ನಲ್ಲಿ ಗ್ಯಾಸ್ ಒತ್ತಡ ಮತ್ತು ಸೋರಿಕೆಯನ್ನು ತಕ್ಷಣವೇ ಪತ್ತೆ ಹಚ್ಚುವ ಸೆನ್ಸರ್ ಉಪಕರಣಗಳು.'
+    descEn: 'Sensory alarms and dial gauges to monitor pipeline pressure in real time.',
+    descKn: 'ಪೈಪ್‌ಲೈನ್ ಒತ್ತಡ ಮತ್ತು ಸೋರಿಕೆಯನ್ನು ತಕ್ಷಣವೇ ಪತ್ತೆ ಹಚ್ಚುವ ಸೆನ್ಸರ್ ಮೀಟರ್‌ಗಳು.'
   },
   {
     id: 'acc-6',
-    nameEn: 'Commercial Heavy Tandoor & Bhatti Burners',
-    nameKn: 'ಕಮರ್ಷಿಯಲ್ ತಂದೂರ್ & ಭಟ್ಟಿ ಬರ್ನರ್‌ಗಳು',
+    nameEn: 'Commercial Tandoor & Bhatti Burners',
+    nameKn: 'ತಂದೂರ್ & ಭಟ್ಟಿ ಬರ್ನರ್‌ಗಳು',
     categoryEn: 'Specialty Burners',
     categoryKn: 'ವಿಶೇಷ ಬರ್ನರ್‌ಗಳು',
-    descEn: 'Specialized high-temperature heating jets engineered for traditional tandoor ovens and large bhatti vessels.',
-    descKn: 'ದೊಡ್ಡ ಭಟ್ಟಿ ಹಾಗೂ ತಂದೂರ್ ಓವನ್‌ಗಳಿಗೆ ತೀವ್ರ ಶಾಖ ಒದಗಿಸುವ ವಿಶೇಷ ಹೈ-ಟೆಕ್ ಜೆಟ್‌ಗಳು.'
+    descEn: 'High-temperature heating jets engineered for tandoors and large bhattis.',
+    descKn: 'ದೊಡ್ಡ ಭಟ್ಟಿ ಹಾಗೂ ತಂದೂರ್ ಓವನ್‌ಗಳಿಗೆ ತೀವ್ರ ಶಾಖ ಒದಗಿಸುವ ಜೆಟ್ ಬರ್ನರ್‌ಗಳು.'
   }
 ];
 
@@ -565,81 +574,81 @@ export const SAFETY_GUIDELINES = {
     {
       step: '1',
       title: 'Smell Gas? Do Not Panic',
-      desc: 'If you detect pungent LPG odor, immediately instruct all kitchen staff to stop cooking and vacate open flame areas.'
+      desc: 'Extinguish all open flames immediately and alert kitchen staff.'
     },
     {
       step: '2',
-      title: 'Turn Off Cylinder & Manifold Valves',
-      desc: 'Rotate the regulator switch / ball valve knob clockwise to the OFF position. Disconnect cylinders if safe to do so.'
+      title: 'Turn Off Cylinder Valve',
+      desc: 'Rotate the regulator switch / valve clockwise to OFF.'
     },
     {
       step: '3',
-      title: 'No Electrical Switches or Mobile Lights',
-      desc: 'Do NOT turn ON or OFF any electric switch, exhaust fan, or light in the area as sparks can ignite gas vapors.'
+      title: 'Do Not Touch Electric Switches',
+      desc: 'Do not flip any light, fan, or exhaust switch to prevent spark ignition.'
     },
     {
       step: '4',
-      title: 'Ventilate & Open All Windows',
-      desc: 'Open all doors and windows wide to let fresh air circulate and disperse heavy LPG gas accumulation at floor level.'
+      title: 'Open Doors & Windows',
+      desc: 'Ventilate the kitchen fully so heavy gas accumulation disperses.'
     },
     {
       step: '5',
-      title: 'Call Sandhya Enterprises Emergency Hotline',
-      desc: 'Dial our 24/7 technical hotline +91 8152889500 or WhatsApp +91 8152889500 immediately for emergency technician dispatch.'
+      title: 'Call 24/7 Emergency Line',
+      desc: 'Dial +91 8152889500 immediately for emergency technician support.'
     }
   ],
   kn: [
     {
       step: '೧',
       title: 'ಗ್ಯಾಸ್ ವಾಸನೆ ಬಂದರೆ ಆತಂಕಪಡಬೇಡಿ',
-      desc: 'ಅಡುಗೆ ಮನೆಯಲ್ಲಿ ಗ್ಯಾಸ್ ವಾಸನೆ ಕಂಡುಬಂದರೆ ತಕ್ಷಣವೇ ಎಲ್ಲಾ ಬೆಂಕಿ ಜ್ವಾಲೆಗಳನ್ನು ನಂದಿಸಿ ಮತ್ತು ಸಿಬ್ಬಂದಿಯನ್ನು ಎಚ್ಚರಿಸಿ.'
+      desc: 'ತಕ್ಷಣವೇ ಎಲ್ಲಾ ಬೆಂಕಿ ಜ್ವಾಲೆಗಳನ್ನು ನಂದಿಸಿ ಸಿಬ್ಬಂದಿಯನ್ನು ಎಚ್ಚರಿಸಿ.'
     },
     {
       step: '೨',
-      title: 'ಸಿಲಿಂಡರ್ ರೆಗ್ಯುಲೇಟರ್ & ವಾಲ್ವ್ ಆಫ್ ಮಾಡಿ',
-      desc: 'ಸಿಲಿಂಡರ್ ರೆಗ್ಯುಲೇಟರ್ ಸ್ವಿಚ್ ಮತ್ತು ಮ್ಯಾನಿಫೋಲ್ಡ್ ಬಾಲ್ ವಾಲ್ವ್‌ಗಳನ್ನು ತಕ್ಷಣವೇ OFF ಸ್ಥಿತಿಗೆ ತಿರುಗಿಸಿ ಮುಚ್ಚಿರಿ.'
+      title: 'ಸಿಲಿಂಡರ್ ವಾಲ್ವ್ ಆಫ್ ಮಾಡಿ',
+      desc: 'ರೆಗ್ಯುಲೇಟರ್ ಸ್ವಿಚ್ ಅನ್ನು ಕ್ಲಾಕ್‌ವೈಸ್ ತಿರುಗಿಸಿ OFF ಮಾಡಿ.'
     },
     {
       step: '೩',
-      title: 'ಯಾವುದೇ ವಿದ್ಯುತ್ ಸ್ವಿಚ್ ಮುಟ್ಟಬೇಡಿ',
-      desc: 'ಫ್ಯಾನ್, ಲೈಟ್ ಅಥವಾ ಯಾವುದೇ ಎಲೆಕ್ಟ್ರಿಕ್ ಸ್ವಿಚ್‌ಗಳನ್ನು ಆನ್ ಅಥವಾ ಆಫ್ ಮಾಡಬೇಡಿ (ಸ್ಪಾರ್ಕ್ ಉಂಟಾಗುವುದನ್ನು ತಡೆಯಿರಿ).'
+      title: 'ವಿದ್ಯುತ್ ಸ್ವಿಚ್ ಮುಟ್ಟಬೇಡಿ',
+      desc: 'ಸ್ಪಾರ್ಕ್ ತಡೆಯಲು ಫ್ಯಾನ್, ಲೈಟ್ ಅಥವಾ ಯಾವುದೇ ಸ್ವಿಚ್ ಹಾಕಬೇಡಿ.'
     },
     {
       step: '೪',
-      title: 'ಕಿಟಕಿ ಮತ್ತು ಬಾಗಿಲುಗಳನ್ನು ಪೂರ್ಣ ತೆರೆಯಿರಿ',
-      desc: 'ಗಾಳಿಯಾಡಲು ಎಲ್ಲಾ ಬಾಗಿಲು ಕಿಟಕಿಗಳನ್ನು ತೆರೆಯಿರಿ, ಇದರಿಂದ ನೆಲಮಟ್ಟದಲ್ಲಿ ಸಂಗ್ರಹವಾದ ಅನಿಲ ಬೇಗನೆ ಹೊರಹೋಗುತ್ತದೆ.'
+      title: 'ಬಾಗಿಲು-ಕಿಟಕಿ ತೆರೆಯಿರಿ',
+      desc: 'ಅನಿಲ ಹೊರಹೋಗಲು ಎಲ್ಲಾ ಬಾಗಿಲು ಕಿಟಕಿಗಳನ್ನು ಪೂರ್ಣ ತೆರೆಯಿರಿ.'
     },
     {
       step: '೫',
-      title: 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ತುರ್ತು ಸಹಾಯವಾಣಿಗೆ ಕರೆ ಮಾಡಿ',
-      desc: 'ತಕ್ಷಣವೇ ನಮ್ಮ 24/7 ತುರ್ತು ಮೊಬೈಲ್ ಸಂಖ್ಯೆ +91 8152889500 ಗೆ ಕರೆ ಮಾಡಿ ಅಥವಾ ವಾಟ್ಸಾಪ್ ಮಾಡಿ.'
+      title: 'ತುರ್ತು ಸಹಾಯವಾಣಿಗೆ ಕರೆ ಮಾಡಿ',
+      desc: 'ತಕ್ಷಣವೇ +91 8152889500 ಸಂಖ್ಯೆಗೆ ಕರೆ ಅಥವಾ ವಾಟ್ಸಾಪ್ ಮಾಡಿ.'
     }
   ]
 };
 
 export const FAQS = [
   {
-    qEn: 'Why are commercial LPG cylinder rates not displayed with fixed prices on the website?',
-    qKn: 'ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿ ಕಮರ್ಷಿಯಲ್ ಗ್ಯಾಸ್ ಸಿಲಿಂಡರ್‌ಗಳ ನಿಶ್ಚಿತ ಬೆಲೆಯನ್ನು ಏಕೆ ಹಾಕಿಲ್ಲ?',
-    aEn: 'Commercial LPG prices are officially revised on the 1st of every month by the Government and Oil Marketing Companies based on global market indices. We always offer our customers the latest reduced daily bulk rates, discount slabs, and volume concessions. Please call or WhatsApp +91 8152889500 to get today’s best quote immediately.',
-    aKn: 'ಸರ್ಕಾರ ಮತ್ತು ತೈಲ ಕಂಪನಿಗಳು ಪ್ರತಿ ತಿಂಗಳ 1ನೇ ತಾರೀಖು ಕಮರ್ಷಿಯಲ್ ಗ್ಯಾಸ್ ಬೆಲೆಯನ್ನು ಬದಲಾಯಿಸುತ್ತವೆ. ನಾವು ನಮ್ಮ ಗ್ರಾಹಕರಿಗೆ ಪ್ರತಿದಿನದ ಅತ್ಯಂತ ಕಡಿಮೆ ರಿಯಾಯಿತಿ ಮತ್ತು ಬಲ್ಕ್ ದರವನ್ನು ಒದಗಿಸುತ್ತೇವೆ. ಆದ್ದರಿಂದ ಇಂದಿನ ನಿಖರವಾದ ದರ ತಿಳಿಯಲು 8152889500 ಗೆ ಕರೆ ಅಥವಾ ವಾಟ್ಸಾಪ್ ಮಾಡಿ.'
+    qEn: 'Why are commercial LPG prices not fixed on the website?',
+    qKn: 'ವೆಬ್‌ಸೈಟ್‌ನಲ್ಲಿ ನಿಶ್ಚಿತ ಗ್ಯಾಸ್ ಬೆಲೆಯನ್ನು ಏಕೆ ಹಾಕಿಲ್ಲ?',
+    aEn: 'LPG rates revise on the 1st of every month as per oil companies. Call Rate Enquiry: 7676398782 for today\'s price. For other enquiries & WhatsApp: 8073407706. 24/7 Helpline: 8152889500.',
+    aKn: 'ತೈಲ ಕಂಪನಿಗಳು ಪ್ರತಿ ತಿಂಗಳ 1ನೇ ತಾರೀಖು ದರ ಬದಲಾಯಿಸುತ್ತವೆ. ಇಂದಿನ ದರ ವಿಚಾರಣೆಗೆ ಕರೆ ಮಾಡಿ: 7676398782. ಇತರ ವಿಚಾರಣೆ ಅಥವಾ ವಾಟ್ಸಾಪ್: 8073407706. ತುರ್ತು ಸಹಾಯವಾಣಿ: 8152889500.'
   },
   {
-    qEn: 'Which areas do you deliver commercial LPG cylinders to?',
-    qKn: 'ನೀವು ಯಾವ್ಯಾವ ಪ್ರದೇಶಗಳಿಗೆ ಕಮರ್ಷಿಯಲ್ ಸಿಲಿಂಡರ್ ಡೆಲಿವರಿ ಮಾಡುತ್ತೀರಿ?',
-    aEn: 'We deliver regular daily orders across Nelamangala Town, Nelamangala Rural, and Bengaluru Rural (PIN 562123). For Tumkur and Sira, we provide dedicated delivery for bulk orders (10–15+ cylinders) for big hotels, wedding halls, and industrial facilities.',
-    aKn: 'ನೆಲಮಂಗಲ ಟೌನ್, ನೆಲಮಂಗಲ ಗ್ರಾಮಾಂತರ ಹಾಗೂ ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರ (ಪಿನ್‌ಕೋಡ್ 562123) ಭಾಗಗಳಿಗೆ ದಿನನಿತ್ಯದ ನಿಯಮಿತ ಡೆಲಿವರಿ ಲಭ್ಯವಿದೆ. ತುಮಕೂರು ಮತ್ತು ಶಿರಾ ಭಾಗಗಳಿಗೆ ದೊಡ್ಡ ಹೋಟೆಲ್‌ಗಳು ಮತ್ತು ಕಲ್ಯಾಣ ಮಂಟಪಗಳಿಗೆ 10-15+ ಸಿಲಿಂಡರ್‌ಗಳ ಬಲ್ಕ್ ಆರ್ಡರ್‌ಗಳಿಗೆ ಮಾತ್ರ ಡೆಲಿವರಿ ಒದಗಿಸಲಾಗುತ್ತದೆ.'
+    qEn: 'Which areas do you deliver to?',
+    qKn: 'ನೀವು ಯಾವ್ಯಾವ ಪ್ರದೇಶಗಳಿಗೆ ಡೆಲಿವರಿ ಮಾಡುತ್ತೀರಿ?',
+    aEn: 'Daily delivery across Nelamangala & Bengaluru Rural (562123). Dedicated delivery to Tumkur & Sira for bulk orders (10-15+ cylinders).',
+    aKn: 'ನೆಲಮಂಗಲ ಮತ್ತು ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರಕ್ಕೆ (562123) ಪ್ರತಿದಿನ ಡೆಲಿವರಿ. ತುಮಕೂರು ಮತ್ತು ಶಿರಾ ಭಾಗಕ್ಕೆ ಬಲ್ಕ್ ಆರ್ಡರ್‌ಗಳಿಗೆ (10-15+) ಮಾತ್ರ ಡೆಲಿವರಿ.'
   },
   {
-    qEn: 'What LPG brands are available with Sandhya Enterprises?',
-    qKn: 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್‌ನಲ್ಲಿ ಯಾವ ಪ್ರಮುಖ ಬ್ರ್ಯಾಂಡ್‌ಗಳು ಲಭ್ಯವಿವೆ?',
-    aEn: 'We provide Bharat Gas (Commercial 19kg & 47.5kg Industrial), Go Gas (Private LPG Commercial 17kg/21kg/33kg), and Power Gas (Commercial & Domestic).',
-    aKn: 'ನಮ್ಮಲ್ಲಿ ಭಾರತ್ ಗ್ಯಾಸ್ (Bharat Gas 19kg & 47.5kg), ಗೋ ಗ್ಯಾಸ್ (Go Gas 17kg/21kg/33kg), ಮತ್ತು ಪವರ್ ಗ್ಯಾಸ್ (Power Gas Commercial & Domestic) ಲಭ್ಯವಿವೆ.'
+    qEn: 'What LPG brands are available?',
+    qKn: 'ಯಾವ ಬ್ರ್ಯಾಂಡ್‌ಗಳು ಲಭ್ಯವಿವೆ?',
+    aEn: 'Bharat Gas (Commercial 19kg & 47.5kg), Go Gas (12kg, 17kg, 33kg), and Power Gas (Commercial & Domestic).',
+    aKn: 'ಭಾರತ್ ಗ್ಯಾಸ್ (19kg & 47.5kg), ಗೋ ಗ್ಯಾಸ್ (12kg, 17kg, 33kg) ಮತ್ತು ಪವರ್ ಗ್ಯಾಸ್ ಲಭ್ಯವಿವೆ.'
   },
   {
-    qEn: 'Do you also install commercial kitchen gas pipelines and manifolds?',
-    qKn: 'ನೀವು ಕಮರ್ಷಿಯಲ್ ಗ್ಯಾಸ್ ಪೈಪ್‌ಲೈನ್ ಮತ್ತು ಮ್ಯಾನಿಫೋಲ್ಡ್ ಇನ್‌ಸ್ಟಾಲೇಶನ್ ಮಾಡುತ್ತೀರಾ?',
-    aEn: 'Yes! We have certified gas technicians specializing in commercial copper and steel pipeline installations, manifold changeover systems, leak testing, and pressure regulators for hotels, restaurants, and factories.',
-    aKn: 'ಖಂಡಿತವಾಗಿ! ಹೋಟೆಲ್‌ಗಳು, ರೆಸ್ಟೋರೆಂಟ್‌ಗಳು, ಮದುವೆ ಸಭಾಂಗಣ ಮತ್ತು ಕಾರ್ಖಾನೆಗಳಿಗೆ ಅಧಿಕೃತ ಕಾಪರ್ ಮತ್ತು ಸ್ಟೀಲ್ ಗ್ಯಾಸ್ ಪೈಪ್‌ಲೈನ್ ಅಳವಡಿಕೆ, ಪ್ರೆಶರ್ ಟೆಸ್ಟಿಂಗ್ ಮತ್ತು ಸರ್ವಿಸ್ ಮಾಡಿಕೊಡುತ್ತೇವೆ.'
+    qEn: 'Do you install commercial gas pipelines?',
+    qKn: 'ಕಮರ್ಷಿಯಲ್ ಗ್ಯಾಸ್ ಪೈಪ್‌ಲೈನ್ ಅಳವಡಿಸುತ್ತೀರಾ?',
+    aEn: 'Yes. We provide certified copper/steel pipelines, manifolds, and pressure testing for hotels and factories.',
+    aKn: 'ಹೌದು. ಹೋಟೆಲ್ ಮತ್ತು ಕಾರ್ಖಾನೆಗಳಿಗೆ ಕಾಪರ್/ಸ್ಟೀಲ್ ಪೈಪ್‌ಲೈನ್, ಮ್ಯಾನಿಫೋಲ್ಡ್ ಮತ್ತು ಪ್ರೆಶರ್ ಟೆಸ್ಟಿಂಗ್ ಮಾಡುತ್ತೇವೆ.'
   }
 ];

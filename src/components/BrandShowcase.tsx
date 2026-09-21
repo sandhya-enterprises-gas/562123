@@ -143,19 +143,19 @@ export const BrandShowcase: React.FC<BrandShowcaseProps> = ({
                     </div>
                     <p className="text-[11px] text-orange-900 mt-0.5 leading-snug">
                       {lang === 'kn'
-                        ? 'ಪ್ರತಿ ತಿಂಗಳು ಗ್ಯಾಸ್ ದರ ಬದಲಾಗುವುದರಿಂದ ಇಂದಿನ ದರಕ್ಕಾಗಿ ಕರೆ ಮಾಡಿ: 8152889500'
-                        : 'Rate revisions occur monthly. First call or WhatsApp for today\'s discounted wholesale rate.'}
+                        ? 'ಪ್ರತಿ ತಿಂಗಳು ಗ್ಯಾಸ್ ದರ ಬದಲಾಗುವುದರಿಂದ ಇಂದಿನ ದರಕ್ಕಾಗಿ ಕರೆ ಮಾಡಿ: 7676398782'
+                        : 'Rate revisions occur monthly. Call Rate Enquiry 7676398782 or WhatsApp 8073407706 for today\'s discounted rate.'}
                     </p>
                   </div>
 
                   {/* Direct Action Buttons */}
                   <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
                     <a
-                      href={`tel:${BUSINESS_INFO.phonePrimary}`}
+                      href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`}
                       className="flex items-center justify-center gap-1 py-2 px-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-black text-[11px] uppercase tracking-wider transition-colors text-center"
                     >
                       <PhoneCall className="w-3 h-3 text-orange-400" />
-                      <span>8152889500</span>
+                      <span>{BUSINESS_INFO.phoneRateEnquiry}</span>
                     </a>
 
                     <a

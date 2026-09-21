@@ -20,13 +20,15 @@ import {
   Shield,
   Eye,
   EyeOff,
-  Lock
+  Lock,
+  Printer
 } from 'lucide-react';
 import { Language, CustomerAccount, OrderRecord, LedgerEntry } from '../../types';
 import { portalStore, PortalState } from '../../data/portalStore';
 import { portalAuth } from '../../lib/portalAuth';
 import { BUSINESS_INFO } from '../../data/content';
 import { OfficialLogoWatermark, OfficialLogoBadge } from '../common/OfficialLogoWatermark';
+import { ThermalLedgerReceipt } from './ThermalLedgerReceipt';
 
 interface CustomerPortalProps {
   lang: Language;
@@ -35,6 +37,7 @@ interface CustomerPortalProps {
 export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
   const [storeState, setStoreState] = useState<PortalState>(portalStore.getState());
   const [activeTab, setActiveTab] = useState<'dashboard' | 'reorder' | 'ledger'>('dashboard');
+  const [showThermalReceipt, setShowThermalReceipt] = useState(false);
 
   // Sync with portalAuth session on load
   useEffect(() => {
@@ -735,7 +738,7 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-3 text-xs">
+                <div className="flex items-center gap-3 text-xs flex-wrap sm:flex-nowrap">
                   <div className="text-right">
                     <span className="text-[10px] text-slate-400 font-bold block">Current Balance</span>
                     <span className="text-xs font-black text-red-600">₹{currentCustomer.balanceAmount.toLocaleString()}</span>
@@ -744,6 +747,16 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
                     <span className="text-[10px] text-slate-400 font-bold block">MT Owed</span>
                     <span className="text-xs font-black text-amber-600">{currentCustomer.emptyCylindersDue} Cyl</span>
                   </div>
+                  <button
+                    type="button"
+                    onClick={() => setShowThermalReceipt(true)}
+                    id="btn-print-ledger-thermal"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-black uppercase tracking-wider transition-all shadow-xs cursor-pointer"
+                    title={lang === 'kn' ? 'ಥರ್ಮಲ್ ಪ್ರಿಂಟರ್ ಗಾತ್ರದಲ್ಲಿ ಲೆಡ್ಜರ್ ಪ್ರಿಂಟ್ ಮಾಡಿ' : 'Print ledger formatted for thermal receipt printer (80mm / 58mm)'}
+                  >
+                    <Printer className="w-3.5 h-3.5 text-orange-400" />
+                    <span>{lang === 'kn' ? 'ಪ್ರಿಂಟ್' : 'Print'}</span>
+                  </button>
                 </div>
               </div>
 
@@ -799,6 +812,27 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
                   </table>
                 </div>
               )}
+
+              {/* Bottom Ledger Thermal Print Toolbar */}
+              <div className="p-3 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2.5 text-xs">
+                <div className="flex items-center gap-2 text-slate-600">
+                  <Printer className="w-4 h-4 text-orange-600 flex-shrink-0" />
+                  <span className="text-[11px]">
+                    {lang === 'kn'
+                      ? 'POS ಥರ್ಮಲ್ ಪ್ರಿಂಟರ್ ಬೆಂಬಲ (80mm ಮತ್ತು 58mm ಪೇಪರ್ ರೋಲ್ ಗಾತ್ರ)'
+                      : 'Thermal Printer Paper Ready: Formatted for 80mm & 58mm POS receipt rolls with running balance & MT counts.'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowThermalReceipt(true)}
+                  id="btn-print-ledger-thermal-bottom"
+                  className="px-3 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-700 text-white font-black text-xs uppercase tracking-wider flex items-center gap-1.5 transition-colors shadow-2xs cursor-pointer whitespace-nowrap"
+                >
+                  <Printer className="w-3.5 h-3.5" />
+                  <span>{lang === 'kn' ? 'ಥರ್ಮಲ್ ರಸೀದಿ ಪ್ರಿಂಟ್' : 'Print Thermal Receipt'}</span>
+                </button>
+              </div>
             </div>
           )}
 
@@ -889,6 +923,15 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
             </div>
           )}
         </div>
+      )}
+      {/* Thermal Receipt Print Modal */}
+      {showThermalReceipt && currentCustomer && (
+        <ThermalLedgerReceipt
+          customer={currentCustomer}
+          ledgers={customerLedgers}
+          lang={lang}
+          onClose={() => setShowThermalReceipt(false)}
+        />
       )}
     </div>
   );

@@ -128,11 +128,11 @@ export const OfficialCustomerShowcase: React.FC<OfficialCustomerShowcaseProps> =
                 <span>{lang === 'kn' ? 'ಗ್ರಾಹಕರ ಲಾಗಿನ್' : 'Customer Portal'}</span>
               </button>
               <a
-                href={`tel:${BUSINESS_INFO.phonePrimary}`}
+                href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`}
                 className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-black uppercase tracking-wider flex items-center gap-1.5 border border-slate-700 transition-all whitespace-nowrap"
               >
-                <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
-                <span>8152889500</span>
+                <PhoneCall className="w-3.5 h-3.5 text-orange-400" />
+                <span>{BUSINESS_INFO.phoneRateEnquiry}</span>
               </a>
             </div>
           </div>
@@ -195,7 +195,7 @@ export const OfficialCustomerShowcase: React.FC<OfficialCustomerShowcaseProps> =
 
             <div className="w-full lg:w-auto flex flex-col sm:flex-row lg:flex-col gap-2 flex-shrink-0">
               <a
-                href={`https://wa.me/918152889500?text=${encodeURIComponent(
+                href={`https://wa.me/91${BUSINESS_INFO.phoneWhatsApp}?text=${encodeURIComponent(
                   `Namaste Sandhya Enterprises, I would like to book a commercial connection for ${selectedCylinder.nameEn} (${selectedCylinder.capacity}). Please share details.`
                 )}`}
                 target="_blank"

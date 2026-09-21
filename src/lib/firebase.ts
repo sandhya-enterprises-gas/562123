@@ -14,8 +14,9 @@ import firebaseConfig from '../../firebase-applet-config.json';
 // Initialize Firebase App singleton
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
-/* CRITICAL: Must pass firebaseConfig.firestoreDatabaseId */
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+/* Pass firestoreDatabaseId if configured */
+const firestoreDbId = (firebaseConfig as any).firestoreDatabaseId;
+export const db = firestoreDbId ? getFirestore(app, firestoreDbId) : getFirestore(app);
 export const auth = getAuth(app);
 
 export enum OperationType {
@@ -71,7 +72,7 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
 export async function testFirestoreConnection(): Promise<boolean> {
   try {
     await getDocFromServer(doc(db, 'test', 'connection'));
-    console.log('[Firebase] Firestore connected successfully to database:', firebaseConfig.firestoreDatabaseId);
+    console.log('[Firebase] Firestore connected successfully to database:', firestoreDbId || '(default)');
     return true;
   } catch (error) {
     if (error instanceof Error && error.message.includes('the client is offline')) {

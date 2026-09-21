@@ -20,6 +20,10 @@ app.use((req, res, next) => {
   next();
 });
 
+// Serve public static assets (logos, manifests, sw, images)
+app.use(express.static(path.join(process.cwd(), "public")));
+app.use("/assets", express.static(path.join(process.cwd(), "public", "assets")));
+
 // Explicit PWA Manifest Endpoint with correct mime-type and CORS
 app.get(["/manifest.json", "/manifest.webmanifest", "/562123/manifest.json", "/562123/manifest.webmanifest"], (req, res) => {
   const manifestPath = path.join(process.cwd(), "public", "manifest.json");
@@ -213,7 +217,7 @@ app.post("/api/auth/send-reset-link", (req, res) => {
 
 // Vite middleware setup for Development vs Production
 async function startServer() {
-  const isDev = process.env.NODE_ENV === "development";
+  const isDev = process.env.NODE_ENV !== "production";
 
   if (isDev) {
     const { createServer: createViteServer } = await import("vite");
