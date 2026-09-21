@@ -3,14 +3,8 @@ import { Language, ActivePortalTab } from './types';
 import { Header } from './components/Header';
 import { RateAlertBanner } from './components/RateAlertBanner';
 import { Hero } from './components/Hero';
-import { BrandShowcase } from './components/BrandShowcase';
-import { CustomerSegments } from './components/CustomerSegments';
-import { ServicesSpecialties } from './components/ServicesSpecialties';
-import { OrderQuoteCalculator } from './components/OrderQuoteCalculator';
-import { CommercialAccessories } from './components/CommercialAccessories';
-import { SafetyGuide } from './components/SafetyGuide';
-import { ContactAndLocation } from './components/ContactAndLocation';
-import { GoogleMapsLocator } from './components/GoogleMapsLocator';
+import { HomePageSectionsHub, HomeSectionId } from './components/HomePageSectionsHub';
+import { HomeTrustStrip } from './components/HomeTrustStrip';
 import { Footer } from './components/Footer';
 import { RateInquiryModal } from './components/RateInquiryModal';
 import { FloatingActions } from './components/FloatingActions';
@@ -19,9 +13,6 @@ import { CustomerPortal } from './components/portal/CustomerPortal';
 import { DistributorDesk } from './components/portal/DistributorDesk';
 import { AdminCommandCenter } from './components/portal/AdminCommandCenter';
 import { GmailHub } from './components/gmail/GmailHub';
-import { GoogleDriveHub } from './components/drive/GoogleDriveHub';
-import { GoogleFormsHub } from './components/forms/GoogleFormsHub';
-import { OfficialCustomerShowcase } from './components/OfficialCustomerShowcase';
 import { OfficialDistributorShowcase } from './components/OfficialDistributorShowcase';
 import { OfficialFAQ } from './components/OfficialFAQ';
 import { PortalAccessGuard } from './components/portal/PortalAccessGuard';
@@ -34,6 +25,7 @@ export default function App() {
   });
 
   const [activePortalTab, setActivePortalTab] = useState<ActivePortalTab>('website');
+  const [activeHomeSection, setActiveHomeSection] = useState<HomeSectionId>('brands');
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false);
   const [selectedBrandForModal, setSelectedBrandForModal] = useState<string | undefined>();
 
@@ -74,6 +66,7 @@ export default function App() {
           onOpenInquiryModal={() => handleOpenInquiry()}
           activePortalTab={activePortalTab}
           onNavigatePortal={setActivePortalTab}
+          onSelectHomeSection={(sec) => setActiveHomeSection(sec)}
         />
       )}
 
@@ -88,60 +81,26 @@ export default function App() {
               onOpenInquiryModal={() => handleOpenInquiry()}
             />
 
-            {/* Major Brands Portfolio (Bharat Gas, Go Gas, Power Gas) */}
-            <BrandShowcase
-              lang={lang}
-              onOpenInquiryModal={(brandId) => handleOpenInquiry(brandId)}
-            />
-
-            {/* Official Pillar 1: FOR CUSTOMERS (ಗ್ರಾಹಕರಿಗೆ - ತಕ್ಷಣದ ಕನೆಕ್ಷನ್, 100% ತೂಕ, GoGas Elite) */}
-            <OfficialCustomerShowcase
+            {/* Core Commercial Trust Strip (100% Weight, Express Fleet, PESO, GST) */}
+            <HomeTrustStrip
               lang={lang}
               onOpenCustomerPortal={() => setActivePortalTab('customer')}
+              onSelectSection={(sec) => setActiveHomeSection(sec)}
             />
 
-            {/* Official Pillar 2: FOR DISTRIBUTORS & DELIVERY PARTNERS (ಡಿಸ್ಟ್ರಿಬ್ಯೂಟರ್ಸ್ ಮತ್ತು ಡೆಲಿವರಿ ಪಾರ್ಟ್ನೆರ್ಗೆ) */}
+            {/* Official Distributor & Delivery Partner Banner */}
             <OfficialDistributorShowcase
               lang={lang}
               onOpenDistributorDesk={() => setActivePortalTab('distributor')}
             />
 
-            {/* Who We Serve / Customer Verticals (Hotels, Dhabas, Kalyana Mantapa, Factories) */}
-            <CustomerSegments
+            {/* Main Interactive Sections Hub (PAGES: Brands, Services, Customers, Booking & Rate, Accessories, Agency Location) */}
+            <HomePageSectionsHub
               lang={lang}
-              onOpenInquiryModal={() => handleOpenInquiry()}
-            />
-
-            {/* Our Special Services & Pipeline Installation */}
-            <ServicesSpecialties
-              lang={lang}
-              onOpenInquiryModal={() => handleOpenInquiry()}
-            />
-
-            {/* Interactive Order & Quote Calculator */}
-            <OrderQuoteCalculator
-              lang={lang}
-            />
-
-            {/* Commercial Kitchen Accessories & Equipment */}
-            <CommercialAccessories
-              lang={lang}
-              onOpenInquiryModal={() => handleOpenInquiry()}
-            />
-
-            {/* 24/7 Safety Protocols & FAQs */}
-            <SafetyGuide
-              lang={lang}
-            />
-
-            {/* Live Google Maps Platform Depot Locator */}
-            <GoogleMapsLocator
-              lang={lang}
-            />
-
-            {/* Official Contact, Social Profiles & Location Hub */}
-            <ContactAndLocation
-              lang={lang}
+              activeSection={activeHomeSection}
+              onSelectSection={setActiveHomeSection}
+              onOpenInquiryModal={(brandId) => handleOpenInquiry(brandId)}
+              onOpenCustomerPortal={() => setActivePortalTab('customer')}
             />
 
             {/* Official FAQ Component (Delivery Timelines, Payment Terms, Installation, Security) */}
@@ -209,16 +168,6 @@ export default function App() {
           >
             <GmailHub lang={lang} />
           </PortalAccessGuard>
-        )}
-
-        {/* VIEW 6: Official Google Drive Vault */}
-        {activePortalTab === 'drive' && (
-          <GoogleDriveHub lang={lang} />
-        )}
-
-        {/* VIEW 7: Official Google Forms Hub */}
-        {activePortalTab === 'forms' && (
-          <GoogleFormsHub lang={lang} />
         )}
       </main>
 

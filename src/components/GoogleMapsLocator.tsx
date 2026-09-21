@@ -1,10 +1,4 @@
-import React, { useState } from 'react';
-import {
-  APIProvider,
-  Map,
-  AdvancedMarker,
-  InfoWindow
-} from '@vis.gl/react-google-maps';
+import React from 'react';
 import {
   MapPin,
   Navigation,
@@ -12,7 +6,6 @@ import {
   Clock,
   ShieldCheck,
   Truck,
-  ExternalLink,
   MessageCircle,
   ShieldAlert
 } from 'lucide-react';
@@ -68,11 +61,6 @@ interface GoogleMapsLocatorProps {
 }
 
 export const GoogleMapsLocator: React.FC<GoogleMapsLocatorProps> = ({ lang }) => {
-  const [infoWindowOpen, setInfoWindowOpen] = useState<boolean>(true);
-
-  // Read Maps API key from environment variable
-  const apiKey = (import.meta as any).env?.VITE_GOOGLE_MAPS_API_KEY || '';
-
   return (
     <section id="depot-locations-map" className="py-12 bg-white border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -122,105 +110,45 @@ export const GoogleMapsLocator: React.FC<GoogleMapsLocatorProps> = ({ lang }) =>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
           {/* Interactive Google Map Container */}
           <div className="lg:col-span-7 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-slate-100 relative">
-            {apiKey ? (
-              <div className="w-full h-[440px] min-h-[420px] relative">
-                <APIProvider apiKey={apiKey} libraries={['places', 'marker']}>
-                  <Map
-                    defaultCenter={AGENCY_LOCATION.position}
-                    defaultZoom={14}
-                    mapId="DEMO_MAP_ID"
-                    className="w-full h-full"
-                    style={{ width: '100%', height: '100%', minHeight: '420px' }}
-                    internalUsageAttributionIds={['gmp_mcp_codeassist_v1_aistudio']}
-                    gestureHandling="greedy"
-                    fullscreenControl={true}
-                    streetViewControl={false}
-                    mapTypeControl={false}
+            <div className="w-full h-[440px] min-h-[420px] relative flex flex-col bg-slate-100">
+              <iframe
+                title="Sandhya Enterprises Sharapurapalya Nelamangala"
+                src={`https://maps.google.com/maps?q=${encodeURIComponent('Sharapurapalya, Nelamangala, Bengaluru Rural, Karnataka 562123')}&z=14&output=embed`}
+                className="w-full h-full min-h-[420px] border-0"
+                loading="lazy"
+                allowFullScreen
+                referrerPolicy="no-referrer"
+              />
+
+              {/* Floating Map Navigation Badge */}
+              <div className="absolute top-3 left-3 right-3 sm:right-auto z-10 max-w-sm bg-slate-950/92 backdrop-blur-sm text-white p-3 rounded-xl border border-slate-800 shadow-lg text-xs">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 font-black text-orange-400 truncate">
+                    <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
+                    <span className="truncate">Sharapurapalya, Nelamangala</span>
+                  </div>
+                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30 whitespace-nowrap">
+                    ● Live Location
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-300 mt-1 leading-snug">
+                  {lang === 'kn'
+                    ? 'ಶರಾಪುರಪಾಳ್ಯ, ನೆಲಮಂಗಲ - 562123. ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್ ಮೂಲಕ ನೇರ ದಾರಿ ಪಡೆಯಿರಿ.'
+                    : 'Sharapurapalya, Nelamangala - 562123. Direct route via Google Maps.'}
+                </p>
+                <div className="mt-2 flex items-center gap-2">
+                  <a
+                    href={AGENCY_LOCATION.mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-orange-600 hover:bg-orange-500 text-white text-[11px] font-black uppercase tracking-wider transition-colors shadow-xs"
                   >
-                    <AdvancedMarker
-                      position={AGENCY_LOCATION.position}
-                      title={lang === 'kn' ? AGENCY_LOCATION.nameKn : AGENCY_LOCATION.nameEn}
-                      onClick={() => setInfoWindowOpen(true)}
-                    >
-                      <div className="flex items-center justify-center p-2 rounded-full bg-orange-600 text-white shadow-lg ring-4 ring-orange-200 cursor-pointer animate-bounce">
-                        <Truck className="w-5 h-5" />
-                      </div>
-                    </AdvancedMarker>
-
-                    {infoWindowOpen && (
-                      <InfoWindow
-                        position={AGENCY_LOCATION.position}
-                        onCloseClick={() => setInfoWindowOpen(false)}
-                      >
-                        <div className="p-1 max-w-[260px] text-slate-900">
-                          <div className="text-xs font-black uppercase text-orange-600">
-                            {lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್' : 'Sandhya Enterprises'}
-                          </div>
-                          <div className="text-[11px] font-bold text-slate-700 mt-0.5">
-                            {lang === 'kn' ? AGENCY_LOCATION.addressKn : AGENCY_LOCATION.addressEn}
-                          </div>
-                          <div className="text-[10px] text-slate-500 mt-1">
-                            {lang === 'kn' ? 'ದರ ವಿಚಾರಣೆ:' : 'Rate Enquiry:'} <strong>{BUSINESS_INFO.phoneRateEnquiry}</strong>
-                          </div>
-                          <div className="mt-2 pt-1 border-t border-slate-200">
-                            <a
-                              href={AGENCY_LOCATION.mapsUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-[10px] font-bold text-orange-600 hover:underline inline-flex items-center gap-1"
-                            >
-                              <span>{lang === 'kn' ? 'ಮ್ಯಾಪ್‌ನಲ್ಲಿ ನೋಡಿ' : 'Open in Google Maps'}</span>
-                              <ExternalLink className="w-2.5 h-2.5" />
-                            </a>
-                          </div>
-                        </div>
-                      </InfoWindow>
-                    )}
-                  </Map>
-                </APIProvider>
-              </div>
-            ) : (
-              // Live Interactive Google Map Frame with direct search for Sharapurapalya, Nelamangala
-              <div className="w-full h-[440px] min-h-[420px] relative flex flex-col bg-slate-100">
-                <iframe
-                  title="Sandhya Enterprises Sharapurapalya Nelamangala"
-                  src={`https://maps.google.com/maps?q=${encodeURIComponent('Sharapurapalya, Nelamangala, Bengaluru Rural, Karnataka 562123')}&z=14&output=embed`}
-                  className="w-full h-full min-h-[420px] border-0"
-                  loading="lazy"
-                  allowFullScreen
-                  referrerPolicy="no-referrer"
-                />
-
-                {/* Floating Map Navigation Badge */}
-                <div className="absolute top-3 left-3 right-3 sm:right-auto z-10 max-w-sm bg-slate-950/92 backdrop-blur-sm text-white p-3 rounded-xl border border-slate-800 shadow-lg text-xs">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-1.5 font-black text-orange-400 truncate">
-                      <MapPin className="w-3.5 h-3.5 flex-shrink-0" />
-                      <span className="truncate">Sharapurapalya, Nelamangala</span>
-                    </div>
-                    <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30 whitespace-nowrap">
-                      ● Live Location
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-slate-300 mt-1 leading-snug">
-                    {lang === 'kn'
-                      ? 'ಶರಾಪುರಪಾಳ್ಯ, ನೆಲಮಂಗಲ - 562123. ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್ ಮೂಲಕ ನೇರ ದಾರಿ ಪಡೆಯಿರಿ.'
-                      : 'Sharapurapalya, Nelamangala - 562123. Direct route via Google Maps.'}
-                  </p>
-                  <div className="mt-2 flex items-center gap-2">
-                    <a
-                      href={AGENCY_LOCATION.mapsUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-orange-600 hover:bg-orange-500 text-white text-[11px] font-black uppercase tracking-wider transition-colors shadow-xs"
-                    >
-                      <Navigation className="w-3 h-3" />
-                      <span>{lang === 'kn' ? 'ಮಾರ್ಗ ಪಡೆಯಿರಿ (Directions)' : 'Get Directions'}</span>
-                    </a>
-                  </div>
+                    <Navigation className="w-3 h-3" />
+                    <span>{lang === 'kn' ? 'ಮಾರ್ಗ ಪಡೆಯಿರಿ (Directions)' : 'Get Directions'}</span>
+                  </a>
                 </div>
               </div>
-            )}
+            </div>
           </div>
 
           {/* Right Column: Agency Profile & Contacts Card */}

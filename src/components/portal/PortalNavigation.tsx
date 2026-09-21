@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Globe, User, Truck, Shield, Lock, Unlock, LogOut, CheckCircle2, Mail, Key, ArrowLeft, HardDrive, ClipboardList } from 'lucide-react';
+import { Globe, User, Truck, Shield, Lock, Unlock, LogOut, CheckCircle2, Mail, Key, ArrowLeft } from 'lucide-react';
 import { ActivePortalTab, Language } from '../../types';
 import { portalStore, PortalState } from '../../data/portalStore';
 import { portalAuth, PortalUserSession } from '../../lib/portalAuth';
@@ -154,38 +154,6 @@ export const PortalNavigation: React.FC<PortalNavigationProps> = ({
             <Mail className="w-3.5 h-3.5 text-red-400" />
             <span>
               {lang === 'kn' ? 'ಜಿಮೇಲ್ ಡೆಸ್ಕ್' : 'Official Mail'}
-            </span>
-          </button>
-
-          {/* Google Drive Vault */}
-          <button
-            type="button"
-            onClick={() => onSelectTab('drive')}
-            className={`px-3 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
-              activeTab === 'drive'
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'text-slate-300 hover:text-white hover:bg-slate-800'
-            }`}
-          >
-            <HardDrive className="w-3.5 h-3.5 text-blue-400" />
-            <span>
-              {lang === 'kn' ? 'ಡ್ರೈವ್ ದಾಖಲೆಗಳು' : 'Drive Docs'}
-            </span>
-          </button>
-
-          {/* Google Forms Hub */}
-          <button
-            type="button"
-            onClick={() => onSelectTab('forms')}
-            className={`px-3 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
-              activeTab === 'forms'
-                ? 'bg-purple-600 text-white shadow-xs'
-                : 'text-slate-300 hover:text-white hover:bg-slate-800'
-            }`}
-          >
-            <ClipboardList className="w-3.5 h-3.5 text-purple-400" />
-            <span>
-              {lang === 'kn' ? 'ಗೂಗಲ್ ಫಾರ್ಮ್ಸ್' : 'Google Forms'}
             </span>
           </button>
         </div>

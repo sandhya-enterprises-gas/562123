@@ -18,6 +18,8 @@ import {
   Phone,
   MapPin,
   Shield,
+  ShieldAlert,
+  PhoneCall,
   Eye,
   EyeOff,
   Lock,
@@ -26,7 +28,7 @@ import {
 import { Language, CustomerAccount, OrderRecord, LedgerEntry } from '../../types';
 import { portalStore, PortalState } from '../../data/portalStore';
 import { portalAuth } from '../../lib/portalAuth';
-import { BUSINESS_INFO } from '../../data/content';
+import { BUSINESS_INFO, SAFETY_GUIDELINES } from '../../data/content';
 import { OfficialLogoWatermark, OfficialLogoBadge } from '../common/OfficialLogoWatermark';
 import { ThermalLedgerReceipt } from './ThermalLedgerReceipt';
 
@@ -36,7 +38,7 @@ interface CustomerPortalProps {
 
 export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
   const [storeState, setStoreState] = useState<PortalState>(portalStore.getState());
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'reorder' | 'ledger'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'reorder' | 'ledger' | 'safety'>('dashboard');
   const [showThermalReceipt, setShowThermalReceipt] = useState(false);
 
   // Sync with portalAuth session on load
@@ -643,6 +645,19 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
               <Send className="w-3.5 h-3.5" />
               <span>{lang === 'kn' ? 'ಕಸ್ಟಮ್ ಆರ್ಡರ್ ಬುಕಿಂಗ್' : 'Custom Booking'}</span>
             </button>
+
+            <button
+              onClick={() => setActiveTab('safety')}
+              className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap ${
+                activeTab === 'safety' ? 'border-red-600 text-red-600' : 'border-transparent text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <ShieldAlert className="w-3.5 h-3.5" />
+              <span>{lang === 'kn' ? 'ತುರ್ತು ಸುರಕ್ಷತಾ ನಿಯಮಗಳು' : 'Safety & Emergency Guide'}</span>
+              <span className="px-1.5 py-0.2 rounded bg-red-100 text-[10px] text-red-700 font-bold">
+                {lang === 'kn' ? 'ನಮ್ಮ ಗ್ರಾಹಕರಿಗೆ' : 'Customer Only'}
+              </span>
+            </button>
           </div>
 
           {/* TAB 1: Active Orders */}
@@ -920,6 +935,111 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
                   <span>{lang === 'kn' ? 'ಆರ್ಡರ್ ಕಳುಹಿಸಿ' : 'Send Delivery Request'}</span>
                 </button>
               </form>
+            </div>
+          )}
+
+          {/* TAB 4: Customer Exclusive Safety Protocols & Emergency Guide */}
+          {activeTab === 'safety' && (
+            <div className="space-y-4 bg-slate-900 text-white p-5 rounded-2xl border border-slate-800 shadow-md">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                <div>
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-red-500/20 text-red-300 text-[10px] font-black uppercase tracking-widest border border-red-500/30 mb-1.5">
+                    <ShieldAlert className="w-3.5 h-3.5 text-red-400" />
+                    <span>{lang === 'kn' ? 'ನಮ್ಮ ಗ್ರಾಹಕರಿಗೆ ಮಾತ್ರ - ತುರ್ತು ಮಾರ್ಗದರ್ಶಿ' : 'CUSTOMER EXCLUSIVE SAFETY GUIDE'}</span>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-black text-white uppercase tracking-tight">
+                    {lang === 'kn' ? (
+                      <>
+                        ಗ್ಯಾಸ್ ಸೋರಿಕೆ ಅಥವಾ ತುರ್ತು ಸಂದರ್ಭದಲ್ಲಿ{' '}
+                        <span className="text-red-400">ಪಾಲಿಸಬೇಕಾದ ನಿಯಮಗಳು</span>
+                      </>
+                    ) : (
+                      <>
+                        Commercial LPG Emergency &{' '}
+                        <span className="text-red-400">Leak Safety Protocols</span>
+                      </>
+                    )}
+                  </h3>
+                  <p className="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
+                    {lang === 'kn'
+                      ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್‌ನ ಅಧಿಕೃತ ಕಮರ್ಷಿಯಲ್ ಗ್ರಾಹಕರಿಗೆ ತುರ್ತು ತಾಂತ್ರಿಕ ನೆರವು ಮತ್ತು ಲೀಕೇಜ್ ಬೆಂಬಲ ನಿರಂತರವಾಗಿ ಲಭ್ಯವಿರುತ್ತದೆ. ಯಾವುದೇ ಸಂದರ್ಭದಲ್ಲಿ ಆತಂಕಪಡದೆ ಕೆಳಗಿನ ಕ್ರಮಗಳನ್ನು ಅನುಸರಿಸಿ.'
+                      : 'Dedicated leak response and safety inspection support exclusively for registered Sandhya Enterprises clients. Follow these steps calmly.'}
+                  </p>
+                </div>
+
+                <div className="bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 text-right">
+                  <span className="text-[10px] font-bold text-slate-400 block uppercase">
+                    {lang === 'kn' ? 'ಗ್ರಾಹಕರ ಸಂಸ್ಥೆ' : 'Customer Account'}
+                  </span>
+                  <span className="text-xs font-black text-orange-400">
+                    {currentCustomer.businessName}
+                  </span>
+                </div>
+              </div>
+
+              {/* 5 Emergency Steps */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-1">
+                {SAFETY_GUIDELINES[lang].map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="p-3.5 rounded-xl bg-slate-800/90 border border-slate-700/80 hover:border-red-500/60 transition-colors flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="w-6 h-6 rounded-lg bg-red-500/20 text-red-400 border border-red-500/30 flex items-center justify-center font-black text-xs mb-2">
+                        {item.step}
+                      </div>
+                      <h4 className="text-xs font-black uppercase tracking-tight text-white mb-1 leading-snug">
+                        {item.title}
+                      </h4>
+                      <p className="text-[11px] text-slate-300 leading-relaxed">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Exclusive Helpline & Technician Dispatch Line */}
+              <div className="mt-4 p-4 rounded-xl bg-gradient-to-r from-red-950/80 to-slate-900 border-l-4 border-l-red-600 border border-red-800/60 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-red-600 text-white flex-shrink-0 shadow-sm">
+                    <PhoneCall className="w-5 h-5 animate-pulse" />
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-black uppercase tracking-widest text-red-300">
+                      {lang === 'kn' ? '24/7 ತುರ್ತು ಲೀಕೇಜ್ ಸಹಾಯವಾಣಿ' : '24/7 PRIORITY LEAK HELPLINE'}
+                    </div>
+                    <div className="text-base sm:text-lg font-black text-white font-mono">
+                      +91 {BUSINESS_INFO.phoneHelpline}
+                    </div>
+                    <div className="text-[11px] text-slate-400">
+                      {lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ತುರ್ತು ರಕ್ಷಣಾ ತಂಡ' : 'Sandhya Enterprises Rapid Technical Team'}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 w-full md:w-auto">
+                  <a
+                    href={`tel:${BUSINESS_INFO.phoneHelpline}`}
+                    className="flex-1 md:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-red-600 hover:bg-red-500 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-sm"
+                  >
+                    <PhoneCall className="w-3.5 h-3.5" />
+                    <span>{lang === 'kn' ? 'ತಕ್ಷಣ ಕರೆ ಮಾಡಿ' : 'Emergency Call'}</span>
+                  </a>
+                  <a
+                    href={`https://wa.me/91${BUSINESS_INFO.phoneWhatsApp}?text=${encodeURIComponent(
+                      lang === 'kn'
+                        ? `ತುರ್ತು: ನನ್ನ ಸಂಸ್ಥೆ ${currentCustomer.businessName} ನಲ್ಲಿ ಗ್ಯಾಸ್ ಸೋರಿಕೆ / ತಾಂತ್ರಿಕ ನೆರವು ತಕ್ಷಣ ಬೇಕಾಗಿದೆ.`
+                        : `URGENT: Gas leak / technical safety emergency support required at ${currentCustomer.businessName}.`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 md:flex-initial inline-flex items-center justify-center gap-1.5 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider rounded-xl transition-all shadow-sm"
+                  >
+                    <span>WhatsApp Alert</span>
+                  </a>
+                </div>
+              </div>
             </div>
           )}
         </div>

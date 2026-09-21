@@ -28,36 +28,9 @@ export const gmailScopes = [
   'https://www.googleapis.com/auth/gmail.settings.sharing'
 ];
 
-// Drive & Forms Workspace Scopes
-export const workspaceScopes = [
-  ...gmailScopes,
-  'https://www.googleapis.com/auth/drive',
-  'https://www.googleapis.com/auth/drive.activity',
-  'https://www.googleapis.com/auth/drive.activity.readonly',
-  'https://www.googleapis.com/auth/drive.appdata',
-  'https://www.googleapis.com/auth/drive.apps.readonly',
-  'https://www.googleapis.com/auth/drive.file',
-  'https://www.googleapis.com/auth/drive.install',
-  'https://www.googleapis.com/auth/drive.meet.readonly',
-  'https://www.googleapis.com/auth/drive.metadata',
-  'https://www.googleapis.com/auth/drive.metadata.readonly',
-  'https://www.googleapis.com/auth/drive.photos.readonly',
-  'https://www.googleapis.com/auth/drive.readonly',
-  'https://www.googleapis.com/auth/drive.scripts',
-  'https://www.googleapis.com/auth/forms.body',
-  'https://www.googleapis.com/auth/forms.body.readonly',
-  'https://www.googleapis.com/auth/forms.responses.readonly'
-];
-
 const gmailProvider = new GoogleAuthProvider();
 gmailScopes.forEach((scope) => gmailProvider.addScope(scope));
 gmailProvider.setCustomParameters({
-  prompt: 'select_account'
-});
-
-const workspaceProvider = new GoogleAuthProvider();
-workspaceScopes.forEach((scope) => workspaceProvider.addScope(scope));
-workspaceProvider.setCustomParameters({
   prompt: 'select_account'
 });
 
@@ -157,38 +130,6 @@ export const googleSignInWithGmail = async (): Promise<{ user: User; accessToken
     return { user: result.user, accessToken: cachedAccessToken };
   } catch (error: any) {
     console.error('[Firebase Auth] Gmail Sign-In error:', error);
-    throw error;
-  } finally {
-    isSigningIn = false;
-  }
-};
-
-/**
- * Google Sign-In with full Workspace Scopes (Drive, Forms, and Gmail)
- */
-export const googleSignInWithWorkspace = async (): Promise<{ user: User; accessToken: string } | null> => {
-  try {
-    isSigningIn = true;
-    const result = await signInWithPopup(auth, workspaceProvider);
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    if (!credential?.accessToken) {
-      throw new Error('Failed to get access token from Google Auth credentials');
-    }
-
-    cachedAccessToken = credential.accessToken;
-
-    await saveUserProfileToFirestore({
-      uid: result.user.uid,
-      displayName: result.user.displayName || 'Sandhya Official Staff',
-      email: result.user.email || '',
-      photoURL: result.user.photoURL || '',
-      role: 'admin',
-      createdAt: new Date().toISOString()
-    });
-
-    return { user: result.user, accessToken: cachedAccessToken };
-  } catch (error: any) {
-    console.error('[Firebase Auth] Workspace Sign-In error:', error);
     throw error;
   } finally {
     isSigningIn = false;

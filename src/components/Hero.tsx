@@ -75,12 +75,9 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
                   </span>
                   <span className="text-slate-200">
                     {lang === 'kn'
-                      ? 'ಪ್ರತಿ ತಿಂಗಳ 1ನೇ ತಾರೀಖು ದರ ಪರಿಷ್ಕರಣೆಯಾಗುತ್ತದೆ. ಇಂದಿನ ರಿಯಾಯಿತಿ ದರಕ್ಕೆ ಕರೆ ಮಾಡಿ: '
-                      : 'Rates update on 1st of every month. Call for today\'s best price: '}
+                      ? 'ಪ್ರತಿ ತಿಂಗಳ 1ನೇ ತಾರೀಖು ದರ ಪರಿಷ್ಕರಣೆಯಾಗುತ್ತದೆ. ಇಂದಿನ ರಿಯಾಯಿತಿ ವಾಣಿಜ್ಯ ಬೆಲೆಗಾಗಿ ತಕ್ಷಣ ಸಂಪರ್ಕಿಸಿ.'
+                      : 'Rates update on 1st of every month. Please call or message to confirm today\'s discounted price.'}
                   </span>
-                  <a href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`} className="font-black text-orange-400 underline hover:text-white ml-1">
-                    +91 {BUSINESS_INFO.phoneRateEnquiry}
-                  </a>
                 </div>
               </div>
             </div>
@@ -90,33 +87,33 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
               <a
                 id="hero-primary-call-btn"
                 href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`}
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-orange-600 hover:bg-orange-700 text-white font-black text-xs uppercase tracking-wider shadow-xs transition-colors active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all active:scale-95"
               >
                 <PhoneCall className="w-4 h-4" />
-                <span>{lang === 'kn' ? 'ದರ ವಿಚಾರಣೆ: 7676398782' : 'RATE CALL 7676398782'}</span>
+                <span>{lang === 'kn' ? 'ಇಂದಿನ ದರಕ್ಕೆ ಕರೆ ಮಾಡಿ' : 'CALL FOR TODAY\'S RATE'}</span>
               </a>
 
               <a
                 id="hero-whatsapp-booking-btn"
                 href={`https://wa.me/91${BUSINESS_INFO.phoneWhatsApp}?text=${encodeURIComponent(
                   lang === 'kn'
-                    ? 'ನಮಸ್ಕಾರ ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್, ನನಗೆ ಕಮರ್ಷಿಯಲ್ ಗ್ಯಾಸ್ ಸಿಲಿಂಡರ್ ಡೆಲಿವರಿ / ದರ ವಿಚಾರಣೆ ಬೇಕಾಗಿದೆ.'
-                    : 'Hello Sandhya Enterprises, I want to inquire about commercial LPG cylinder rate & booking.'
+                    ? 'ನಮಸ್ಕಾರ ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್, ನನಗೆ ಕಮರ್ಷಿಯಲ್ ಗ್ಯಾಸ್ ಸಿಲಿಂಡರ್ ಡೆಲಿವರಿ ಮತ್ತು ಇಂದಿನ ದರ ಬೇಕಾಗಿದೆ.'
+                    : 'Hello Sandhya Enterprises, I would like to inquire about today\'s commercial LPG cylinder rate & booking.'
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs uppercase tracking-wider shadow-xs transition-colors active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all active:scale-95"
               >
                 <MessageCircle className="w-4 h-4" />
-                <span>{lang === 'kn' ? 'ವಾಟ್ಸಾಪ್: 8073407706' : 'WHATSAPP 8073407706'}</span>
+                <span>{lang === 'kn' ? 'ವಾಟ್ಸಾಪ್‌ನಲ್ಲಿ ವಿಚಾರಿಸಿ' : 'WHATSAPP ENQUIRY'}</span>
               </a>
 
               <button
                 id="hero-quote-calculator-btn"
                 onClick={onOpenInquiryModal}
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs uppercase tracking-wider transition-colors"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs uppercase tracking-wider transition-colors"
               >
-                <span>{lang === 'kn' ? 'ಬುಕಿಂಗ್ & ದರ' : 'GET QUOTE'}</span>
+                <span>{lang === 'kn' ? 'ಆರ್ಡರ್ ವಿಚಾರಣೆ' : 'REQUEST QUOTE'}</span>
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>
@@ -217,14 +214,18 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
               {/* Action Bar */}
               <div className="pt-2 border-t border-slate-700 flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">{lang === 'kn' ? '24/7 ಸಹಾಯವಾಣಿ ಮಾತ್ರ:' : '24/7 Helpline Only:'}</span>
-                  <span className="text-xs font-black text-orange-400">+91 {BUSINESS_INFO.phoneHelpline}</span>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">{lang === 'kn' ? '24/7 ತುರ್ತು ಲೀಕೇಜ್ ಚೆಕ್:' : '24/7 Emergency Helpline:'}</span>
+                  <span className="text-xs font-black text-emerald-400 flex items-center gap-1">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block" />
+                    {lang === 'kn' ? 'ಸದಾ ಲಭ್ಯವಿದೆ' : 'Live & Active'}
+                  </span>
                 </div>
                 <a
                   href={`tel:${BUSINESS_INFO.phoneHelpline}`}
-                  className="px-3 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs uppercase tracking-wider transition-colors"
+                  className="px-3.5 py-1.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs uppercase tracking-wider transition-colors inline-flex items-center gap-1.5"
                 >
-                  {lang === 'kn' ? 'ಕರೆ ಮಾಡಿ' : 'CALL HELPLINE'}
+                  <PhoneCall className="w-3 h-3" />
+                  <span>{lang === 'kn' ? 'ಕರೆ ಮಾಡಿ' : 'CALL HELPLINE'}</span>
                 </a>
               </div>
             </div>

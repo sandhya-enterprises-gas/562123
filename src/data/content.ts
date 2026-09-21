@@ -47,20 +47,24 @@ export const BUSINESS_INFO = {
 export const RATE_NOTICE = {
   en: {
     badge: 'Pricing Notice',
-    title: 'Monthly Rate Revisions: Call for Today\'s Price',
-    desc: 'LPG prices revise on the 1st of every month. For today\'s best rate, call Rate Enquiry: 7676398782. For general enquiries or WhatsApp: 8073407706. 24/7 Helpline: 8152889500.',
-    actionCall: 'Rate Enquiry: 7676398782',
-    actionWhatsApp: 'WhatsApp: 8073407706',
+    title: 'Every Month Rates Are Subject to Change',
+    subtitle: "Please Call & Confirm Today's Discounted Commercial Price",
+    desc: "Commercial LPG cylinder prices revise on the 1st of every month. Tap below to confirm today's discounted rate or 24/7 delivery support.",
+    actionCall: "Call for Today's Rate",
+    actionWhatsApp: 'WhatsApp for Best Price',
+    actionHelpline: '24/7 Helpline',
     rateEnquiryPhone: '7676398782',
     otherEnquiryPhone: '8073407706',
     helplinePhone: '8152889500'
   },
   kn: {
-    badge: 'ದರ ಸೂಚನೆ',
-    title: 'ಪ್ರತಿ ತಿಂಗಳ 1ನೇ ತಾರೀಖು ದರ ಬದಲಾವಣೆ',
-    desc: 'ತಿಂಗಳ 1ನೇ ತಾರೀಖು ದರ ಪರಿಷ್ಕರಣೆಯಾಗುತ್ತದೆ. ಇಂದಿನ ದರ ವಿಚಾರಣೆಗೆ ಕರೆ: 7676398782. ಇತರ ವಿಚಾರಣೆ ಅಥವಾ ವಾಟ್ಸಾಪ್: 8073407706. ತುರ್ತು ಸಹಾಯವಾಣಿ: 8152889500.',
-    actionCall: 'ದರ ವಿಚಾರಣೆ: 7676398782',
-    actionWhatsApp: 'ವಾಟ್ಸಾಪ್: 8073407706',
+    badge: 'ದರ ಸೂಚನೆ (Pricing Notice)',
+    title: 'ಪ್ರತಿ ತಿಂಗಳು ಗ್ಯಾಸ್ ದರ ಬದಲಾವಣೆಗೆ ಒಳಪಟ್ಟಿರುತ್ತದೆ',
+    subtitle: 'ಇಂದಿನ ರಿಯಾಯಿತಿ ವಾಣಿಜ್ಯ ದರ ಮತ್ತು ವಿವರಗಳಿಗಾಗಿ ಸಂಪರ್ಕಿಸಿ',
+    desc: 'ವಾಣಿಜ್ಯ ಎಲ್‌ಪಿಜಿ ದರಗಳು ಪ್ರತಿ ತಿಂಗಳು ಪರಿಷ್ಕರಣೆಯಾಗುತ್ತವೆ. ಇಂದಿನ ವಿಶೇಷ ರಿಯಾಯಿತಿ ದರ ಮತ್ತು ತಕ್ಷಣದ ಡೆಲಿವರಿಗಾಗಿ ಕೆಳಗಿನ ಆಯ್ಕೆ ಕ್ಲಿಕ್ ಮಾಡಿ.',
+    actionCall: 'ಇಂದಿನ ದರಕ್ಕೆ ಕರೆ ಮಾಡಿ',
+    actionWhatsApp: 'ವಾಟ್ಸಾಪ್‌ನಲ್ಲಿ ದರ ಪಡೆಯಿರಿ',
+    actionHelpline: '24/7 ಸಹಾಯವಾಣಿ',
     rateEnquiryPhone: '7676398782',
     otherEnquiryPhone: '8073407706',
     helplinePhone: '8152889500'

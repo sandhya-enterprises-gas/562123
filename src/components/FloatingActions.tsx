@@ -45,7 +45,7 @@ export const FloatingActions: React.FC<FloatingActionsProps> = ({
         id="floating-call-btn"
         href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`}
         aria-label="Call Sandhya Enterprises Rate Enquiry"
-        title={lang === 'kn' ? 'ದರ ವಿಚಾರಣೆ ಕರೆ: 7676398782' : 'Rate Enquiry: 7676398782'}
+        title={lang === 'kn' ? 'ಇಂದಿನ ದರಕ್ಕೆ ಕರೆ ಮಾಡಿ' : 'Call for Today\'s Rate'}
         className="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-orange-600 hover:bg-orange-700 text-white flex items-center justify-center shadow-lg transition-colors border border-orange-500"
       >
         <PhoneCall className="w-5 h-5" />

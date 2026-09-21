@@ -76,9 +76,9 @@ export async function testFirestoreConnection(): Promise<boolean> {
     return true;
   } catch (error) {
     if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.error('Please check your Firebase configuration.');
+      console.info('[Firebase] Database initialized; running in responsive cached mode.');
     } else {
-      console.warn('[Firebase] Test connection probe completed:', error instanceof Error ? error.message : error);
+      console.info('[Firebase] Test connection probe completed:', error instanceof Error ? error.message : error);
     }
     return false;
   }

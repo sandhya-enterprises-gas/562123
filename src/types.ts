@@ -58,7 +58,7 @@ export interface AccessoryItem {
 }
 
 export type UserRole = 'customer' | 'distributor' | 'admin';
-export type ActivePortalTab = 'website' | 'customer' | 'distributor' | 'admin' | 'gmail' | 'drive' | 'forms';
+export type ActivePortalTab = 'website' | 'customer' | 'distributor' | 'admin' | 'gmail';
 
 export type PaymentMode = 'cash' | 'online' | 'pending' | 'credit';
 export type OrderStatus = 'placed' | 'confirmed' | 'out_for_delivery' | 'delivered' | 'cancelled';

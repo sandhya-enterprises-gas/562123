@@ -14,8 +14,11 @@ import {
   Lock,
   ChevronDown,
   ArrowRight,
-  HardDrive,
-  ClipboardList
+  Wrench,
+  Users,
+  Calculator,
+  UtensilsCrossed,
+  ChevronRight
 } from 'lucide-react';
 import { Language, ActivePortalTab } from '../types';
 import { SandhyaLogo } from './SandhyaLogo';
@@ -27,6 +30,7 @@ interface HeaderProps {
   onOpenInquiryModal: () => void;
   activePortalTab?: ActivePortalTab;
   onNavigatePortal?: (tab: ActivePortalTab) => void;
+  onSelectHomeSection?: (sectionId: 'brands' | 'services' | 'customers' | 'calculator' | 'accessories' | 'contact') => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -34,7 +38,8 @@ export const Header: React.FC<HeaderProps> = ({
   onLanguageChange,
   onOpenInquiryModal,
   activePortalTab = 'website',
-  onNavigatePortal
+  onNavigatePortal,
+  onSelectHomeSection
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [portalDropdownOpen, setPortalDropdownOpen] = useState(false);
@@ -52,13 +57,13 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   const navLinks = [
-    { id: 'brands', labelEn: 'Gas Brands', labelKn: 'ಗ್ಯಾಸ್ ಬ್ರ್ಯಾಂಡ್‌ಗಳು', href: '#brands' },
-    { id: 'services', labelEn: 'Services', labelKn: 'ಸೇವೆಗಳು', href: '#services' },
-    { id: 'customers', labelEn: 'Who We Serve', labelKn: 'ಗ್ರಾಹಕರು', href: '#customers' },
-    { id: 'calculator', labelEn: 'Rate & Booking', labelKn: 'ಬುಕಿಂಗ್ & ದರ', href: '#calculator' },
-    { id: 'accessories', labelEn: 'Accessories', labelKn: 'ಉಪಕರಣಗಳು', href: '#accessories' },
-    { id: 'safety', labelEn: '24/7 Safety', labelKn: 'ಸುರಕ್ಷತೆ', href: '#safety' },
-    { id: 'contact', labelEn: 'Agency Location', labelKn: 'ಏಜೆನ್ಸಿ ವಿಳಾಸ', href: '#depot-locations-map' },
+    { id: 'brands', labelEn: 'Gas Brands', labelKn: 'ಗ್ಯಾಸ್ ಬ್ರ್ಯಾಂಡ್‌ಗಳು', icon: Flame, isSafetyGuide: false },
+    { id: 'services', labelEn: 'Services', labelKn: 'ಸೇವೆಗಳು', icon: Wrench, isSafetyGuide: false },
+    { id: 'customers', labelEn: 'Who We Serve', labelKn: 'ಗ್ರಾಹಕರು', icon: Users, isSafetyGuide: false },
+    { id: 'calculator', labelEn: 'Rate & Booking', labelKn: 'ಬುಕಿಂಗ್ & ದರ', icon: Calculator, isSafetyGuide: false },
+    { id: 'accessories', labelEn: 'Accessories', labelKn: 'ಉಪಕರಣಗಳು', icon: UtensilsCrossed, isSafetyGuide: false },
+    { id: 'safety', labelEn: 'Safety (Customer Portal)', labelKn: 'ಸುರಕ್ಷತೆ (ಗ್ರಾಹಕರಿಗೆ ಮಾತ್ರ)', icon: ShieldAlert, isSafetyGuide: true },
+    { id: 'contact', labelEn: 'Agency Location', labelKn: 'ಏಜೆನ್ಸಿ ವಿಳಾಸ', icon: MapPin, isSafetyGuide: false },
   ];
 
   const portalItems = [
@@ -101,26 +106,6 @@ export const Header: React.FC<HeaderProps> = ({
       icon: Mail,
       color: 'bg-red-600 text-white',
       badge: 'Gmail API'
-    },
-    {
-      id: 'drive' as ActivePortalTab,
-      nameEn: 'Google Drive Vault',
-      nameKn: 'ಡ್ರೈವ್ ದಾಖಲೆಗಳು',
-      descEn: 'GST Invoices, delivery challans & PESO safety docs',
-      descKn: 'ಇನ್‌ವಾಯ್ಸ್, ಡೆಲಿವರಿ ಚಲನ್ ಮತ್ತು ಸುರಕ್ಷತಾ ದಾಖಲೆಗಳು',
-      icon: HardDrive,
-      color: 'bg-blue-600 text-white',
-      badge: 'Drive API'
-    },
-    {
-      id: 'forms' as ActivePortalTab,
-      nameEn: 'Google Forms Hub',
-      nameKn: 'ಗೂಗಲ್ ಫಾರ್ಮ್ಸ್',
-      descEn: 'Commercial cylinder intake & safety audit surveys',
-      descKn: 'ಹೊಸ ಸಂಪರ್ಕ ಕೋರಿಕೆಗಳು & ತೃಪ್ತಿ ಸಮೀಕ್ಷೆಗಳು',
-      icon: ClipboardList,
-      color: 'bg-purple-600 text-white',
-      badge: 'Forms API'
     }
   ];
 
@@ -198,14 +183,32 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Desktop Navigation Links */}
           <nav className="hidden xl:flex items-center gap-5">
             {navLinks.map((link) => (
-              <a
+              <button
                 key={link.id}
-                href={link.href}
-                className="text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-orange-600 transition-colors py-1 relative group"
+                type="button"
+                onClick={() => {
+                  if (link.isSafetyGuide) {
+                    if (onNavigatePortal) onNavigatePortal('customer');
+                  } else if (onSelectHomeSection) {
+                    if (activePortalTab !== 'website' && onNavigatePortal) {
+                      onNavigatePortal('website');
+                    }
+                    onSelectHomeSection(link.id as any);
+                    const el = document.getElementById('home-sections-hub');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className={`text-xs font-bold uppercase tracking-wider transition-colors py-1 relative group flex items-center gap-1.5 cursor-pointer ${
+                  link.isSafetyGuide
+                    ? 'text-red-600 hover:text-red-700 bg-red-50 hover:bg-red-100 px-2 py-1 rounded-md border border-red-200'
+                    : 'text-slate-700 hover:text-orange-600'
+                }`}
               >
-                {lang === 'kn' ? link.labelKn : link.labelEn}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-600 transition-all duration-150 group-hover:w-full" />
-              </a>
+                <span>{lang === 'kn' ? link.labelKn : link.labelEn}</span>
+                {!link.isSafetyGuide && (
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-600 transition-all duration-150 group-hover:w-full" />
+                )}
+              </button>
             ))}
           </nav>
 
@@ -416,19 +419,60 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* Navigation Page Anchor Links */}
             <div className="space-y-1 pt-1">
-              <div className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-2 mb-1">
-                {lang === 'kn' ? 'ಪುಟಗಳು' : 'Menu Navigation'}
+              <div className="text-[10px] font-black uppercase tracking-wider text-slate-400 px-2 mb-1.5 flex items-center justify-between">
+                <span>{lang === 'kn' ? 'ಪುಟಗಳು (ವಿಭಾಗಗಳು)' : 'MENU PAGES'}</span>
+                <span className="text-[9px] text-orange-600 font-bold">{lang === 'kn' ? 'ತ್ವರಿತ ವೀಕ್ಷಣೆ' : 'Direct View'}</span>
               </div>
-              {navLinks.map((link) => (
-                <a
-                  key={link.id}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-orange-50 hover:text-orange-700 rounded-lg transition-colors"
-                >
-                  {lang === 'kn' ? link.labelKn : link.labelEn}
-                </a>
-              ))}
+              <div className="grid grid-cols-1 gap-1">
+                {navLinks.map((link) => {
+                  const LinkIcon = link.icon;
+                  return (
+                    <button
+                      key={link.id}
+                      type="button"
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        if (link.isSafetyGuide) {
+                          if (onNavigatePortal) onNavigatePortal('customer');
+                        } else if (onSelectHomeSection) {
+                          if (activePortalTab !== 'website' && onNavigatePortal) {
+                            onNavigatePortal('website');
+                          }
+                          onSelectHomeSection(link.id as any);
+                          const el = document.getElementById('home-sections-hub');
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                      className={`w-full flex items-center justify-between px-3 py-2.5 text-xs font-black uppercase tracking-wider rounded-xl transition-all border text-left cursor-pointer ${
+                        link.isSafetyGuide
+                          ? 'bg-red-50/70 border-red-200 text-red-900 hover:bg-red-100'
+                          : 'bg-white border-slate-200 text-slate-800 hover:bg-orange-50 hover:text-orange-700 hover:border-orange-200'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div
+                          className={`w-7 h-7 rounded-lg flex items-center justify-center ${
+                            link.isSafetyGuide
+                              ? 'bg-red-100 text-red-600'
+                              : 'bg-orange-100/80 text-orange-600'
+                          }`}
+                        >
+                          <LinkIcon className="w-3.5 h-3.5" />
+                        </div>
+                        <span>{lang === 'kn' ? link.labelKn : link.labelEn}</span>
+                      </div>
+
+                      {link.isSafetyGuide ? (
+                        <span className="text-[9px] bg-red-600 text-white font-bold px-2 py-0.5 rounded-full">
+                          {lang === 'kn' ? 'ಗ್ರಾಹಕರ ಲಾಗಿನ್' : 'Customer Login'}
+                        </span>
+                      ) : (
+                        <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Helpline Emergency Bar */}
@@ -441,9 +485,10 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
               <a
                 href={`tel:${BUSINESS_INFO.phoneHelpline}`}
-                className="font-black text-red-600 underline font-mono text-xs"
+                className="px-3 py-1 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider inline-flex items-center gap-1 shadow-xs transition-colors"
               >
-                +91 {BUSINESS_INFO.phoneHelpline}
+                <PhoneCall className="w-3 h-3" />
+                <span>{lang === 'kn' ? 'ತುರ್ತು ಕರೆ' : 'CALL'}</span>
               </a>
             </div>
 
