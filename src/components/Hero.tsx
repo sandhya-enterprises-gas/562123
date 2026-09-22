@@ -3,6 +3,7 @@ import { PhoneCall, MessageCircle, Truck, Flame, Sparkles, CheckCircle2, Chevron
 import { Language } from '../types';
 import { BUSINESS_INFO } from '../data/content';
 import heroImage from '../assets/images/sandhya_hero_banner_1788344672799.jpg';
+import sandhyaNewLogo from '../assets/images/sandhya_new_logo.png';
 
 interface HeroProps {
   lang: Language;
@@ -26,14 +27,22 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
           {/* Main Hero Left Content */}
           <div className="lg:col-span-7 space-y-4">
-            {/* Top Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-bold uppercase tracking-wider">
-              <Flame className="w-3.5 h-3.5 text-orange-400" />
-              <span>
-                {lang === 'kn'
-                  ? 'ಕಮರ್ಷಿಯಲ್ ಎಲ್‌ಪಿಜಿ ತಜ್ಞರು (ESTD. 2010)'
-                  : 'COMMERCIAL LPG SPECIALISTS (ESTD. 2010)'}
-              </span>
+            {/* Top Badge with Official Logo */}
+            <div className="flex items-center gap-3">
+              <img
+                src={sandhyaNewLogo}
+                alt="Sandhya Enterprises Official Logo"
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full drop-shadow-md flex-shrink-0 border-2 border-orange-500/40 bg-slate-900 p-0.5"
+                referrerPolicy="no-referrer"
+              />
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-bold uppercase tracking-wider">
+                <Flame className="w-3.5 h-3.5 text-orange-400" />
+                <span>
+                  {lang === 'kn'
+                    ? 'ಕಮರ್ಷಿಯಲ್ ಗ್ಯಾಸ್ ಸರ್ವಿಸ್ (ESTD. 2010)'
+                    : 'COMMERCIAL GAS SERVICE (ESTD. 2010)'}
+                </span>
+              </div>
             </div>
 
             {/* Main Heading */}
@@ -147,8 +156,13 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
                     {lang === 'kn' ? 'ಕಮರ್ಷಿಯಲ್ & ಡೊಮೆಸ್ಟಿಕ್ ಪೂರೈಕೆ' : 'Commercial & Domestic Network'}
                   </h3>
                 </div>
-                <div className="w-8 h-8 rounded-lg bg-orange-600/20 text-orange-400 border border-orange-500/30 flex items-center justify-center">
-                  <Flame className="w-4 h-4" />
+                <div className="w-10 h-10 rounded-full bg-slate-900 border border-orange-500/40 flex items-center justify-center p-0.5 overflow-hidden shadow-sm flex-shrink-0">
+                  <img
+                    src={sandhyaNewLogo}
+                    alt="Sandhya Seal"
+                    className="w-full h-full object-contain rounded-full"
+                    referrerPolicy="no-referrer"
+                  />
                 </div>
               </div>
 

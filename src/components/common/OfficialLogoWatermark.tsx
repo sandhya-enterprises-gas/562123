@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import newLogoPng from '../../assets/images/sandhya_new_logo.png';
 import officialLogoJpg from '../../assets/images/sandhya_official_logo_1788882010131.jpg';
 
-export const DEFAULT_LOGO_URL = officialLogoJpg || '/assets/sandhya_official_logo.jpg';
+export const DEFAULT_LOGO_URL = newLogoPng || '/assets/sandhya_new_logo.png' || officialLogoJpg;
 const STORAGE_KEY = 'sandhya_custom_logo_url';
 const OPACITY_STORAGE_KEY = 'sandhya_watermark_opacity';
 
 export function getOfficialLogoUrl(): string {
   if (typeof window === 'undefined') return DEFAULT_LOGO_URL;
   const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored && stored.trim().length > 0 && stored !== 'null' && stored !== 'undefined' && !stored.includes('sandhya_seal_transparent')) {
+  if (stored && stored.trim().length > 0 && stored !== 'null' && stored !== 'undefined') {
     return stored;
   }
   return DEFAULT_LOGO_URL;
@@ -171,8 +172,8 @@ export const OfficialLogoWatermark: React.FC<OfficialLogoWatermarkProps> = ({
     if (fallbackAttempt === 0 && logoUrl !== DEFAULT_LOGO_URL) {
       setLogoUrl(DEFAULT_LOGO_URL);
       setFallbackAttempt(1);
-    } else if (fallbackAttempt === 1 && logoUrl !== '/assets/sandhya_official_logo.jpg') {
-      setLogoUrl('/assets/sandhya_official_logo.jpg');
+    } else if (fallbackAttempt === 1 && logoUrl !== '/assets/sandhya_new_logo.png') {
+      setLogoUrl('/assets/sandhya_new_logo.png');
       setFallbackAttempt(2);
     } else {
       setUseVectorFallback(true);
@@ -235,8 +236,8 @@ export const OfficialLogoBadge: React.FC<{
     if (fallbackAttempt === 0 && logoUrl !== DEFAULT_LOGO_URL) {
       setLogoUrl(DEFAULT_LOGO_URL);
       setFallbackAttempt(1);
-    } else if (fallbackAttempt === 1 && logoUrl !== '/assets/sandhya_official_logo.jpg') {
-      setLogoUrl('/assets/sandhya_official_logo.jpg');
+    } else if (fallbackAttempt === 1 && logoUrl !== '/assets/sandhya_new_logo.png') {
+      setLogoUrl('/assets/sandhya_new_logo.png');
       setFallbackAttempt(2);
     } else {
       setUseVectorFallback(true);

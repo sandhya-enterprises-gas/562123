@@ -807,7 +807,7 @@ export const AdminCommandCenter: React.FC<AdminCommandCenterProps> = ({ lang }) 
                   type="button"
                   onClick={() => {
                     setOfficialLogoUrl('');
-                    setCurrentLogo('/assets/sandhya_official_logo.jpg');
+                    setCurrentLogo('/assets/sandhya_new_logo.png');
                     setWatermarkOpacity(0.04);
                     setOpacityValue(0.04);
                     setLogoSaveSuccess(true);
