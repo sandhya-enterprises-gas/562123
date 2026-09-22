@@ -225,11 +225,18 @@ async function startServer() {
       server: { middlewareMode: true },
       appType: "spa",
     });
+    // Redirect root / to /562123/ so Vite base: '/562123/' is cleanly served
+    app.get("/", (req, res) => {
+      res.redirect("/562123/");
+    });
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
     app.use('/562123', express.static(distPath));
+    app.get(["/", "/562123"], (req, res) => {
+      res.redirect("/562123/");
+    });
     app.get('*', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
