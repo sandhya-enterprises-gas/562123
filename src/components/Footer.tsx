@@ -1,8 +1,25 @@
 import React from 'react';
-import { Flame, PhoneCall, MessageCircle, Mail, MapPin, Globe, Instagram, Facebook, ShieldCheck, Heart, ShieldAlert } from 'lucide-react';
+import {
+  Flame,
+  PhoneCall,
+  MessageCircle,
+  MapPin,
+  Mail,
+  ShieldCheck,
+  Building,
+  Award,
+  ShieldAlert,
+  Globe,
+  Instagram,
+  Facebook,
+  Truck,
+  User,
+  Calculator
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Language } from '../types';
-import { SandhyaLogo } from './SandhyaLogo';
 import { BUSINESS_INFO } from '../data/content';
+import { SandhyaLogo } from './SandhyaLogo';
 
 interface FooterProps {
   lang: Language;
@@ -11,52 +28,31 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
   return (
-    <footer className="bg-slate-950 text-slate-400 pt-10 pb-8 border-t border-slate-800 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 lg:gap-8 pb-8 border-b border-slate-800">
-          {/* Col 1: Brand & Bio */}
-          <div className="lg:col-span-4 space-y-3">
-            <SandhyaLogo size="md" inverted />
-            <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
+    <footer className="bg-slate-950 text-slate-300 border-t border-slate-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-8 border-b border-slate-800/80">
+          {/* Col 1: Brand & Identity */}
+          <div className="lg:col-span-4 space-y-3.5">
+            <Link to="/" className="inline-block">
+              <SandhyaLogo size="lg" />
+            </Link>
+
+            <p className="text-xs text-slate-400 leading-relaxed">
               {lang === 'kn'
-                ? '೨೦೧೦ ರಿಂದ ನೆಲಮಂಗಲ, ತುಮಕೂರು, ಶಿರಾ ಮತ್ತು ಸುತ್ತಮುತ್ತಲಿನ ಹೋಟೆಲ್‌ಗಳು, ರೆಸ್ಟೋರೆಂಟ್‌ಗಳು ಮತ್ತು ಕೈಗಾರಿಕೆಗಳಿಗೆ ಅತ್ಯುತ್ತಮ ಕಮರ್ಷಿಯಲ್ ಎಲ್‌ಪಿಜಿ ಸಿಲಿಂಡರ್ ಪೂರೈಕೆ ಹಾಗೂ ಗ್ಯಾಸ್ ಪೈಪ್‌ಲೈನ್ ಸೇವೆ.'
-                : 'Premier authorized distributor for Bharat Gas, Go Gas, and Power Gas commercial & domestic cylinders with 24/7 pipeline and leakage support across Karnataka.'}
+                ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ - ನೆಲಮಂಗಲ ಮತ್ತು ಸುತ್ತಮುತ್ತಲಿನ ಹೋಟೆಲ್, ಕ್ಯಾಟರಿಂಗ್, ಮತ್ತು ಕೈಗಾರಿಕೆಗಳಿಗೆ ಅಧಿಕೃತ ವಾಣಿಜ್ಯ ಎಲ್‌ಪಿಜಿ ಸಿಲಿಂಡರ್ ವಿತರಕರು. 100% ನಿಖರ ತೂಕ ಮತ್ತು ವೇಗದ ಡೋರ್‌ಸ್ಟೆಪ್ ಸೇವೆ.'
+                : 'Sandhya Enterprises - Authorized Commercial LPG Gas Cylinders & Manifold Pipeline Solutions in Nelamangala (562123). Verified net weight, tamper-proof seals & dedicated express delivery fleet.'}
             </p>
 
-            <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300">
-              <span className="font-bold text-orange-400">
-                {lang === 'kn' ? 'ಮುಖ್ಯ ಸೂಚನೆ: ' : 'Pricing Policy: '}
-              </span>
-              {lang === 'kn'
-                ? 'ಪ್ರತಿ ತಿಂಗಳು ಗ್ಯಾಸ್ ದರ ಪರಿಷ್ಕರಣೆಯಾಗುವುದರಿಂದ, ಇಂದಿನ ದರಕ್ಕಾಗಿ 7676398782 ಗೆ ಕರೆ ಮಾಡಿ.'
-                : 'Rates revise every month. Call Rate Enquiry 7676398782 to get today\'s best wholesale price.'}
-            </div>
-
-            {/* Official Registration, GST & MSME Badge */}
-            <div className="p-3 rounded-lg bg-slate-900/90 border border-slate-800/80 text-xs space-y-1.5 shadow-2xs">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-black uppercase tracking-widest text-amber-400 flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                  {lang === 'kn' ? 'ಅಧಿಕೃತ ನೋಂದಣಿ ವಿವರಗಳು' : 'REGISTRATION & TAX COMPLIANCE'}
-                </span>
-                <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-800/50 font-bold">
-                  ✓ VERIFIED
-                </span>
-              </div>
-              <div className="text-[11px] text-slate-300">
-                <span className="text-slate-400">{lang === 'kn' ? 'ಪ್ರೊಪ್ರೈಟರ್ / ಮಾಲೀಕರು:' : 'Proprietor:'}</span>{' '}
-                <strong className="text-amber-300 font-bold tracking-wide">
-                  {lang === 'kn' ? `${BUSINESS_INFO.proprietorKn} (${BUSINESS_INFO.proprietor})` : BUSINESS_INFO.proprietor}
-                </strong>
-              </div>
-              <div className="text-[11px] font-mono text-slate-400 flex items-center justify-between">
-                <span>GSTIN:</span>
-                <span className="text-white font-bold bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700">
+            {/* Official Registrations */}
+            <div className="space-y-1 text-xs text-slate-400 pt-1">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">GSTIN:</span>
+                <span className="text-white font-mono font-bold bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700">
                   {BUSINESS_INFO.gstin}
                 </span>
               </div>
-              <div className="text-[11px] font-mono text-slate-400 flex items-center justify-between">
-                <span>UDYAM:</span>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">UDYAM:</span>
                 <span className="text-white font-bold bg-slate-800 px-1.5 py-0.5 rounded border border-slate-700">
                   {BUSINESS_INFO.udyam}
                 </span>
@@ -65,55 +61,94 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
           </div>
 
           {/* Col 2: Quick Links */}
-          <div className="lg:col-span-2 space-y-2.5">
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-white">
-              {lang === 'kn' ? 'ತ್ವರಿತ ಲಿಂಕ್‌ಗಳು' : 'NAVIGATION'}
+          <div className="lg:col-span-3 space-y-2.5">
+            <h4 className="text-[10px] font-black uppercase tracking-widest text-amber-400">
+              {lang === 'kn' ? 'ತ್ವರಿತ ಪುಟಗಳು' : 'DIRECT NAVIGATION'}
             </h4>
             <ul className="space-y-1.5 text-xs">
               <li>
-                <a href="#brands" className="hover:text-orange-400 transition-colors">
-                  {lang === 'kn' ? 'ಗ್ಯಾಸ್ ಬ್ರ್ಯಾಂಡ್‌ಗಳು' : 'Gas Brands Range'}
-                </a>
+                <Link to="/" className="hover:text-amber-400 transition-colors flex items-center gap-1.5">
+                  <span>•</span>
+                  <span>{lang === 'kn' ? 'ಮುಖ್ಯ ಪುಟ (ಮುಖಪುಟ)' : 'Home Page'}</span>
+                </Link>
               </li>
               <li>
-                <a href="#services" className="hover:text-orange-400 transition-colors">
-                  {lang === 'kn' ? 'ನಮ್ಮ ಸೇವೆಗಳು' : 'Commercial Services'}
-                </a>
+                <Link to="/booking" className="hover:text-amber-400 text-orange-400 font-bold transition-colors flex items-center gap-1.5">
+                  <Flame className="w-3 h-3 text-orange-500" />
+                  <span>{lang === 'kn' ? 'ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್' : 'Cylinder Booking'}</span>
+                </Link>
               </li>
               <li>
-                <a href="#customers" className="hover:text-orange-400 transition-colors">
-                  {lang === 'kn' ? 'ಯಾರಿಗೆಲ್ಲ ಲಭ್ಯ?' : 'Who We Serve'}
-                </a>
+                <Link to="/track-order" className="hover:text-amber-400 text-amber-300 font-bold transition-colors flex items-center gap-1.5">
+                  <Truck className="w-3 h-3 text-amber-400" />
+                  <span>{lang === 'kn' ? 'ಲೈವ್ ಆರ್ಡರ್ ಟ್ರ್ಯಾಕಿಂಗ್' : 'Track Order (Live)'}</span>
+                </Link>
               </li>
               <li>
-                <a href="#calculator" className="hover:text-orange-400 transition-colors">
-                  {lang === 'kn' ? 'ದರ & ಬುಕಿಂಗ್' : 'Rate Calculator'}
-                </a>
+                <Link to="/customer" className="hover:text-amber-400 text-emerald-400 font-bold transition-colors flex items-center gap-1.5">
+                  <User className="w-3 h-3 text-emerald-400" />
+                  <span>{lang === 'kn' ? 'ಗ್ರಾಹಕರ ಪೋರ್ಟಲ್ & ಲಾಗಿನ್' : 'Customer Portal & Login'}</span>
+                </Link>
               </li>
               <li>
-                <a href="#accessories" className="hover:text-orange-400 transition-colors">
-                  {lang === 'kn' ? 'ಕಮರ್ಷಿಯಲ್ ಸ್ಟೌಗಳು' : 'Burners & Fittings'}
-                </a>
+                <Link to="/distributor" className="hover:text-amber-400 text-blue-400 font-bold transition-colors flex items-center gap-1.5">
+                  <Truck className="w-3 h-3 text-blue-400" />
+                  <span>{lang === 'kn' ? 'ಡೆಲಿವರಿ ಪಾರ್ಟ್ನರ್ ಡೆಸ್ಕ್' : 'Delivery Partner Desk'}</span>
+                </Link>
               </li>
               <li>
-                <a href="#safety" className="hover:text-orange-400 transition-colors">
-                  {lang === 'kn' ? '24/7 ತುರ್ತು ಸುರಕ್ಷತೆ' : 'Safety Protocols'}
-                </a>
+                <Link to="/brands" className="hover:text-amber-400 transition-colors flex items-center gap-1.5">
+                  <span>•</span>
+                  <span>{lang === 'kn' ? 'ಗ್ಯಾಸ್ ಬ್ರ್ಯಾಂಡ್‌ಗಳು' : 'Gas Brands Range'}</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/services" className="hover:text-amber-400 transition-colors flex items-center gap-1.5">
+                  <span>•</span>
+                  <span>{lang === 'kn' ? 'ನಮ್ಮ ಸೇವೆಗಳು & ಪೈಪ್‌ಲೈನ್' : 'Commercial Services'}</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/customers" className="hover:text-amber-400 transition-colors flex items-center gap-1.5">
+                  <span>•</span>
+                  <span>{lang === 'kn' ? 'ಯಾರಿಗೆಲ್ಲ ಲಭ್ಯ?' : 'Who We Serve'}</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/accessories" className="hover:text-amber-400 transition-colors flex items-center gap-1.5">
+                  <span>•</span>
+                  <span>{lang === 'kn' ? 'ಕಮರ್ಷಿಯಲ್ ಬರ್ನರ್ & ಉಪಕರಣಗಳು' : 'Burners & Fittings'}</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/safety" className="hover:text-red-400 transition-colors flex items-center gap-1.5">
+                  <ShieldAlert className="w-3 h-3 text-red-500" />
+                  <span>{lang === 'kn' ? 'ತುರ್ತು ಸುರಕ್ಷತಾ ಮಾರ್ಗದರ್ಶಿ' : 'Safety Protocols'}</span>
+                </Link>
               </li>
             </ul>
           </div>
 
           {/* Col 3: Brands & Hubs */}
-          <div className="lg:col-span-3 space-y-2.5">
+          <div className="lg:col-span-2 space-y-2.5">
             <h4 className="text-[10px] font-black uppercase tracking-widest text-white">
               {lang === 'kn' ? 'ಬ್ರ್ಯಾಂಡ್‌ಗಳು & ಪ್ರದೇಶಗಳು' : 'BRANDS & CORRIDORS'}
             </h4>
             <div className="space-y-1.5 text-xs text-slate-400">
-              <div className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-slate-500"></span><strong className="text-white">Bharat Gas</strong>: 19kg & 47.5kg Industrial</div>
-              <div className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-slate-500"></span><strong className="text-white">GoGas</strong>: 17kg, 21kg & 33kg Commercial & Elite</div>
-              <div className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-slate-500"></span><strong className="text-white">Power Gas</strong>: Commercial & Domestic LPG</div>
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+                <strong className="text-white">Bharat Gas</strong>: 19kg & 47.5kg
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                <strong className="text-white">GoGas</strong>: 17kg, 21kg & 33kg
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <strong className="text-white">Power Gas</strong>: Commercial & Domestic
+              </div>
               <div className="pt-1.5 text-slate-400 text-[11px] leading-relaxed">
-                <strong className="text-orange-400">Coverage:</strong> Nelamangala Rural/Town, Tumkur Road, Sira, Dobbaspet, Bangalore Rural.
+                <strong className="text-orange-400">Coverage:</strong> Nelamangala (562123), Dobbaspet, Tumkur Road, Bangalore Rural.
               </div>
             </div>
           </div>
@@ -131,21 +166,32 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
               <div className="space-y-1.5 pt-1">
                 <div className="flex items-center gap-1.5">
                   <PhoneCall className="w-3.5 h-3.5 text-orange-400 flex-shrink-0" />
-                  <span className="text-[10px] text-slate-400 font-bold uppercase">{lang === 'kn' ? 'ದರ ವಿಚಾರಣೆ:' : 'Rate Enquiry:'}</span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">
+                    {lang === 'kn' ? 'ದರ ವಿಚಾರಣೆ:' : 'Rate Enquiry:'}
+                  </span>
                   <a href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`} className="text-white hover:text-orange-400 font-bold ml-auto font-mono">
                     +91 {BUSINESS_INFO.phoneRateEnquiry}
                   </a>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <MessageCircle className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                  <span className="text-[10px] text-slate-400 font-bold uppercase">{lang === 'kn' ? 'ಇತರ / WhatsApp:' : 'Other / WhatsApp:'}</span>
-                  <a href={`https://wa.me/91${BUSINESS_INFO.phoneWhatsApp}`} className="text-white hover:text-emerald-400 font-bold ml-auto font-mono">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">
+                    WhatsApp:
+                  </span>
+                  <a
+                    href={`https://wa.me/91${BUSINESS_INFO.phoneWhatsApp}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white hover:text-emerald-400 font-bold ml-auto font-mono"
+                  >
                     +91 {BUSINESS_INFO.phoneWhatsApp}
                   </a>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <ShieldAlert className="w-3.5 h-3.5 text-red-400 flex-shrink-0" />
-                  <span className="text-[10px] text-slate-400 font-bold uppercase">{lang === 'kn' ? 'ಸಹಾಯವಾಣಿ ಮಾತ್ರ:' : 'Helpline Only:'}</span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">
+                    {lang === 'kn' ? 'ಸಹಾಯವಾಣಿ:' : 'Helpline:'}
+                  </span>
                   <a href={`tel:${BUSINESS_INFO.phoneHelpline}`} className="text-white hover:text-red-400 font-bold ml-auto font-mono">
                     +91 {BUSINESS_INFO.phoneHelpline}
                   </a>
@@ -168,7 +214,9 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
               © {new Date().getFullYear()} {BUSINESS_INFO.name}. All Rights Reserved.
             </div>
             <div className="text-[11px] text-slate-400">
-              <span className="text-amber-400 font-semibold">{lang === 'kn' ? `ಪ್ರೊ: ${BUSINESS_INFO.proprietorKn}` : `Pro: ${BUSINESS_INFO.proprietor}`}</span>
+              <span className="text-amber-400 font-semibold">
+                {lang === 'kn' ? `ಪ್ರೊ: ${BUSINESS_INFO.proprietorKn}` : `Pro: ${BUSINESS_INFO.proprietor}`}
+              </span>
               {' • '}
               <span>GSTIN: <strong className="text-slate-300 font-mono">{BUSINESS_INFO.gstin}</strong></span>
               {' • '}

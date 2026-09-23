@@ -1,5 +1,6 @@
 import React from 'react';
-import { PhoneCall, MessageCircle, Truck, Flame, Sparkles, CheckCircle2, ChevronRight, MapPin, AlertTriangle } from 'lucide-react';
+import { PhoneCall, MessageCircle, Truck, Flame, Sparkles, CheckCircle2, ChevronRight, MapPin, AlertTriangle, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Language } from '../types';
 import { BUSINESS_INFO } from '../data/content';
 import heroImage from '../assets/images/sandhya_hero_banner_1788344672799.jpg';
@@ -93,14 +94,23 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
 
             {/* Quick Action CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-1">
-              <a
-                id="hero-primary-call-btn"
-                href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`}
+              <Link
+                to="/booking"
+                id="hero-book-cylinder-btn"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all active:scale-95"
               >
-                <PhoneCall className="w-4 h-4" />
-                <span>{lang === 'kn' ? 'ಇಂದಿನ ದರಕ್ಕೆ ಕರೆ ಮಾಡಿ' : 'CALL FOR TODAY\'S RATE'}</span>
-              </a>
+                <Flame className="w-4 h-4 text-amber-300" />
+                <span>{lang === 'kn' ? 'ಸಿಲಿಂಡರ್ ಬುಕ್ ಮಾಡಿ' : 'BOOK CYLINDERS NOW'}</span>
+              </Link>
+
+              <Link
+                to="/track-order"
+                id="hero-track-order-btn"
+                className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40 font-bold text-xs uppercase tracking-wider transition-colors shadow-xs"
+              >
+                <Truck className="w-4 h-4 text-amber-400" />
+                <span>{lang === 'kn' ? 'ಆರ್ಡರ್ ಟ್ರ್ಯಾಕಿಂಗ್' : 'TRACK ORDER'}</span>
+              </Link>
 
               <a
                 id="hero-whatsapp-booking-btn"
@@ -111,20 +121,20 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs uppercase tracking-wider shadow-md transition-all active:scale-95"
               >
                 <MessageCircle className="w-4 h-4" />
-                <span>{lang === 'kn' ? 'ವಾಟ್ಸಾಪ್‌ನಲ್ಲಿ ವಿಚಾರಿಸಿ' : 'WHATSAPP ENQUIRY'}</span>
+                <span>{lang === 'kn' ? 'ವಾಟ್ಸಾಪ್' : 'WHATSAPP'}</span>
               </a>
 
-              <button
-                id="hero-quote-calculator-btn"
-                onClick={onOpenInquiryModal}
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs uppercase tracking-wider transition-colors"
+              <a
+                id="hero-primary-call-btn"
+                href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`}
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs uppercase tracking-wider transition-colors"
               >
-                <span>{lang === 'kn' ? 'ಆರ್ಡರ್ ವಿಚಾರಣೆ' : 'REQUEST QUOTE'}</span>
-                <ChevronRight className="w-4 h-4" />
-              </button>
+                <PhoneCall className="w-3.5 h-3.5 text-orange-400" />
+                <span>{lang === 'kn' ? 'ದರ ಕರೆ' : 'CALL DESK'}</span>
+              </a>
             </div>
 
             {/* Quick feature checks */}

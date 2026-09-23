@@ -479,6 +479,21 @@ class PortalStore {
     return newOrder;
   }
 
+  public addOrder(order: OrderRecord): OrderRecord {
+    this.state.orders.unshift(order);
+    this.addAuditLog({
+      actorRole: 'customer',
+      actorName: `${order.customerName} (${order.businessName})`,
+      actionType: 'CUSTOMER_ORDER_PLACED',
+      summaryEn: `New Order: ${order.quantity}x ${order.cylinderBrand} ${order.cylinderType} booked for ${order.businessName}`,
+      summaryKn: `ಹೊಸ ಬೇಡಿಕೆ: ${order.businessName} ಅವರಿಂದ ${order.quantity} ${order.cylinderBrand} ಸಿಲಿಂಡರ್ ಬುಕ್ ಆಗಿದೆ.`,
+      targetCustomer: order.businessName,
+      orderId: order.id
+    });
+    this.saveState();
+    return order;
+  }
+
   // Distributor Operations
   public updateOrderStatus(orderId: string, status: OrderStatus, distributorName: string = 'Distributor Staff') {
     const order = this.state.orders.find((o) => o.id === orderId);

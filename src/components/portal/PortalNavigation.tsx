@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Globe, User, Truck, Shield, Lock, Unlock, LogOut, CheckCircle2, Mail, Key, ArrowLeft } from 'lucide-react';
+import { Globe, User, Truck, Shield, Lock, Unlock, LogOut, CheckCircle2, Mail, Key, ArrowLeft, Flame } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import { ActivePortalTab, Language } from '../../types';
 import { portalStore, PortalState } from '../../data/portalStore';
 import { portalAuth, PortalUserSession } from '../../lib/portalAuth';
@@ -18,6 +19,7 @@ export const PortalNavigation: React.FC<PortalNavigationProps> = ({
 }) => {
   const [storeState, setStoreState] = useState<PortalState>(portalStore.getState());
   const [authSession, setAuthSession] = useState<PortalUserSession | null>(portalAuth.getSession());
+  const location = useLocation();
 
   useEffect(() => {
     const unsubStore = portalStore.subscribe(() => {
@@ -44,17 +46,18 @@ export const PortalNavigation: React.FC<PortalNavigationProps> = ({
     portalStore.lockAdmin();
   };
 
+  const currentPath = location.pathname;
+
   return (
     <div className="bg-slate-950 text-white border-b border-slate-800 sticky top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 flex items-center justify-between h-14">
         {/* Left: Official Logo + Navigation Tabs */}
-        <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto py-1 text-xs no-scrollbar">
-          {/* Official Brand Logo - Perfectly aligned next to 'ಮುಖ್ಯ ವೆಬ್‌ಸೈಟ್' button */}
-          <button
-            type="button"
-            id="nav-brand-logo-btn"
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto py-1 text-xs no-scrollbar">
+          {/* Official Brand Logo */}
+          <Link
+            to="/"
             onClick={() => onSelectTab('website')}
-            title={lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ - ಅಧಿಕೃತ ಮುದ್ರೆ' : 'Sandhya Enterprises - Official Seal'}
+            title={lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ - ಮುಖಪುಟ' : 'Sandhya Enterprises - Home'}
             className="flex items-center gap-2 shrink-0 group focus:outline-none transition-transform active:scale-95 text-left"
           >
             <OfficialLogoBadge
@@ -69,27 +72,53 @@ export const PortalNavigation: React.FC<PortalNavigationProps> = ({
                 LPG AGENCY
               </span>
             </div>
-          </button>
+          </Link>
 
           <div className="h-5 w-px bg-slate-800 hidden sm:block shrink-0" />
 
           {/* Main Website / Return Action */}
-          <button
-            type="button"
+          <Link
+            to="/"
             id="nav-btn-website"
             onClick={() => onSelectTab('website')}
             className="px-3 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap shrink-0 shadow-xs ring-1 ring-orange-400/40"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>{lang === 'kn' ? 'ಮುಖ್ಯ ವೆಬ್‌ಸೈಟ್‌ಗೆ ಹಿಂತಿರುಗಿ' : '← Back to Website'}</span>
-          </button>
+            <span>{lang === 'kn' ? 'ಮುಖ್ಯ ವೆಬ್‌ಸೈಟ್' : '← Main Website'}</span>
+          </Link>
+
+          {/* Cylinder Booking */}
+          <Link
+            to="/booking"
+            className={`px-2.5 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
+              currentPath === '/booking'
+                ? 'bg-amber-500 text-slate-950 shadow-xs'
+                : 'text-slate-300 hover:text-white hover:bg-slate-800'
+            }`}
+          >
+            <Flame className="w-3.5 h-3.5 text-orange-400" />
+            <span>{lang === 'kn' ? 'ಬುಕಿಂಗ್' : 'Booking'}</span>
+          </Link>
+
+          {/* Track Order */}
+          <Link
+            to="/track-order"
+            className={`px-2.5 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
+              currentPath === '/track-order'
+                ? 'bg-amber-500 text-slate-950 shadow-xs'
+                : 'text-slate-300 hover:text-white hover:bg-slate-800'
+            }`}
+          >
+            <Truck className="w-3.5 h-3.5 text-amber-400" />
+            <span>{lang === 'kn' ? 'ಟ್ರ್ಯಾಕಿಂಗ್' : 'Track Order'}</span>
+          </Link>
 
           {/* Customer Portal (Private Account Gate) */}
-          <button
-            type="button"
+          <Link
+            to="/customer"
             onClick={() => onSelectTab('customer')}
-            className={`px-3 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
-              activeTab === 'customer'
+            className={`px-2.5 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
+              activeTab === 'customer' || currentPath === '/customer'
                 ? 'bg-orange-600 text-white shadow-xs ring-1 ring-orange-400/30'
                 : 'text-slate-300 hover:text-white hover:bg-slate-800'
             }`}
@@ -101,14 +130,14 @@ export const PortalNavigation: React.FC<PortalNavigationProps> = ({
             {(currentCustomer || authSession?.role === 'customer') && (
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
             )}
-          </button>
+          </Link>
 
           {/* Distributor Desk (Private Staff Gate) */}
-          <button
-            type="button"
+          <Link
+            to="/distributor"
             onClick={() => onSelectTab('distributor')}
-            className={`px-3 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
-              activeTab === 'distributor'
+            className={`px-2.5 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
+              activeTab === 'distributor' || currentPath === '/distributor'
                 ? 'bg-blue-600 text-white shadow-xs ring-1 ring-blue-400/30'
                 : 'text-slate-300 hover:text-white hover:bg-slate-800'
             }`}
@@ -120,42 +149,42 @@ export const PortalNavigation: React.FC<PortalNavigationProps> = ({
             {isDistributorAuth && (
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
             )}
-          </button>
+          </Link>
 
           {/* Admin Command Center (Private Management Gate) */}
-          <button
-            type="button"
+          <Link
+            to="/admin"
             onClick={() => onSelectTab('admin')}
-            className={`px-3 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
-              activeTab === 'admin'
+            className={`px-2.5 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
+              activeTab === 'admin' || currentPath === '/admin'
                 ? 'bg-purple-600 text-white shadow-xs ring-1 ring-purple-400/30'
                 : 'text-slate-300 hover:text-white hover:bg-slate-800'
             }`}
           >
             <Shield className={`w-3.5 h-3.5 ${isAdminAuth ? 'text-emerald-400' : 'text-purple-400'}`} />
             <span>
-              {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಪ್ಯಾನೆಲ್' : 'Admin Command'}
+              {lang === 'kn' ? 'ಅಡ್ಮಿನ್' : 'Admin'}
             </span>
             {isAdminAuth && (
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-0.5" />
             )}
-          </button>
+          </Link>
 
           {/* Gmail Communications Desk */}
-          <button
-            type="button"
+          <Link
+            to="/gmail"
             onClick={() => onSelectTab('gmail')}
-            className={`px-3 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
-              activeTab === 'gmail'
+            className={`px-2.5 py-1.5 rounded-lg font-black uppercase tracking-wider text-[11px] flex items-center gap-1.5 transition-all whitespace-nowrap ${
+              activeTab === 'gmail' || currentPath === '/gmail'
                 ? 'bg-red-600 text-white shadow-xs'
                 : 'text-slate-300 hover:text-white hover:bg-slate-800'
             }`}
           >
             <Mail className="w-3.5 h-3.5 text-red-400" />
             <span>
-              {lang === 'kn' ? 'ಜಿಮೇಲ್ ಡೆಸ್ಕ್' : 'Official Mail'}
+              {lang === 'kn' ? 'ಜಿಮೇಲ್' : 'Mail'}
             </span>
-          </button>
+          </Link>
         </div>
 
         {/* Right Info: Authenticated User Status or Security Policy */}
@@ -173,7 +202,7 @@ export const PortalNavigation: React.FC<PortalNavigationProps> = ({
                 type="button"
                 onClick={handleLogout}
                 title="Sign Out Session"
-                className="p-1 rounded-full hover:bg-slate-800 text-slate-400 hover:text-red-400 transition"
+                className="p-1 rounded-full hover:bg-slate-800 text-slate-400 hover:text-red-400 transition cursor-pointer"
               >
                 <LogOut className="w-3 h-3" />
               </button>
@@ -182,7 +211,7 @@ export const PortalNavigation: React.FC<PortalNavigationProps> = ({
             <div className="hidden lg:flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1 rounded-full text-slate-300 font-bold">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span className="text-[10px] uppercase tracking-wider text-slate-300">
-                {lang === 'kn' ? '🔒 ಅಧಿಕೃತ RBAC ಎನ್‌ಕ್ರಿಪ್ಶನ್' : '🔒 Official Role-Based Portals'}
+                {lang === 'kn' ? '🔒 ಅಧಿಕೃತ RBAC ಎನ್‌ಕ್ರಿಪ್ಶನ್' : '🔒 Verified Portals'}
               </span>
             </div>
           )}
