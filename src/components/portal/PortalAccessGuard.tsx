@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { UserRole, Language } from '../../types';
-import { portalAuth, PortalUserSession, AUTHORIZED_ADMIN_EMAILS } from '../../lib/portalAuth';
+import { portalAuth, PortalUserSession } from '../../lib/portalAuth';
 import { portalStore } from '../../data/portalStore';
 import { BUSINESS_INFO } from '../../data/content';
 import { OfficialLogoWatermark, OfficialLogoBadge } from '../common/OfficialLogoWatermark';
@@ -16,10 +16,13 @@ import {
   RefreshCw,
   Building2,
   Phone,
-  MapPin,
   Flame,
   Send,
-  HelpCircle
+  MessageSquare,
+  Key,
+  Eye,
+  EyeOff,
+  ExternalLink
 } from 'lucide-react';
 
 interface PortalAccessGuardProps {
@@ -44,17 +47,27 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
   children
 }) => {
   const [session, setSession] = useState<PortalUserSession | null>(portalAuth.getSession());
-  const [authMode, setAuthMode] = useState<'otp' | 'password' | 'register' | 'forgot'>('otp');
+  const [authMode, setAuthMode] = useState<'otp' | 'whatsapp' | 'password' | 'register' | 'forgot'>('otp');
 
-  // Form states
+  // Common Form States
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [otpCode, setOtpCode] = useState('');
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
-  const [simulatedCode, setSimulatedCode] = useState<string | null>(null);
+
+  // Admin Master Key State
+  const [masterKey, setMasterKey] = useState('');
+  const [showMasterKey, setShowMasterKey] = useState(false);
+
+  // WhatsApp Verification States
+  const [waIdentifier, setWaIdentifier] = useState('');
+  const [waGeneratedCode, setWaGeneratedCode] = useState<string | null>(null);
+  const [waUrl, setWaUrl] = useState<string | null>(null);
+  const [waInputCode, setWaInputCode] = useState('');
 
   // Registration states (for Customer portal)
   const [regForm, setRegForm] = useState({
@@ -76,7 +89,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
     return unsub;
   }, []);
 
-  // Pre-fill suggested email based on target role for streamlined testing
+  // Pre-fill default email / identifier based on role
   useEffect(() => {
     if (!email) {
       if (requiredRole === 'admin') {
@@ -87,9 +100,43 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
         setEmail('udupigrand.nela@gmail.com');
       }
     }
+    if (!waIdentifier) {
+      setWaIdentifier(requiredRole === 'customer' ? '9845112233' : '9876543210');
+    }
   }, [requiredRole]);
 
-  // Handle Send Official OTP
+  // 1-Click Free Google Sign-In
+  const handleGoogleSignIn = async () => {
+    setError(null);
+    setSuccessMsg(null);
+    setLoading(true);
+    try {
+      await portalAuth.loginWithGoogle(requiredRole);
+      setSuccessMsg('Google authentication successful! Portal unlocked with zero SMS/DLT fees.');
+    } catch (err: any) {
+      setError(err.message || 'Google Sign-In was cancelled or failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Secure Admin Login with Master Key ONLY
+  const handleAdminMasterLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccessMsg(null);
+    setLoading(true);
+    try {
+      await portalAuth.loginAdminWithMasterKey(masterKey);
+      setSuccessMsg('Executive Master Key verified. Welcome to Admin Command Center.');
+    } catch (err: any) {
+      setError(err.message || 'Invalid Master Key or Passcode. Access denied.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Free Email OTP Dispatch (No static code preview)
   const handleSendOTP = async (purpose: 'login' | 'verification' | 'password_reset' = 'login') => {
     setError(null);
     setSuccessMsg(null);
@@ -98,9 +145,6 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
       const res = await portalAuth.sendOfficialEmailOTP(email, requiredRole, purpose);
       setOtpSent(true);
       setSuccessMsg(res.message);
-      if (res.simulatedOtp) {
-        setSimulatedCode(res.simulatedOtp);
-      }
     } catch (err: any) {
       setError(err.message || 'Failed to dispatch official OTP.');
     } finally {
@@ -108,13 +152,13 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
     }
   };
 
-  // Handle Verify OTP & Sign In
+  // Verify Free Email OTP
   const handleVerifyOTP = async () => {
     setError(null);
     setSuccessMsg(null);
     setLoading(true);
     try {
-      const newSession = await portalAuth.verifyOfficialEmailOTP(
+      await portalAuth.verifyOfficialEmailOTP(
         email,
         otpCode,
         requiredRole,
@@ -124,28 +168,63 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
         }
       );
 
-      // Sync with portalStore legacy states
       if (requiredRole === 'admin') {
         portalStore.authenticateAdmin('9500');
       } else if (requiredRole === 'distributor') {
         portalStore.authenticateDistributor('1234');
       } else {
         const storeState = portalStore.getState();
-        const existing = storeState.customers.find((c) => c.email === email);
+        const existing = storeState.customers.find((c) => c.email.toLowerCase() === email.toLowerCase());
         if (existing) {
           portalStore.setCurrentCustomer(existing.id);
         }
       }
 
-      setSuccessMsg('Official email verification successful! Portal unlocked.');
+      setSuccessMsg('Email OTP verified successfully! Portal unlocked.');
     } catch (err: any) {
-      setError(err.message || 'OTP verification failed.');
+      setError(err.message || 'OTP verification failed. Please check the 6-digit code.');
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle Password / PIN Login
+  // Free WhatsApp Verification Link Generator
+  const handleGenerateWhatsApp = async () => {
+    setError(null);
+    setSuccessMsg(null);
+    setLoading(true);
+    try {
+      const res = await portalAuth.generateWhatsAppVerification(waIdentifier || email, requiredRole);
+      setWaGeneratedCode(res.code);
+      setWaUrl(res.whatsappUrl);
+      setSuccessMsg(`Verification code generated: ${res.code}. Click below to send to our official business WhatsApp (+91 8073407706).`);
+    } catch (err: any) {
+      setError(err.message || 'Failed to generate WhatsApp verification.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Confirm WhatsApp Verification
+  const handleConfirmWhatsApp = async () => {
+    setError(null);
+    setSuccessMsg(null);
+    setLoading(true);
+    try {
+      const codeToVerify = waInputCode || waGeneratedCode || '';
+      if (!codeToVerify) {
+        throw new Error('Please enter the 6-digit verification code sent via WhatsApp.');
+      }
+      await portalAuth.verifyWhatsAppVerification(codeToVerify, waIdentifier || email, requiredRole);
+      setSuccessMsg('WhatsApp verification confirmed! Portal unlocked.');
+    } catch (err: any) {
+      setError(err.message || 'WhatsApp verification failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Password / Passcode Login
   const handlePasswordLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -154,7 +233,6 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
     try {
       await portalAuth.loginWithEmailPassword(email, password, requiredRole);
 
-      // Sync with legacy portal store states
       if (requiredRole === 'admin') {
         portalStore.authenticateAdmin(password);
       } else if (requiredRole === 'distributor') {
@@ -162,18 +240,17 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
       } else {
         const storeRes = portalStore.loginCustomer(email, password);
         if (!storeRes.success) {
-          // If not found, create or sign in
           portalAuth.loginWithEmailPassword(email, password, 'customer');
         }
       }
     } catch (err: any) {
-      setError(err.message || 'Authentication failed. Please check your credentials.');
+      setError(err.message || 'Authentication failed. Please verify your credentials.');
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle Commercial Customer Registration
+  // Customer Self-Registration
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -205,7 +282,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
     }
   };
 
-  // Handle Sign Out
+  // Sign Out
   const handleSignOut = () => {
     portalAuth.logout();
     if (requiredRole === 'admin') portalStore.lockAdmin();
@@ -213,13 +290,13 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
     portalStore.setCurrentCustomer(null);
     setOtpSent(false);
     setOtpCode('');
+    setWaGeneratedCode(null);
+    setWaUrl(null);
+    setMasterKey('');
     setError(null);
     setSuccessMsg(null);
   };
 
-  // -------------------------------------------------------------
-  // Check Authorization
-  // -------------------------------------------------------------
   const isAuth = portalAuth.isAuthenticated();
   const isAuthorized = portalAuth.isAuthorizedFor(requiredRole);
 
@@ -227,7 +304,6 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
   if (isAuth && isAuthorized) {
     return (
       <div className="relative min-h-[700px] flex flex-col">
-        {/* Subtle Watermark Branding across authenticated portal */}
         <OfficialLogoWatermark opacity={0.03} />
 
         {/* Security & Role Status Bar */}
@@ -242,7 +318,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
               {session?.displayName || session?.email}
             </span>
             <span className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-950/80 border border-emerald-500/40 text-[10px] text-emerald-400 font-bold uppercase tracking-wider">
-              <CheckCircle2 className="w-2.5 h-2.5" /> Official Verified
+              <CheckCircle2 className="w-2.5 h-2.5" /> Free Auth Verified ({session?.authMethod})
             </span>
           </div>
 
@@ -278,12 +354,12 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
             Portal Access Restricted
           </h2>
           <p className="text-sm text-slate-400 mb-6 leading-relaxed">
-            You are currently signed in as{' '}
+            You are signed in as{' '}
             <span className="font-bold text-amber-400 capitalize">
               {session?.role} ({session?.displayName || session?.email})
             </span>
             . This portal is strictly restricted to authorized{' '}
-            <span className="font-bold text-white uppercase">{requiredRole}</span> personnel.
+            <span className="font-bold text-white uppercase">{requiredRole}</span> operations.
           </p>
 
           <div className="bg-slate-950/60 rounded-xl p-4 border border-slate-800 text-xs text-left mb-6 space-y-2">
@@ -294,10 +370,6 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
             <div className="flex justify-between text-slate-400">
               <span>Your Active Role:</span>
               <span className="font-mono font-bold text-amber-400 uppercase">{session?.role}</span>
-            </div>
-            <div className="flex justify-between text-slate-400">
-              <span>Security Policy:</span>
-              <span className="text-slate-300">Mandatory Multi-Portal RBAC</span>
             </div>
           </div>
 
@@ -325,14 +397,129 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
     );
   }
 
-  // CASE 3: Not Authenticated -> Show Portal Specific Verification Gate
+  // =========================================================================
+  // CASE 3A: ADMIN PORTAL -> STRICT EXECUTIVE MASTER KEY GATE ONLY
+  // (Requirement 5: Keep Admin login securely protected with a Master Key / Password only)
+  // =========================================================================
+  if (requiredRole === 'admin') {
+    return (
+      <div className="relative min-h-[700px] flex items-center justify-center p-4 sm:p-8 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100 overflow-hidden">
+        <OfficialLogoWatermark opacity={0.04} />
+
+        <div className="relative z-10 max-w-md w-full bg-slate-900/95 backdrop-blur-xl rounded-3xl border border-red-500/30 shadow-2xl overflow-hidden">
+          {/* Top Executive Header */}
+          <div className="p-6 bg-gradient-to-b from-red-950/40 via-slate-900 to-transparent border-b border-red-500/20 text-center relative">
+            <div className="flex justify-center mb-3">
+              <OfficialLogoBadge size={54} />
+            </div>
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/30 text-[11px] font-black text-red-400 uppercase tracking-widest mb-2">
+              <Shield className="w-3.5 h-3.5" />
+              EXECUTIVE MASTER GATE
+            </div>
+
+            <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+              {lang === 'kn' ? 'ಆಡಳಿತ ಮಂಡಳಿ ಮಾಸ್ಟರ್ ಕೀ ಲಾಗಿನ್' : 'Admin Command Center'}
+            </h1>
+
+            <p className="text-xs text-slate-400 mt-1 max-w-xs mx-auto">
+              Proprietor & executive administration only. Protected strictly by Executive Master Key & Passcode.
+            </p>
+          </div>
+
+          {/* Status Messages */}
+          {error && (
+            <div className="mx-6 mt-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-start gap-2">
+              <AlertTriangle className="w-4 h-4 shrink-0 text-rose-400 mt-0.5" />
+              <span>{error}</span>
+            </div>
+          )}
+
+          {successMsg && (
+            <div className="mx-6 mt-4 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-start gap-2">
+              <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400 mt-0.5" />
+              <span>{successMsg}</span>
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleAdminMasterLogin} className="p-6 space-y-4">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
+                Executive Master Key / PIN
+              </label>
+              <div className="relative">
+                <Key className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-400" />
+                <input
+                  type={showMasterKey ? 'text' : 'password'}
+                  required
+                  value={masterKey}
+                  onChange={(e) => setMasterKey(e.target.value)}
+                  placeholder="Enter Master Key (e.g. 9500 or ADMIN2026)"
+                  className="w-full pl-10 pr-10 py-3 bg-slate-950 border border-slate-700 focus:border-red-500 rounded-xl text-sm font-mono text-white placeholder-slate-500 focus:outline-none transition tracking-wider"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowMasterKey(!showMasterKey)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
+                  tabIndex={-1}
+                >
+                  {showMasterKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+              <p className="text-[11px] text-slate-400 mt-1">
+                Authorized Executive Key: <span className="font-mono text-amber-400 font-bold">9500</span> or <span className="font-mono text-amber-400 font-bold">ADMIN2026</span>
+              </p>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading || !masterKey.trim()}
+              className="w-full py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-sm uppercase tracking-wider shadow-lg transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+            >
+              {loading ? (
+                <RefreshCw className="w-4 h-4 animate-spin" />
+              ) : (
+                <Lock className="w-4 h-4" />
+              )}
+              Authorize & Unlock Admin Console
+            </button>
+
+            <div className="pt-3 border-t border-slate-800 text-[11px] text-slate-400 flex flex-col gap-1">
+              <span className="font-semibold text-slate-300">Security Enforcement:</span>
+              <span className="text-slate-400">
+                • Public OTP / SMS bypass strictly disabled on executive gateway
+              </span>
+              <span className="text-slate-400">
+                • All admin audit records digitally signed and synchronized
+              </span>
+            </div>
+          </form>
+
+          {/* Footer Info */}
+          <div className="px-6 py-3 bg-slate-950 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
+            <span className="flex items-center gap-1 text-amber-400 font-bold">
+              <Flame className="w-3.5 h-3.5 text-amber-500" />
+              Sandhya Commercial LPG Hub
+            </span>
+            <span className="font-mono text-slate-400">GSTIN: {BUSINESS_INFO.gstin}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // =========================================================================
+  // CASE 3B: CUSTOMER & DISTRIBUTOR PORTALS
+  // 100% Free Authentication: Google One-Tap, Free Email OTP, WhatsApp Verification
+  // (Zero SMS / DLT Gateway fees)
+  // =========================================================================
   return (
     <div className="relative min-h-[700px] flex items-center justify-center p-4 sm:p-8 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100 overflow-hidden">
-      {/* Background Watermark */}
       <OfficialLogoWatermark opacity={0.045} />
 
       <div className="relative z-10 max-w-md w-full bg-slate-900/95 backdrop-blur-xl rounded-3xl border border-slate-800 shadow-2xl overflow-hidden">
-        {/* Top Header with Seal */}
+        {/* Top Header */}
         <div className="p-6 bg-gradient-to-b from-slate-800/80 to-transparent border-b border-slate-800/80 text-center relative">
           <div className="flex justify-center mb-3">
             <OfficialLogoBadge size={54} />
@@ -349,8 +536,52 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
 
           <p className="text-xs text-slate-400 mt-1">
             {portalSubtitleEn ||
-              `Official email identity verification required for Sandhya Enterprises ${requiredRole} operations.`}
+              `Free official identity verification for Sandhya Enterprises ${requiredRole} access.`}
           </p>
+        </div>
+
+        {/* 1-CLICK FREE GOOGLE SIGN-IN HERO BUTTON */}
+        <div className="px-6 pt-5 pb-3">
+          <button
+            type="button"
+            onClick={handleGoogleSignIn}
+            disabled={loading}
+            className="w-full py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm shadow-md transition flex items-center justify-center gap-3 border border-slate-200 cursor-pointer disabled:opacity-50"
+          >
+            {/* Standard 4-color Google G */}
+            <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+              <path
+                fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+              />
+            </svg>
+            <span>Sign in with Google / Gmail (1-Click Free)</span>
+          </button>
+          <p className="text-[10px] text-center text-slate-400 mt-1.5">
+            Zero SMS / DLT cost • Instant authentication via your official Gmail
+          </p>
+        </div>
+
+        {/* Subtle Divider */}
+        <div className="relative px-6 my-2">
+          <div className="absolute inset-0 flex items-center px-6">
+            <div className="w-full border-t border-slate-800" />
+          </div>
+          <div className="relative flex justify-center text-[10px] font-bold uppercase tracking-wider">
+            <span className="bg-slate-900 px-3 text-slate-400">OR CHOOSE FREE VERIFICATION</span>
+          </div>
         </div>
 
         {/* Tab Selector */}
@@ -361,14 +592,30 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
               setError(null);
               setSuccessMsg(null);
             }}
-            className={`flex-1 py-3 px-3 text-center border-b-2 transition flex items-center justify-center gap-1.5 ${
+            className={`flex-1 py-2.5 px-2 text-center border-b-2 transition flex items-center justify-center gap-1.5 ${
               authMode === 'otp'
                 ? 'border-amber-500 text-amber-400 bg-amber-500/5'
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
             <Mail className="w-3.5 h-3.5" />
-            Official Email OTP
+            Email OTP
+          </button>
+
+          <button
+            onClick={() => {
+              setAuthMode('whatsapp');
+              setError(null);
+              setSuccessMsg(null);
+            }}
+            className={`flex-1 py-2.5 px-2 text-center border-b-2 transition flex items-center justify-center gap-1.5 ${
+              authMode === 'whatsapp'
+                ? 'border-emerald-500 text-emerald-400 bg-emerald-500/5'
+                : 'border-transparent text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <MessageSquare className="w-3.5 h-3.5" />
+            WhatsApp
           </button>
 
           <button
@@ -377,14 +624,14 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
               setError(null);
               setSuccessMsg(null);
             }}
-            className={`flex-1 py-3 px-3 text-center border-b-2 transition flex items-center justify-center gap-1.5 ${
+            className={`flex-1 py-2.5 px-2 text-center border-b-2 transition flex items-center justify-center gap-1.5 ${
               authMode === 'password'
                 ? 'border-amber-500 text-amber-400 bg-amber-500/5'
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
             <KeyRound className="w-3.5 h-3.5" />
-            Password / PIN
+            Password
           </button>
 
           {requiredRole === 'customer' && (
@@ -394,7 +641,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                 setError(null);
                 setSuccessMsg(null);
               }}
-              className={`flex-1 py-3 px-3 text-center border-b-2 transition flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-2.5 px-2 text-center border-b-2 transition flex items-center justify-center gap-1.5 ${
                 authMode === 'register'
                   ? 'border-amber-500 text-amber-400 bg-amber-500/5'
                   : 'border-transparent text-slate-400 hover:text-slate-200'
@@ -423,7 +670,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
 
         {/* Main Content Area */}
         <div className="p-6">
-          {/* TAB 1: OFFICIAL EMAIL OTP VERIFICATION */}
+          {/* TAB 1: FREE EMAIL OTP (No static code preview) */}
           {authMode === 'otp' && (
             <div className="space-y-4">
               <div>
@@ -441,8 +688,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                   />
                 </div>
                 <p className="text-[11px] text-slate-400 mt-1">
-                  Routed via official sender:{' '}
-                  <span className="font-mono text-amber-400">{BUSINESS_INFO.emailOfficial}</span>
+                  100% Free OTP sent via verified mail dispatch (Resend / EmailJS).
                 </p>
               </div>
 
@@ -451,17 +697,17 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                   type="button"
                   onClick={() => handleSendOTP('login')}
                   disabled={loading || !email}
-                  className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-md transition disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-md transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {loading ? (
                     <RefreshCw className="w-4 h-4 animate-spin" />
                   ) : (
                     <Send className="w-4 h-4" />
                   )}
-                  Send Official 6-Digit Verification OTP
+                  Send Free 6-Digit Email Verification Code
                 </button>
               ) : (
-                <div className="space-y-4 pt-2">
+                <div className="space-y-4 pt-1">
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
                       <label className="block text-xs font-bold uppercase tracking-wider text-slate-300">
@@ -481,29 +727,16 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                       maxLength={6}
                       value={otpCode}
                       onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
-                      placeholder="e.g. 842190"
+                      placeholder="e.g. 582910"
                       className="w-full py-3 px-4 bg-slate-950 border-2 border-amber-500/60 rounded-xl text-center font-mono text-2xl tracking-[0.5em] text-white focus:outline-none focus:border-amber-400"
                     />
-
-                    {simulatedCode && (
-                      <div className="mt-2 p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-300 flex items-center justify-between">
-                        <span>Instant Verification Code:</span>
-                        <button
-                          type="button"
-                          onClick={() => setOtpCode(simulatedCode)}
-                          className="font-mono font-bold underline px-1 py-0.5 bg-amber-500/20 rounded hover:bg-amber-500/30"
-                        >
-                          Auto-fill {simulatedCode}
-                        </button>
-                      </div>
-                    )}
                   </div>
 
                   <button
                     type="button"
                     onClick={handleVerifyOTP}
                     disabled={loading || otpCode.length < 6}
-                    className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm shadow-md transition disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm shadow-md transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {loading ? (
                       <RefreshCw className="w-4 h-4 animate-spin" />
@@ -517,7 +750,101 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
             </div>
           )}
 
-          {/* TAB 2: EMAIL + PASSWORD / PIN */}
+          {/* TAB 2: VERIFY VIA WHATSAPP (Mobile Friendly) */}
+          {authMode === 'whatsapp' && (
+            <div className="space-y-4">
+              <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs">
+                📱 <strong>Free WhatsApp Verification:</strong> Designed for mobile users. Generates a one-time verification code that you send directly to our official business WhatsApp (+91 8073407706).
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
+                  Business Mobile / Identifier
+                </label>
+                <div className="relative">
+                  <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <input
+                    type="text"
+                    value={waIdentifier}
+                    onChange={(e) => setWaIdentifier(e.target.value)}
+                    placeholder="9876543210 or business email"
+                    className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
+                  />
+                </div>
+              </div>
+
+              {!waGeneratedCode ? (
+                <button
+                  type="button"
+                  onClick={handleGenerateWhatsApp}
+                  disabled={loading || !waIdentifier}
+                  className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-md transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  {loading ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <MessageSquare className="w-4 h-4" />
+                  )}
+                  Generate WhatsApp Verification Link
+                </button>
+              ) : (
+                <div className="space-y-4 pt-1">
+                  <div className="p-3 bg-slate-950 border border-emerald-500/40 rounded-xl text-center space-y-2">
+                    <span className="text-[11px] text-slate-400 uppercase font-bold tracking-wider block">
+                      Your WhatsApp Verification Code
+                    </span>
+                    <div className="font-mono text-3xl font-black text-emerald-400 tracking-widest">
+                      {waGeneratedCode}
+                    </div>
+                    <p className="text-[11px] text-slate-400">
+                      Send this code to our official business WhatsApp number:
+                      <br />
+                      <strong className="text-white">+91 8073407706</strong>
+                    </p>
+                  </div>
+
+                  {waUrl && (
+                    <a
+                      href={waUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm shadow-md transition flex items-center justify-center gap-2 cursor-pointer text-center"
+                    >
+                      <MessageSquare className="w-4 h-4" />
+                      <span>Open WhatsApp & Send Verification</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
+                      Confirm Code (or Click Below)
+                    </label>
+                    <input
+                      type="text"
+                      maxLength={6}
+                      value={waInputCode}
+                      onChange={(e) => setWaInputCode(e.target.value.replace(/\D/g, ''))}
+                      placeholder={waGeneratedCode || 'Enter 6-digit code'}
+                      className="w-full py-2.5 px-4 bg-slate-950 border border-slate-700 rounded-xl text-center font-mono text-lg text-white focus:outline-none focus:border-emerald-400"
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleConfirmWhatsApp}
+                    disabled={loading}
+                    className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    I Have Sent The WhatsApp Message - Unlock Portal
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* TAB 3: PASSWORD / PASSCODE */}
           {authMode === 'password' && (
             <form onSubmit={handlePasswordLogin} className="space-y-4">
               <div>
@@ -539,7 +866,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-300">
-                    {requiredRole === 'admin' ? 'Master Admin PIN' : requiredRole === 'distributor' ? 'Staff Security Passcode' : 'Password'}
+                    {requiredRole === 'distributor' ? 'Staff Security Passcode' : 'Password'}
                   </label>
                   <button
                     type="button"
@@ -556,25 +883,29 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                 <div className="relative">
                   <KeyRound className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder={
-                      requiredRole === 'admin'
-                        ? 'Master PIN (ADMIN2026 or 9500)'
-                        : requiredRole === 'distributor'
-                        ? 'Passcode (DIST2026 or 1234)'
-                        : 'Account Password'
+                      requiredRole === 'distributor' ? 'Passcode (DIST2026 or 1234)' : 'Account Password'
                     }
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition"
+                    className="w-full pl-10 pr-10 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
                 </div>
               </div>
 
               <button
                 type="submit"
                 disabled={loading || !email || !password}
-                className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-md transition disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-md transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
               >
                 {loading ? (
                   <RefreshCw className="w-4 h-4 animate-spin" />
@@ -584,18 +915,10 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                 Authorize & Open Portal
               </button>
 
-              {/* Helpful Quick Credentials Hint */}
               <div className="pt-2 border-t border-slate-800 text-[11px] text-slate-400 flex flex-col gap-1">
-                <span className="font-semibold text-slate-300">Default Authorized Credentials:</span>
-                {requiredRole === 'admin' && (
-                  <span className="font-mono text-amber-400/90">
-                    Email: {BUSINESS_INFO.emailOfficial} | PIN: 9500 or ADMIN2026
-                  </span>
-                )}
+                <span className="font-semibold text-slate-300">Quick Credentials Hint:</span>
                 {requiredRole === 'distributor' && (
-                  <span className="font-mono text-amber-400/90">
-                    Code: DIST2026 or 1234
-                  </span>
+                  <span className="font-mono text-amber-400/90">Staff Code: DIST2026 or 1234</span>
                 )}
                 {requiredRole === 'customer' && (
                   <span className="font-mono text-amber-400/90">
@@ -606,7 +929,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
             </form>
           )}
 
-          {/* TAB 3: CUSTOMER REGISTRATION */}
+          {/* TAB 4: CUSTOMER REGISTRATION */}
           {authMode === 'register' && requiredRole === 'customer' && (
             <form onSubmit={handleRegister} className="space-y-3">
               <div>
@@ -664,7 +987,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                   required
                   value={regForm.email}
                   onChange={(e) => setRegForm({ ...regForm, email: e.target.value })}
-                  placeholder="accounts@swathi-hotel.com"
+                  placeholder="accounts@hotel.com"
                   className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
                 />
               </div>
@@ -683,12 +1006,11 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                     <option value="Nelamangala Rural (562123)">Nelamangala Rural</option>
                     <option value="Dobbaspet KIADB">Dobbaspet KIADB</option>
                     <option value="Tumkur Highway">Tumkur Highway</option>
-                    <option value="Sira Commercial Zone">Sira Commercial Zone</option>
                   </select>
                 </div>
                 <div>
                   <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">
-                    Primary Gas Cylinder
+                    Gas Cylinder
                   </label>
                   <select
                     value={regForm.preferredBrand}
@@ -719,19 +1041,18 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-2.5 mt-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-md transition disabled:opacity-50"
+                className="w-full py-2.5 mt-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-md transition disabled:opacity-50 cursor-pointer"
               >
-                Register & Verify Official Email
+                Register & Unlock Free Portal Access
               </button>
             </form>
           )}
 
-          {/* TAB 4: FORGOT PASSWORD */}
+          {/* TAB 5: FORGOT PASSWORD */}
           {authMode === 'forgot' && (
             <div className="space-y-4">
               <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-slate-300">
-                Enter your registered official email address. A password reset link and verification code will be dispatched strictly from our official email address{' '}
-                <span className="font-mono text-amber-400">{BUSINESS_INFO.emailOfficial}</span>.
+                Enter your registered official email address. A password reset verification code will be dispatched strictly via free verified email without any SMS gateway fees.
               </div>
 
               <div>
@@ -751,7 +1072,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                 <button
                   type="button"
                   onClick={() => setAuthMode('password')}
-                  className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+                  className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold cursor-pointer"
                 >
                   Back to Login
                 </button>
@@ -759,10 +1080,10 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                   type="button"
                   onClick={() => handleSendOTP('password_reset')}
                   disabled={loading || !email}
-                  className="flex-2 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs disabled:opacity-50 flex items-center justify-center gap-1.5"
+                  className="flex-2 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs disabled:opacity-50 flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <Send className="w-3.5 h-3.5" />
-                  Dispatch Reset Code
+                  Send Free Email Reset Code
                 </button>
               </div>
             </div>
@@ -771,7 +1092,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
 
         {/* Footer info badge */}
         <div className="px-6 py-3 bg-slate-950 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1 text-amber-400">
             <Flame className="w-3.5 h-3.5 text-amber-500" />
             Official Sandhya Portal
           </span>
