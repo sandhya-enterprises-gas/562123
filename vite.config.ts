@@ -2,8 +2,11 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
+import dotenv from 'dotenv';
 import {defineConfig, Plugin} from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+
+dotenv.config();
 
 // LINT.IfChange(aistudio_media_plugin)
 function aistudioMediaPlugin(): Plugin {
@@ -66,8 +69,34 @@ function aistudioMediaPlugin(): Plugin {
 // LINT.ThenChange(//depot/google3/java/com/google/alkali/boq/makersuite/applet_dev_service/templates/initializers/react_theme/vite.config.ts:aistudio_media_plugin)
 
 export default defineConfig(() => {
+  const serviceId = (process.env.EMAILJS_SERVICE_ID && process.env.EMAILJS_SERVICE_ID !== 'EMAILJS_SERVICE_ID')
+    ? process.env.EMAILJS_SERVICE_ID
+    : (process.env.VITE_EMAILJS_SERVICE_ID && process.env.VITE_EMAILJS_SERVICE_ID !== 'EMAILJS_SERVICE_ID')
+    ? process.env.VITE_EMAILJS_SERVICE_ID
+    : 'service_31jj6yq';
+
+  const templateId = (process.env.EMAILJS_TEMPLATE_ID && process.env.EMAILJS_TEMPLATE_ID !== 'EMAILJS_TEMPLATE_ID')
+    ? process.env.EMAILJS_TEMPLATE_ID
+    : (process.env.VITE_EMAILJS_TEMPLATE_ID && process.env.VITE_EMAILJS_TEMPLATE_ID !== 'EMAILJS_TEMPLATE_ID')
+    ? process.env.VITE_EMAILJS_TEMPLATE_ID
+    : 'template_sjy2r1b';
+
+  const publicKey = (process.env.EMAILJS_PUBLIC_KEY && process.env.EMAILJS_PUBLIC_KEY !== 'EMAILJS_PUBLIC_KEY')
+    ? process.env.EMAILJS_PUBLIC_KEY
+    : (process.env.VITE_EMAILJS_PUBLIC_KEY && process.env.VITE_EMAILJS_PUBLIC_KEY !== 'EMAILJS_PUBLIC_KEY')
+    ? process.env.VITE_EMAILJS_PUBLIC_KEY
+    : 'mq2CSZgr-vlXBFP1';
+
   return {
     base: '/562123/',
+    define: {
+      'process.env.EMAILJS_SERVICE_ID': JSON.stringify(serviceId),
+      'process.env.EMAILJS_TEMPLATE_ID': JSON.stringify(templateId),
+      'process.env.EMAILJS_PUBLIC_KEY': JSON.stringify(publicKey),
+      'process.env.VITE_EMAILJS_SERVICE_ID': JSON.stringify(serviceId),
+      'process.env.VITE_EMAILJS_TEMPLATE_ID': JSON.stringify(templateId),
+      'process.env.VITE_EMAILJS_PUBLIC_KEY': JSON.stringify(publicKey),
+    },
     plugins: [
       react(),
       tailwindcss(),

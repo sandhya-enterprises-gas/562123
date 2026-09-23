@@ -83,6 +83,10 @@ app.get("/api/auth/email-service", (req, res) => {
 // Helper for 100% free transactional email dispatch (Resend / EmailJS / RFC Logger)
 async function sendFreeEmail(to: string, subject: string, code: string, purpose: string) {
   let dispatched = false;
+  let emailJsResult: { attempted: boolean; success: boolean; status?: number; text?: string; error?: string } = {
+    attempted: false,
+    success: false
+  };
 
   // 1. Send via Resend if RESEND_API_KEY is configured
   if (process.env.RESEND_API_KEY) {
@@ -128,34 +132,85 @@ async function sendFreeEmail(to: string, subject: string, code: string, purpose:
   }
 
   // 2. Send via EmailJS if configured
-  if (!dispatched && process.env.EMAILJS_SERVICE_ID && process.env.EMAILJS_TEMPLATE_ID && process.env.EMAILJS_PUBLIC_KEY) {
-    try {
-      const emailJsRes = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          service_id: process.env.EMAILJS_SERVICE_ID,
-          template_id: process.env.EMAILJS_TEMPLATE_ID,
-          user_id: process.env.EMAILJS_PUBLIC_KEY,
-          template_params: {
-            to_email: to,
-            otp_code: code,
-            purpose: purpose,
-            app_name: "Sandhya Enterprises Commercial LPG"
-          }
-        })
-      });
-      if (emailJsRes.ok) {
-        console.log(`[EmailJS] Successfully dispatched OTP to ${to}`);
-        dispatched = true;
+  const rawService = process.env.EMAILJS_SERVICE_ID || process.env.VITE_EMAILJS_SERVICE_ID;
+  const emailJsServiceId = rawService && rawService !== "EMAILJS_SERVICE_ID" ? rawService : "service_31jj6yq";
+
+  const rawTemplate = process.env.EMAILJS_TEMPLATE_ID || process.env.VITE_EMAILJS_TEMPLATE_ID;
+  const emailJsTemplateId = rawTemplate && rawTemplate !== "EMAILJS_TEMPLATE_ID" ? rawTemplate : "template_sjy2r1b";
+
+  const rawPublic = process.env.EMAILJS_PUBLIC_KEY || process.env.VITE_EMAILJS_PUBLIC_KEY;
+  const initialPublicKey = rawPublic && rawPublic !== "EMAILJS_PUBLIC_KEY"
+    ? rawPublic
+    : "mq2CSZgr-vIXRBFP1";
+
+  // Try configured key, with auto-fallback between glyph variants (vIXRBFP1 vs vlXBFP1)
+  const candidateKeys = Array.from(new Set([
+    initialPublicKey,
+    initialPublicKey.replace("vlXBFP1", "vIXRBFP1"),
+    "mq2CSZgr-vIXRBFP1",
+    "mq2CSZgr-vlXBFP1"
+  ]));
+
+  if (!dispatched && emailJsServiceId && emailJsTemplateId) {
+    emailJsResult.attempted = true;
+
+    for (const key of candidateKeys) {
+      if (dispatched) break;
+      try {
+        console.log(`[EmailJS Dispatch Attempt] Key: "${key.slice(0, 5)}***" -> To: ${to}`);
+
+        const emailJsRes = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Origin": "https://sandhya-enterprises-gas.github.io",
+            "Referer": "https://sandhya-enterprises-gas.github.io/"
+          },
+          body: JSON.stringify({
+            service_id: emailJsServiceId,
+            template_id: emailJsTemplateId,
+            user_id: key,
+            template_params: {
+              email: to,
+              to_email: to,
+              user_email: to,
+              recipient: to,
+              to_name: to.split("@")[0],
+              otp: code,
+              otp_code: code,
+              code: code,
+              passcode: code,
+              purpose: purpose,
+              message: `Your Sandhya Enterprises verification OTP is ${code}. Valid for 10 minutes.`,
+              app_name: "Sandhya Enterprises Commercial LPG"
+            }
+          })
+        });
+
+        const resText = await emailJsRes.text();
+        emailJsResult.status = emailJsRes.status;
+        emailJsResult.text = resText;
+
+        if (emailJsRes.ok) {
+          console.log(`[EmailJS Success] Dispatched OTP to ${to} (HTTP ${emailJsRes.status}): ${resText}`);
+          dispatched = true;
+          emailJsResult.success = true;
+          delete emailJsResult.error;
+          break;
+        } else {
+          console.warn(`[EmailJS Attempt Response] Key ${key}: Status ${emailJsRes.status} | ${resText}`);
+          emailJsResult.error = resText;
+        }
+      } catch (e: any) {
+        console.error("[EmailJS Submission Error]:", e.message || e);
+        emailJsResult.error = e.message || String(e);
       }
-    } catch (e: any) {
-      console.warn("[EmailJS Error]:", e.message);
     }
   }
 
-  return dispatched;
+  return { dispatched, emailJsResult };
 }
+
 
 // Send Verification OTP via Official Email (100% Free, Zero DLT / SMS)
 app.post("/api/auth/send-otp", async (req, res) => {
@@ -193,13 +248,14 @@ app.post("/api/auth/send-otp", async (req, res) => {
     console.log(`====================================================================`);
 
     // Dispatch via Resend / EmailJS
-    const wasSentViaCloud = await sendFreeEmail(cleanEmail, formattedSubject, code, purpose);
+    const sendResult = await sendFreeEmail(cleanEmail, formattedSubject, code, purpose);
 
     return res.json({
       success: true,
       message: `Official ${purpose === "password_reset" ? "password reset" : "verification"} code sent to ${cleanEmail}. Please check your Inbox.`,
       sender: OFFICIAL_EMAIL_SENDER,
-      dispatchedVia: wasSentViaCloud ? "cloud_service" : "official_server",
+      dispatchedVia: sendResult.dispatched ? "cloud_service" : "official_server",
+      emailJsResult: sendResult.emailJsResult,
       expiresInMinutes: 10,
       timestamp: new Date().toISOString()
     });

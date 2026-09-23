@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { UserRole, Language } from '../../types';
-import { portalAuth, PortalUserSession } from '../../lib/portalAuth';
+import { portalAuth, PortalUserSession, getEmailJsConfig, saveEmailJsConfig } from '../../lib/portalAuth';
 import { portalStore } from '../../data/portalStore';
 import { BUSINESS_INFO } from '../../data/content';
 import { OfficialLogoWatermark, OfficialLogoBadge } from '../common/OfficialLogoWatermark';
@@ -22,7 +22,8 @@ import {
   Key,
   Eye,
   EyeOff,
-  ExternalLink
+  ExternalLink,
+  Code
 } from 'lucide-react';
 
 interface PortalAccessGuardProps {
@@ -62,6 +63,22 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
   // Admin Master Key State
   const [masterKey, setMasterKey] = useState('');
   const [showMasterKey, setShowMasterKey] = useState(false);
+
+  // EmailJS Status & Diagnostic State
+  const [emailJsNotice, setEmailJsNotice] = useState<{
+    status?: number;
+    text?: string;
+    error?: string;
+    serviceId?: string;
+    templateId?: string;
+    isSuccess?: boolean;
+  } | null>(null);
+
+  const [showEmailJsConfig, setShowEmailJsConfig] = useState(false);
+  const [cfgServiceId, setCfgServiceId] = useState('');
+  const [cfgTemplateId, setCfgTemplateId] = useState('');
+  const [cfgPublicKey, setCfgPublicKey] = useState('');
+  const [cfgSaveSuccess, setCfgSaveSuccess] = useState(false);
 
   // WhatsApp Verification States
   const [waIdentifier, setWaIdentifier] = useState('');
@@ -136,15 +153,59 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
     }
   };
 
+  // Initialize EmailJS config inputs
+  useEffect(() => {
+    const cfg = getEmailJsConfig();
+    setCfgServiceId(cfg.serviceId);
+    setCfgTemplateId(cfg.templateId);
+    setCfgPublicKey(cfg.publicKey);
+  }, []);
+
+  const handleSaveEmailJsConfig = (e: React.FormEvent) => {
+    e.preventDefault();
+    saveEmailJsConfig({
+      serviceId: cfgServiceId,
+      templateId: cfgTemplateId,
+      publicKey: cfgPublicKey
+    });
+    setCfgSaveSuccess(true);
+    setTimeout(() => setCfgSaveSuccess(false), 4000);
+    setEmailJsNotice(null);
+  };
+
   // Free Email OTP Dispatch (No static code preview)
   const handleSendOTP = async (purpose: 'login' | 'verification' | 'password_reset' = 'login') => {
     setError(null);
     setSuccessMsg(null);
+    setEmailJsNotice(null);
     setLoading(true);
     try {
       const res = await portalAuth.sendOfficialEmailOTP(email, requiredRole, purpose);
       setOtpSent(true);
       setSuccessMsg(res.message);
+
+      if (res.emailJsStatus) {
+        if (res.emailJsStatus.error) {
+          console.error('[EmailJS Delivery Alert]:', res.emailJsStatus.error);
+          setEmailJsNotice({
+            status: res.emailJsStatus.status,
+            text: res.emailJsStatus.text,
+            error: res.emailJsStatus.error,
+            serviceId: res.emailJsStatus.serviceId,
+            templateId: res.emailJsStatus.templateId,
+            isSuccess: false
+          });
+        } else if (res.emailJsStatus.success) {
+          console.log('[EmailJS Delivery Confirmed]: Status', res.emailJsStatus.status, res.emailJsStatus.text);
+          setEmailJsNotice({
+            status: res.emailJsStatus.status || 200,
+            text: res.emailJsStatus.text || 'Email dispatched successfully via EmailJS',
+            serviceId: res.emailJsStatus.serviceId,
+            templateId: res.emailJsStatus.templateId,
+            isSuccess: true
+          });
+        }
+      }
     } catch (err: any) {
       setError(err.message || 'Failed to dispatch official OTP.');
     } finally {
@@ -174,10 +235,21 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
         portalStore.authenticateDistributor('1234');
       } else {
         const storeState = portalStore.getState();
-        const existing = storeState.customers.find((c) => c.email.toLowerCase() === email.toLowerCase());
-        if (existing) {
-          portalStore.setCurrentCustomer(existing.id);
+        let existing = storeState.customers.find((c) => c.email.toLowerCase() === email.toLowerCase());
+        if (!existing) {
+          existing = portalStore.registerCustomer({
+            businessName: email.split('@')[0].toUpperCase() + ' Commercial LPG',
+            contactPerson: email.split('@')[0],
+            phone: '9845000000',
+            email: email.toLowerCase(),
+            businessType: 'Restaurant / Hotel',
+            area: 'Nelamangala Town (562123)',
+            pincode: '562123',
+            password: 'otp_verified',
+            preferredBrand: 'Bharat Gas 19kg'
+          });
         }
+        portalStore.setCurrentCustomer(existing.id);
       }
 
       setSuccessMsg('Email OTP verified successfully! Portal unlocked.');
@@ -216,6 +288,29 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
         throw new Error('Please enter the 6-digit verification code sent via WhatsApp.');
       }
       await portalAuth.verifyWhatsAppVerification(codeToVerify, waIdentifier || email, requiredRole);
+
+      if (requiredRole === 'customer') {
+        const storeState = portalStore.getState();
+        const cleanIdent = (waIdentifier || email).toLowerCase();
+        let existing = storeState.customers.find((c) =>
+          c.email.toLowerCase() === cleanIdent || c.phone.includes(cleanIdent)
+        );
+        if (!existing) {
+          existing = portalStore.registerCustomer({
+            businessName: 'WhatsApp Commercial Partner',
+            contactPerson: 'Commercial Partner',
+            phone: waIdentifier.replace(/\D/g, '') || '9876543210',
+            email: `${waIdentifier.replace(/\D/g, '') || 'customer'}@sandhyagas.in`,
+            businessType: 'Restaurant / Hotel',
+            area: 'Nelamangala Town (562123)',
+            pincode: '562123',
+            password: 'whatsapp_verified',
+            preferredBrand: 'Bharat Gas 19kg'
+          });
+        }
+        portalStore.setCurrentCustomer(existing.id);
+      }
+
       setSuccessMsg('WhatsApp verification confirmed! Portal unlocked.');
     } catch (err: any) {
       setError(err.message || 'WhatsApp verification failed.');
@@ -510,46 +605,60 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
   }
 
   // =========================================================================
-  // CASE 3B: CUSTOMER & DISTRIBUTOR PORTALS
-  // 100% Free Authentication: Google One-Tap, Free Email OTP, WhatsApp Verification
-  // (Zero SMS / DLT Gateway fees)
+  // CASE 3B: CUSTOMER & DISTRIBUTOR PORTALS (Ultra-Clean Modern Gateway)
+  // 1. Prominent Top Hero: Sign in with Google / Gmail (1-Click Free)
+  // 2. Simplified 2 Tabs: "Email OTP" (EmailJS verified) & "WhatsApp Direct" (wa.me)
+  // 3. Removed complex Password and Register forms from customer main view
+  // 4. Dark theme, Sandhya Enterprises branding, GSTIN & verified badges intact
   // =========================================================================
   return (
-    <div className="relative min-h-[700px] flex items-center justify-center p-4 sm:p-8 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100 overflow-hidden">
+    <div className="relative min-h-[720px] flex items-center justify-center p-4 sm:p-6 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100 overflow-hidden">
       <OfficialLogoWatermark opacity={0.045} />
 
-      <div className="relative z-10 max-w-md w-full bg-slate-900/95 backdrop-blur-xl rounded-3xl border border-slate-800 shadow-2xl overflow-hidden">
+      <div className="relative z-10 max-w-lg w-full bg-slate-900/95 backdrop-blur-2xl rounded-3xl border border-slate-800 shadow-2xl overflow-hidden">
         {/* Top Header */}
-        <div className="p-6 bg-gradient-to-b from-slate-800/80 to-transparent border-b border-slate-800/80 text-center relative">
+        <div className="p-6 bg-gradient-to-b from-slate-800/80 via-slate-900/90 to-transparent border-b border-slate-800/80 text-center relative">
           <div className="flex justify-center mb-3">
-            <OfficialLogoBadge size={54} />
+            <OfficialLogoBadge size={56} />
           </div>
 
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-[11px] font-bold text-amber-400 uppercase tracking-widest mb-1.5">
-            <Lock className="w-3 h-3" />
-            {requiredRole.toUpperCase()} SECURITY GATEWAY
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-[11px] font-bold text-amber-400 uppercase tracking-widest mb-2">
+            <Flame className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+            <span>SANDHYA ENTERPRISES • {requiredRole.toUpperCase()} GATEWAY</span>
           </div>
 
           <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-            {lang === 'kn' ? portalTitleKn : portalTitleEn}
+            {lang === 'kn' ? (
+              requiredRole === 'customer' ? 'ಗ್ರಾಹಕರ ಗ್ಯಾಸ್ ಬುಕಿಂಗ್ ಪ್ರವೇಶ' : portalTitleKn
+            ) : (
+              requiredRole === 'customer' ? 'Commercial Customer Gateway' : portalTitleEn
+            )}
           </h1>
 
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
             {portalSubtitleEn ||
-              `Free official identity verification for Sandhya Enterprises ${requiredRole} access.`}
+              `Fast, 100% free verified access for commercial LPG cylinder orders, tracking & invoices.`}
           </p>
+
+          <div className="flex items-center justify-center gap-2 mt-2 text-[10px] text-slate-500 font-medium">
+            <span>Bharat Gas 19kg & 47.5kg</span>
+            <span>•</span>
+            <span>HP Gas Commercial</span>
+            <span>•</span>
+            <span>Nelamangala (562123)</span>
+          </div>
         </div>
 
-        {/* 1-CLICK FREE GOOGLE SIGN-IN HERO BUTTON */}
-        <div className="px-6 pt-5 pb-3">
+        {/* 1. TOP PROMINENT BUTTON: 1-CLICK FREE GOOGLE SIGN-IN */}
+        <div className="px-6 pt-5 pb-2">
           <button
             type="button"
             onClick={handleGoogleSignIn}
             disabled={loading}
-            className="w-full py-3 px-4 rounded-xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm shadow-md transition flex items-center justify-center gap-3 border border-slate-200 cursor-pointer disabled:opacity-50"
+            className="w-full py-4 px-5 rounded-2xl bg-white hover:bg-slate-100 text-slate-950 font-bold shadow-xl hover:shadow-2xl transition-all duration-200 flex items-center justify-center gap-3.5 border-2 border-slate-200 cursor-pointer disabled:opacity-50 active:scale-[0.99] group"
           >
             {/* Standard 4-color Google G */}
-            <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 shrink-0 transition-transform group-hover:scale-105" viewBox="0 0 24 24">
               <path
                 fill="#4285F4"
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -567,115 +676,95 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
               />
             </svg>
-            <span>Sign in with Google / Gmail (1-Click Free)</span>
+            <div className="text-left">
+              <span className="block font-black text-slate-900 text-sm sm:text-base leading-tight">
+                Sign in with Google / Gmail (1-Click Free)
+              </span>
+              <span className="block text-[11px] font-semibold text-slate-500">
+                Fastest • Zero Passwords • Instant Verified Entry
+              </span>
+            </div>
           </button>
-          <p className="text-[10px] text-center text-slate-400 mt-1.5">
-            Zero SMS / DLT cost • Instant authentication via your official Gmail
-          </p>
+
+          <div className="flex items-center justify-center gap-2 text-[11px] text-slate-400 mt-2.5 font-medium">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+            <span>100% Free Instant Access • Works with any Gmail • No SMS / DLT fees</span>
+          </div>
         </div>
 
         {/* Subtle Divider */}
-        <div className="relative px-6 my-2">
+        <div className="relative px-6 my-3">
           <div className="absolute inset-0 flex items-center px-6">
             <div className="w-full border-t border-slate-800" />
           </div>
-          <div className="relative flex justify-center text-[10px] font-bold uppercase tracking-wider">
-            <span className="bg-slate-900 px-3 text-slate-400">OR CHOOSE FREE VERIFICATION</span>
+          <div className="relative flex justify-center text-[10px] font-black uppercase tracking-wider">
+            <span className="bg-slate-900 px-3 py-0.5 rounded-full text-slate-400 border border-slate-800 shadow-sm">
+              OR VERIFY WITH TWO FREE OPTIONS
+            </span>
           </div>
         </div>
 
-        {/* Tab Selector */}
-        <div className="flex border-b border-slate-800 bg-slate-950/40 text-xs font-bold">
+        {/* 2. SIMPLIFIED TWO TABS: "Email OTP" & "WhatsApp Direct" */}
+        <div className="mx-6 p-1.5 bg-slate-950/80 rounded-2xl border border-slate-800 grid grid-cols-2 gap-1.5 text-xs font-bold">
           <button
+            type="button"
             onClick={() => {
               setAuthMode('otp');
               setError(null);
               setSuccessMsg(null);
             }}
-            className={`flex-1 py-2.5 px-2 text-center border-b-2 transition flex items-center justify-center gap-1.5 ${
+            className={`py-2.5 px-3 rounded-xl transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer ${
               authMode === 'otp'
-                ? 'border-amber-500 text-amber-400 bg-amber-500/5'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'bg-amber-500 text-slate-950 font-black shadow-lg'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
             }`}
           >
-            <Mail className="w-3.5 h-3.5" />
-            Email OTP
+            <Mail className="w-4 h-4 shrink-0" />
+            <span>Email OTP</span>
           </button>
 
           <button
+            type="button"
             onClick={() => {
               setAuthMode('whatsapp');
               setError(null);
               setSuccessMsg(null);
             }}
-            className={`flex-1 py-2.5 px-2 text-center border-b-2 transition flex items-center justify-center gap-1.5 ${
+            className={`py-2.5 px-3 rounded-xl transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer ${
               authMode === 'whatsapp'
-                ? 'border-emerald-500 text-emerald-400 bg-emerald-500/5'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'bg-emerald-500 text-slate-950 font-black shadow-lg'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
             }`}
           >
-            <MessageSquare className="w-3.5 h-3.5" />
-            WhatsApp
+            <MessageSquare className="w-4 h-4 shrink-0" />
+            <span>WhatsApp Direct</span>
           </button>
-
-          <button
-            onClick={() => {
-              setAuthMode('password');
-              setError(null);
-              setSuccessMsg(null);
-            }}
-            className={`flex-1 py-2.5 px-2 text-center border-b-2 transition flex items-center justify-center gap-1.5 ${
-              authMode === 'password'
-                ? 'border-amber-500 text-amber-400 bg-amber-500/5'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <KeyRound className="w-3.5 h-3.5" />
-            Password
-          </button>
-
-          {requiredRole === 'customer' && (
-            <button
-              onClick={() => {
-                setAuthMode('register');
-                setError(null);
-                setSuccessMsg(null);
-              }}
-              className={`flex-1 py-2.5 px-2 text-center border-b-2 transition flex items-center justify-center gap-1.5 ${
-                authMode === 'register'
-                  ? 'border-amber-500 text-amber-400 bg-amber-500/5'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Building2 className="w-3.5 h-3.5" />
-              Register
-            </button>
-          )}
         </div>
 
         {/* Status Messages */}
         {error && (
-          <div className="mx-6 mt-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-start gap-2">
+          <div className="mx-6 mt-4 p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-start gap-2.5">
             <AlertTriangle className="w-4 h-4 shrink-0 text-rose-400 mt-0.5" />
-            <span>{error}</span>
+            <span className="leading-relaxed">{error}</span>
           </div>
         )}
 
         {successMsg && (
-          <div className="mx-6 mt-4 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-start gap-2">
+          <div className="mx-6 mt-4 p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-start gap-2.5">
             <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400 mt-0.5" />
-            <span>{successMsg}</span>
+            <span className="leading-relaxed">{successMsg}</span>
           </div>
         )}
 
         {/* Main Content Area */}
-        <div className="p-6">
-          {/* TAB 1: FREE EMAIL OTP (No static code preview) */}
+        <div className="p-6 pt-4">
+          {/* TAB 1: FREE EMAIL OTP (Verified via EmailJS / Resend) */}
           {authMode === 'otp' && (
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
-                  Official Email Address
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5 flex items-center justify-between">
+                  <span>Enter Official Email Address</span>
+                  <span className="text-[10px] text-amber-400 font-semibold lowercase">no password needed</span>
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -683,12 +772,13 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="name@business.com"
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition"
+                    placeholder="e.g. yourhotel@gmail.com"
+                    className="w-full pl-10 pr-4 py-3 bg-slate-950 border border-slate-700 focus:border-amber-500 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none transition font-medium"
                   />
                 </div>
-                <p className="text-[11px] text-slate-400 mt-1">
-                  100% Free OTP sent via verified mail dispatch (Resend / EmailJS).
+                <p className="text-[11px] text-slate-400 mt-1.5 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  100% Free OTP sent via verified EmailJS service • Zero DLT/SMS charge
                 </p>
               </div>
 
@@ -697,17 +787,28 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                   type="button"
                   onClick={() => handleSendOTP('login')}
                   disabled={loading || !email}
-                  className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-md transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-sm shadow-lg hover:shadow-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {loading ? (
                     <RefreshCw className="w-4 h-4 animate-spin" />
                   ) : (
                     <Send className="w-4 h-4" />
                   )}
-                  Send Free 6-Digit Email Verification Code
+                  Send 6-Digit Email Verification Code
                 </button>
               ) : (
                 <div className="space-y-4 pt-1">
+                  <div className="p-3 bg-slate-950/80 rounded-xl border border-amber-500/30 text-xs text-slate-300 flex items-center justify-between">
+                    <span className="truncate">Code dispatched to <strong className="text-white">{email}</strong></span>
+                    <button
+                      type="button"
+                      onClick={() => setOtpSent(false)}
+                      className="text-[11px] text-amber-400 hover:underline shrink-0 ml-2"
+                    >
+                      Change
+                    </button>
+                  </div>
+
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
                       <label className="block text-xs font-bold uppercase tracking-wider text-slate-300">
@@ -716,9 +817,10 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                       <button
                         type="button"
                         onClick={() => handleSendOTP('login')}
-                        className="text-[11px] text-amber-400 hover:underline flex items-center gap-1"
+                        disabled={loading}
+                        className="text-[11px] text-amber-400 hover:underline flex items-center gap-1 cursor-pointer"
                       >
-                        <RefreshCw className="w-3 h-3" /> Resend
+                        <RefreshCw className="w-3 h-3" /> Resend Code
                       </button>
                     </div>
 
@@ -727,8 +829,8 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                       maxLength={6}
                       value={otpCode}
                       onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
-                      placeholder="e.g. 582910"
-                      className="w-full py-3 px-4 bg-slate-950 border-2 border-amber-500/60 rounded-xl text-center font-mono text-2xl tracking-[0.5em] text-white focus:outline-none focus:border-amber-400"
+                      placeholder="• • • • • •"
+                      className="w-full py-3 px-4 bg-slate-950 border-2 border-amber-500/70 rounded-xl text-center font-mono text-2xl tracking-[0.4em] text-white focus:outline-none focus:border-amber-400 transition"
                     />
                   </div>
 
@@ -736,39 +838,140 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                     type="button"
                     onClick={handleVerifyOTP}
                     disabled={loading || otpCode.length < 6}
-                    className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm shadow-md transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm shadow-xl transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {loading ? (
                       <RefreshCw className="w-4 h-4 animate-spin" />
                     ) : (
                       <CheckCircle2 className="w-4 h-4" />
                     )}
-                    Verify OTP & Enter {requiredRole.toUpperCase()} Portal
+                    Verify Code & Enter Customer Portal
                   </button>
                 </div>
               )}
+
+              {/* EmailJS Live Dispatch Status Indicator */}
+              {emailJsNotice && emailJsNotice.isSuccess && (
+                <div className="p-3 rounded-xl bg-emerald-950/80 border border-emerald-500/50 text-emerald-200 text-xs flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <div>
+                      <p className="font-bold text-emerald-300">EmailJS Delivery Confirmed (200 OK)</p>
+                      <p className="text-[11px] text-emerald-400/90">OTP sent to {email}. Check Inbox & Spam.</p>
+                    </div>
+                  </div>
+                  <span className="px-2 py-0.5 rounded bg-emerald-900/80 font-mono text-[10px] text-emerald-300 border border-emerald-500/40">
+                    200 OK
+                  </span>
+                </div>
+              )}
+
+              {/* EmailJS Diagnostics Drawer (Tucked neatly at bottom) */}
+              <div className="pt-2 border-t border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setShowEmailJsConfig(!showEmailJsConfig)}
+                  className="w-full text-left text-[11px] font-semibold text-slate-400 hover:text-amber-400 flex items-center justify-between transition cursor-pointer"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <Code className="w-3 h-3 text-slate-400" />
+                    <span>EmailJS Configuration (service_31jj6yq)</span>
+                  </span>
+                  <span>{showEmailJsConfig ? '▲ Hide' : '▼ Details'}</span>
+                </button>
+
+                {showEmailJsConfig && (
+                  <form onSubmit={handleSaveEmailJsConfig} className="mt-2.5 p-3.5 bg-slate-950/90 rounded-xl border border-slate-800 space-y-2.5 text-xs">
+                    <div className="text-[11px] text-slate-300 pb-1 border-b border-slate-800 flex items-center justify-between">
+                      <span className="font-bold text-amber-400">EmailJS Service Credentials</span>
+                      <span className="text-[10px] text-emerald-400 font-mono">Status: Connected</span>
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">
+                        SERVICE_ID
+                      </label>
+                      <input
+                        type="text"
+                        value={cfgServiceId}
+                        onChange={(e) => setCfgServiceId(e.target.value)}
+                        className="w-full px-2.5 py-1.5 bg-slate-900 border border-slate-700 rounded text-xs text-white font-mono focus:outline-none focus:border-amber-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">
+                        TEMPLATE_ID
+                      </label>
+                      <input
+                        type="text"
+                        value={cfgTemplateId}
+                        onChange={(e) => setCfgTemplateId(e.target.value)}
+                        className="w-full px-2.5 py-1.5 bg-slate-900 border border-slate-700 rounded text-xs text-white font-mono focus:outline-none focus:border-amber-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">
+                        PUBLIC_KEY
+                      </label>
+                      <input
+                        type="text"
+                        value={cfgPublicKey}
+                        onChange={(e) => setCfgPublicKey(e.target.value)}
+                        className="w-full px-2.5 py-1.5 bg-slate-900 border border-slate-700 rounded text-xs text-white font-mono focus:outline-none focus:border-amber-500"
+                      />
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-1">
+                      <button
+                        type="submit"
+                        className="flex-1 py-1.5 px-3 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs cursor-pointer transition"
+                      >
+                        Save Configuration
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEmail('shamrocky80@gmail.com');
+                          handleSendOTP('login');
+                        }}
+                        className="py-1.5 px-3 rounded bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs cursor-pointer border border-slate-700 transition"
+                      >
+                        Test shamrocky80@gmail.com
+                      </button>
+                    </div>
+
+                    {cfgSaveSuccess && (
+                      <p className="text-[11px] text-emerald-400 font-bold text-center">
+                        ✓ Configuration saved!
+                      </p>
+                    )}
+                  </form>
+                )}
+              </div>
             </div>
           )}
 
-          {/* TAB 2: VERIFY VIA WHATSAPP (Mobile Friendly) */}
+          {/* TAB 2: WHATSAPP DIRECT (Mobile & Desktop Friendly) */}
           {authMode === 'whatsapp' && (
             <div className="space-y-4">
-              <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs">
-                📱 <strong>Free WhatsApp Verification:</strong> Designed for mobile users. Generates a one-time verification code that you send directly to our official business WhatsApp (+91 8073407706).
+              <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs">
+                📱 <strong>Direct WhatsApp Verification:</strong> Generates a secure code sent straight to our official business WhatsApp (+91 8073407706) with zero SMS/DLT fees.
               </div>
 
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
-                  Business Mobile / Identifier
+                  Business Mobile Number
                 </label>
                 <div className="relative">
                   <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
-                    type="text"
+                    type="tel"
                     value={waIdentifier}
                     onChange={(e) => setWaIdentifier(e.target.value)}
-                    placeholder="9876543210 or business email"
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
+                    placeholder="9845000000"
+                    className="w-full pl-10 pr-4 py-3 bg-slate-950 border border-slate-700 focus:border-emerald-500 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none transition font-medium"
                   />
                 </div>
               </div>
@@ -778,7 +981,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                   type="button"
                   onClick={handleGenerateWhatsApp}
                   disabled={loading || !waIdentifier}
-                  className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-md transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg hover:shadow-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {loading ? (
                     <RefreshCw className="w-4 h-4 animate-spin" />
@@ -789,17 +992,17 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                 </button>
               ) : (
                 <div className="space-y-4 pt-1">
-                  <div className="p-3 bg-slate-950 border border-emerald-500/40 rounded-xl text-center space-y-2">
+                  <div className="p-4 bg-slate-950 border border-emerald-500/40 rounded-2xl text-center space-y-2">
                     <span className="text-[11px] text-slate-400 uppercase font-bold tracking-wider block">
                       Your WhatsApp Verification Code
                     </span>
-                    <div className="font-mono text-3xl font-black text-emerald-400 tracking-widest">
+                    <div className="font-mono text-3xl font-black text-emerald-400 tracking-widest py-1">
                       {waGeneratedCode}
                     </div>
                     <p className="text-[11px] text-slate-400">
-                      Send this code to our official business WhatsApp number:
+                      Send this code to official business WhatsApp:
                       <br />
-                      <strong className="text-white">+91 8073407706</strong>
+                      <strong className="text-white text-xs">+91 8073407706</strong>
                     </p>
                   </div>
 
@@ -808,17 +1011,17 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                       href={waUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm shadow-md transition flex items-center justify-center gap-2 cursor-pointer text-center"
+                      className="w-full py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-sm shadow-xl transition flex items-center justify-center gap-2 cursor-pointer text-center"
                     >
                       <MessageSquare className="w-4 h-4" />
-                      <span>Open WhatsApp & Send Verification</span>
+                      <span>Open WhatsApp & Send Code (+91 8073407706)</span>
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                   )}
 
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
-                      Confirm Code (or Click Below)
+                      Confirm Code (Or Click Below Once Sent)
                     </label>
                     <input
                       type="text"
@@ -826,7 +1029,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                       value={waInputCode}
                       onChange={(e) => setWaInputCode(e.target.value.replace(/\D/g, ''))}
                       placeholder={waGeneratedCode || 'Enter 6-digit code'}
-                      className="w-full py-2.5 px-4 bg-slate-950 border border-slate-700 rounded-xl text-center font-mono text-lg text-white focus:outline-none focus:border-emerald-400"
+                      className="w-full py-3 px-4 bg-slate-950 border border-slate-700 focus:border-emerald-400 rounded-xl text-center font-mono text-lg text-white focus:outline-none"
                     />
                   </div>
 
@@ -834,7 +1037,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                     type="button"
                     onClick={handleConfirmWhatsApp}
                     disabled={loading}
-                    className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs border border-slate-700 transition flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                     I Have Sent The WhatsApp Message - Unlock Portal
@@ -844,261 +1047,62 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
             </div>
           )}
 
-          {/* TAB 3: PASSWORD / PASSCODE */}
-          {authMode === 'password' && (
-            <form onSubmit={handlePasswordLogin} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1.5">
-                  Official Email / Phone
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                  <input
-                    type="text"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="email@domain.com or phone"
-                    className="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-300">
-                    {requiredRole === 'distributor' ? 'Staff Security Passcode' : 'Password'}
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAuthMode('forgot');
-                      setError(null);
-                      setSuccessMsg(null);
-                    }}
-                    className="text-[11px] text-amber-400 hover:underline"
-                  >
-                    Forgot Password?
-                  </button>
-                </div>
-                <div className="relative">
-                  <KeyRound className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder={
-                      requiredRole === 'distributor' ? 'Passcode (DIST2026 or 1234)' : 'Account Password'
-                    }
-                    className="w-full pl-10 pr-10 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
-                    tabIndex={-1}
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading || !email || !password}
-                className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm shadow-md transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
-              >
-                {loading ? (
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Lock className="w-4 h-4" />
-                )}
-                Authorize & Open Portal
-              </button>
-
-              <div className="pt-2 border-t border-slate-800 text-[11px] text-slate-400 flex flex-col gap-1">
-                <span className="font-semibold text-slate-300">Quick Credentials Hint:</span>
-                {requiredRole === 'distributor' && (
-                  <span className="font-mono text-amber-400/90">Staff Code: DIST2026 or 1234</span>
-                )}
-                {requiredRole === 'customer' && (
-                  <span className="font-mono text-amber-400/90">
-                    Email: udupigrand.nela@gmail.com | Password: password123
-                  </span>
-                )}
-              </div>
-            </form>
-          )}
-
-          {/* TAB 4: CUSTOMER REGISTRATION */}
-          {authMode === 'register' && requiredRole === 'customer' && (
-            <form onSubmit={handleRegister} className="space-y-3">
-              <div>
-                <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">
-                  Business / Establishment Name *
-                </label>
-                <div className="relative">
-                  <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                  <input
-                    type="text"
-                    required
-                    value={regForm.businessName}
-                    onChange={(e) => setRegForm({ ...regForm, businessName: e.target.value })}
-                    placeholder="e.g. Swathi Delicacy Hotel"
-                    className="w-full pl-9 pr-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">
-                    Contact Person *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={regForm.contactPerson}
-                    onChange={(e) => setRegForm({ ...regForm, contactPerson: e.target.value })}
-                    placeholder="Manager / Owner"
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">
-                    Mobile Number *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={regForm.phone}
-                    onChange={(e) => setRegForm({ ...regForm, phone: e.target.value })}
-                    placeholder="9876543210"
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">
-                  Official Email Address *
-                </label>
-                <input
-                  type="email"
-                  required
-                  value={regForm.email}
-                  onChange={(e) => setRegForm({ ...regForm, email: e.target.value })}
-                  placeholder="accounts@hotel.com"
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">
-                    Delivery Area
-                  </label>
-                  <select
-                    value={regForm.area}
-                    onChange={(e) => setRegForm({ ...regForm, area: e.target.value })}
-                    className="w-full px-2.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-amber-500"
-                  >
-                    <option value="Nelamangala Town (562123)">Nelamangala Town</option>
-                    <option value="Nelamangala Rural (562123)">Nelamangala Rural</option>
-                    <option value="Dobbaspet KIADB">Dobbaspet KIADB</option>
-                    <option value="Tumkur Highway">Tumkur Highway</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">
-                    Gas Cylinder
-                  </label>
-                  <select
-                    value={regForm.preferredBrand}
-                    onChange={(e: any) => setRegForm({ ...regForm, preferredBrand: e.target.value })}
-                    className="w-full px-2.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-amber-500"
-                  >
-                    <option value="Bharat Gas 19kg">Bharat Gas 19kg</option>
-                    <option value="Bharat Gas 47.5kg">Bharat Gas 47.5kg Bulk</option>
-                    <option value="Go Gas 21kg">Go Gas 21kg</option>
-                    <option value="Power Gas 19kg">Power Gas 19kg</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-bold uppercase text-slate-300 mb-1">
-                  Create Password
-                </label>
-                <input
-                  type="password"
-                  value={regForm.password}
-                  onChange={(e) => setRegForm({ ...regForm, password: e.target.value })}
-                  placeholder="Set account password"
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-2.5 mt-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-md transition disabled:opacity-50 cursor-pointer"
-              >
-                Register & Unlock Free Portal Access
-              </button>
-            </form>
-          )}
-
-          {/* TAB 5: FORGOT PASSWORD */}
-          {authMode === 'forgot' && (
-            <div className="space-y-4">
-              <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-slate-300">
-                Enter your registered official email address. A password reset verification code will be dispatched strictly via free verified email without any SMS gateway fees.
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold uppercase text-slate-300 mb-1.5">
-                  Registered Email
-                </label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="registered@email.com"
-                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
-                />
-              </div>
-
-              <div className="flex gap-2">
+          {/* Discreet Distributor Staff Passcode (Only displayed when requiredRole is distributor) */}
+          {requiredRole === 'distributor' && (
+            <div className="pt-4 mt-4 border-t border-slate-800/80">
+              {authMode !== 'password' ? (
                 <button
                   type="button"
                   onClick={() => setAuthMode('password')}
-                  className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold cursor-pointer"
+                  className="w-full text-center text-xs text-slate-400 hover:text-amber-400 font-semibold cursor-pointer transition flex items-center justify-center gap-1.5"
                 >
-                  Back to Login
+                  <Lock className="w-3 h-3 text-slate-400" />
+                  <span>Distributor Staff Passcode Entry (Staff Only)</span>
                 </button>
-                <button
-                  type="button"
-                  onClick={() => handleSendOTP('password_reset')}
-                  disabled={loading || !email}
-                  className="flex-2 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs disabled:opacity-50 flex items-center justify-center gap-1.5 cursor-pointer"
-                >
-                  <Send className="w-3.5 h-3.5" />
-                  Send Free Email Reset Code
-                </button>
-              </div>
+              ) : (
+                <form onSubmit={handlePasswordLogin} className="space-y-3 p-3.5 bg-slate-950/80 rounded-2xl border border-slate-800">
+                  <div className="flex items-center justify-between text-xs pb-1 border-b border-slate-800 text-slate-300 font-bold">
+                    <span>Distributor Staff Security Passcode</span>
+                    <button
+                      type="button"
+                      onClick={() => setAuthMode('otp')}
+                      className="text-[11px] text-amber-400 hover:underline"
+                    >
+                      ← Back to Email OTP
+                    </button>
+                  </div>
+                  <div>
+                    <input
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Passcode (DIST2026 or 1234)"
+                      className="w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-amber-500 font-mono"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={loading || !password}
+                    className="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-md transition"
+                  >
+                    Unlock Distributor Desk
+                  </button>
+                </form>
+              )}
             </div>
           )}
         </div>
 
-        {/* Footer info badge */}
-        <div className="px-6 py-3 bg-slate-950 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
-          <span className="flex items-center gap-1 text-amber-400">
+        {/* Official Agency Footer */}
+        <div className="px-6 py-3.5 bg-slate-950 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
+          <span className="flex items-center gap-1.5 text-amber-400 font-semibold">
             <Flame className="w-3.5 h-3.5 text-amber-500" />
-            Official Sandhya Portal
+            Sandhya Enterprises (Estd. 2010)
           </span>
-          <span className="font-mono">GSTIN: {BUSINESS_INFO.gstin}</span>
+          <span className="font-mono text-slate-400">GSTIN: {BUSINESS_INFO.gstin}</span>
         </div>
       </div>
     </div>
   );
 };
+

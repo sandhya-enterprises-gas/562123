@@ -4,6 +4,78 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { UserRole } from '../types';
 import { googleSignIn } from './firebaseAuth';
 import { portalStore } from '../data/portalStore';
+import emailjs from '@emailjs/browser';
+
+export interface EmailJsConfig {
+  serviceId: string;
+  templateId: string;
+  publicKey: string;
+}
+
+export const DEFAULT_EMAILJS_SERVICE_ID = 'service_31jj6yq';
+export const DEFAULT_EMAILJS_TEMPLATE_ID = 'template_sjy2r1b';
+export const DEFAULT_EMAILJS_PUBLIC_KEY = 'mq2CSZgr-vlXBFP1';
+
+export const getEmailJsConfig = (): EmailJsConfig => {
+  let stored: Partial<EmailJsConfig> = {};
+  if (typeof window !== 'undefined') {
+    try {
+      const raw = localStorage.getItem('sandhya_emailjs_config');
+      if (raw) stored = JSON.parse(raw);
+    } catch {}
+  }
+
+  // Check stored values, filtering out placeholders or outdated test keys
+  const validStoredServiceId =
+    stored.serviceId && stored.serviceId !== 'EMAILJS_SERVICE_ID' ? stored.serviceId : undefined;
+  const validStoredTemplateId =
+    stored.templateId && stored.templateId !== 'EMAILJS_TEMPLATE_ID' ? stored.templateId : undefined;
+  const validStoredPublicKey =
+    stored.publicKey && stored.publicKey !== 'EMAILJS_PUBLIC_KEY' && stored.publicKey !== 'mq2CSZgr-vIXRBFP1'
+      ? stored.publicKey
+      : undefined;
+
+  const rawEnvService =
+    (typeof process !== 'undefined' && (process.env?.EMAILJS_SERVICE_ID || process.env?.VITE_EMAILJS_SERVICE_ID)) ||
+    ((import.meta as any).env?.VITE_EMAILJS_SERVICE_ID as string) ||
+    '';
+  const serviceId =
+    validStoredServiceId ||
+    (rawEnvService && rawEnvService !== 'EMAILJS_SERVICE_ID' ? rawEnvService : DEFAULT_EMAILJS_SERVICE_ID);
+
+  const rawEnvTemplate =
+    (typeof process !== 'undefined' && (process.env?.EMAILJS_TEMPLATE_ID || process.env?.VITE_EMAILJS_TEMPLATE_ID)) ||
+    ((import.meta as any).env?.VITE_EMAILJS_TEMPLATE_ID as string) ||
+    '';
+  const templateId =
+    validStoredTemplateId ||
+    (rawEnvTemplate && rawEnvTemplate !== 'EMAILJS_TEMPLATE_ID' ? rawEnvTemplate : DEFAULT_EMAILJS_TEMPLATE_ID);
+
+  const rawEnvPublic =
+    (typeof process !== 'undefined' && (process.env?.EMAILJS_PUBLIC_KEY || process.env?.VITE_EMAILJS_PUBLIC_KEY)) ||
+    ((import.meta as any).env?.VITE_EMAILJS_PUBLIC_KEY as string) ||
+    '';
+  const publicKey =
+    validStoredPublicKey ||
+    (rawEnvPublic && rawEnvPublic !== 'EMAILJS_PUBLIC_KEY' && rawEnvPublic !== 'mq2CSZgr-vIXRBFP1'
+      ? rawEnvPublic
+      : DEFAULT_EMAILJS_PUBLIC_KEY);
+
+  return { serviceId, templateId, publicKey };
+};
+
+export const saveEmailJsConfig = (config: Partial<EmailJsConfig>): EmailJsConfig => {
+  const current = getEmailJsConfig();
+  const merged: EmailJsConfig = {
+    serviceId: config.serviceId !== undefined ? config.serviceId.trim() : current.serviceId,
+    templateId: config.templateId !== undefined ? config.templateId.trim() : current.templateId,
+    publicKey: config.publicKey !== undefined ? config.publicKey.trim() : current.publicKey,
+  };
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('sandhya_emailjs_config', JSON.stringify(merged));
+  }
+  return merged;
+};
 
 export interface PortalUserSession {
   uid: string;
@@ -111,7 +183,19 @@ class PortalAuthService {
     email: string,
     role: UserRole,
     purpose: 'login' | 'verification' | 'password_reset' = 'login'
-  ): Promise<{ success: boolean; message: string }> {
+  ): Promise<{
+    success: boolean;
+    message: string;
+    emailJsStatus?: {
+      attempted: boolean;
+      success: boolean;
+      status?: number;
+      text?: string;
+      error?: string;
+      serviceId?: string;
+      templateId?: string;
+    };
+  }> {
     const cleanEmail = email.trim().toLowerCase();
     if (!cleanEmail || !cleanEmail.includes('@')) {
       throw new Error('Please provide a valid official email address.');
@@ -139,9 +223,94 @@ class PortalAuthService {
 
     this.activeOTPs.set(cleanEmail, record);
 
-    // Call server endpoint for official email routing (supports Resend / EmailJS / RFC Logger)
+    // 1. EmailJS Payload: Guarantee matching template variables: {{email}} or {{to_email}}
+    const emailJsPayload = {
+      email: cleanEmail,
+      to_email: cleanEmail,
+      user_email: cleanEmail,
+      recipient: cleanEmail,
+      to_name: cleanEmail.split('@')[0],
+      otp: generatedOtp,
+      otp_code: generatedOtp,
+      code: generatedOtp,
+      passcode: generatedOtp,
+      purpose: purpose === 'password_reset' ? 'Password Reset' : 'Portal Verification',
+      message: `Your Sandhya Enterprises verification OTP is ${generatedOtp}. Valid for 10 minutes.`,
+      app_name: 'Sandhya Enterprises Commercial LPG',
+      date: new Date().toLocaleDateString('en-IN')
+    };
+
+    const { serviceId, templateId, publicKey } = getEmailJsConfig();
+    const emailJsStatus: {
+      attempted: boolean;
+      success: boolean;
+      status?: number;
+      text?: string;
+      error?: string;
+      serviceId?: string;
+      templateId?: string;
+    } = {
+      attempted: false,
+      success: false,
+      serviceId: serviceId || undefined,
+      templateId: templateId || undefined
+    };
+
+    console.log('[EmailJS Submission] ========================================');
+    console.log(`[EmailJS Target Email]: ${cleanEmail}`);
+    console.log(`[EmailJS Service ID]: ${serviceId ? `"${serviceId}"` : '(MISSING: Set EMAILJS_SERVICE_ID)'}`);
+    console.log(`[EmailJS Template ID]: ${templateId ? `"${templateId}"` : '(MISSING: Set EMAILJS_TEMPLATE_ID)'}`);
+    console.log(`[EmailJS Public Key]: ${publicKey ? `"${publicKey.slice(0, 4)}***"` : '(MISSING: Set EMAILJS_PUBLIC_KEY)'}`);
+    console.log('[EmailJS Payload Fields]:', Object.keys(emailJsPayload).join(', '));
+    console.log('[EmailJS Full Payload]:', emailJsPayload);
+    console.log('=============================================================');
+
+    // Attempt client-side direct delivery via EmailJS
+    if (serviceId && templateId && publicKey) {
+      emailJsStatus.attempted = true;
+      const candidateKeys = Array.from(new Set([
+        publicKey,
+        publicKey.replace('vlXBFP1', 'vIXRBFP1'),
+        'mq2CSZgr-vIXRBFP1',
+        'mq2CSZgr-vlXBFP1'
+      ]));
+
+      for (const key of candidateKeys) {
+        if (emailJsStatus.success) break;
+        try {
+          console.log(`[EmailJS Client Send] Trying key "${key.slice(0, 5)}***"...`);
+          const response = await emailjs.send(
+            serviceId,
+            templateId,
+            emailJsPayload,
+            key
+          );
+
+          console.log(`[EmailJS Success] Dispatched to ${cleanEmail}:`, response.status, response.text);
+          emailJsStatus.success = true;
+          emailJsStatus.status = response.status;
+          emailJsStatus.text = response.text;
+          delete emailJsStatus.error;
+          break;
+        } catch (err: any) {
+          console.error(`[EmailJS Error Response] (Key: ${key.slice(0, 5)}***):`, err);
+          emailJsStatus.status = err?.status;
+          emailJsStatus.text = err?.text;
+          emailJsStatus.error = err?.text || err?.message || String(err);
+        }
+      }
+    } else {
+      const missing = [];
+      if (!serviceId) missing.push('SERVICE_ID');
+      if (!templateId) missing.push('TEMPLATE_ID');
+      if (!publicKey) missing.push('PUBLIC_KEY');
+      console.warn(`[EmailJS Warning] Missing environment variables: ${missing.join(', ')}`);
+      emailJsStatus.error = `Missing configuration: ${missing.join(', ')}`;
+    }
+
+    // 2. Call server endpoint for dual routing (server-side Resend/EmailJS fallback)
     try {
-      const response = await fetch('/api/auth/send-otp', {
+      const serverRes = await fetch('/api/auth/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -152,15 +321,23 @@ class PortalAuthService {
         })
       });
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.warn('[Official Auth] Server email routing notice:', errorData.message);
+      if (serverRes.ok) {
+        const serverData = await serverRes.json();
+        console.log('[Official Auth] Server email routing response:', serverData);
+        if (!emailJsStatus.success && serverData?.emailJsResult?.success) {
+          emailJsStatus.success = true;
+          emailJsStatus.status = serverData.emailJsResult.status;
+          emailJsStatus.text = serverData.emailJsResult.text;
+        }
+      } else {
+        const errorData = await serverRes.json().catch(() => ({}));
+        console.warn('[Official Auth] Server email routing notice:', errorData.message || errorData.error);
       }
     } catch {
-      console.log('[Official Auth] Server offline fallback: OTP buffered locally');
+      console.log('[Official Auth] Server offline or static host (e.g. GitHub Pages). Dispatched directly from browser.');
     }
 
-    // Also persist OTP record to Firestore for durable multi-device verification
+    // 3. Persist OTP record to Firestore for durable verification
     try {
       const otpDocRef = doc(db, 'verification_otps', cleanEmail.replace(/[^a-zA-Z0-9]/g, '_'));
       await setDoc(otpDocRef, {
@@ -177,9 +354,11 @@ class PortalAuthService {
 
     return {
       success: true,
-      message: `Official ${purpose === 'password_reset' ? 'Password Reset' : 'Verification'} OTP sent to ${cleanEmail}. Please check your email inbox and spam folder.`
+      message: `Official ${purpose === 'password_reset' ? 'Password Reset' : 'Verification'} OTP sent to ${cleanEmail}. Please check your email inbox and spam folder.`,
+      emailJsStatus
     };
   }
+
 
 
   /**
