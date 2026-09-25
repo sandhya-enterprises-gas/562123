@@ -123,7 +123,7 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
               className="px-3.5 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-black text-xs uppercase tracking-wider transition shadow-md flex items-center gap-1.5"
             >
               <Lock className="w-3.5 h-3.5" />
-              <span>{lang === 'kn' ? 'ಗ್ರಾಹಕರ ಲಾಗಿನ್' : 'Customer Portal'}</span>
+              <span>{lang === 'kn' ? 'ಗ್ರಾಹಕರ ಲಾಗಿನ್ (Gmail)' : 'Customer Login (Gmail)'}</span>
             </Link>
           </div>
         </div>

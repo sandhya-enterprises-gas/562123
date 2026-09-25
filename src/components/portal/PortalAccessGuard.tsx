@@ -605,11 +605,176 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
   }
 
   // =========================================================================
-  // CASE 3B: CUSTOMER & DISTRIBUTOR PORTALS (Ultra-Clean Modern Gateway)
-  // 1. Prominent Top Hero: Sign in with Google / Gmail (1-Click Free)
-  // 2. Simplified 2 Tabs: "Email OTP" (EmailJS verified) & "WhatsApp Direct" (wa.me)
-  // 3. Removed complex Password and Register forms from customer main view
-  // 4. Dark theme, Sandhya Enterprises branding, GSTIN & verified badges intact
+  // CASE 3B: CUSTOMER GATEWAY -> EXCLUSIVE 1-CLICK GOOGLE (GMAIL) LOGIN
+  // Per User Mandate:
+  // 1. WhatsApp Login completely removed
+  // 2. 'Create Account' & 'Forgot Password' buttons completely removed
+  // 3. Traditional password login completely removed
+  // 4. Only ONE prominent Google (Gmail) login button
+  // 5. Direct access to AppSheet Booking form immediately upon login
+  // 6. Security: Customer data preserved, syncs directly to Gas Booking Admin / Google Sheets
+  // 7. Full Bilingual Support (Kannada & English)
+  // =========================================================================
+  if (requiredRole === 'customer') {
+    return (
+      <div className="relative min-h-[720px] flex items-center justify-center p-4 sm:p-6 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100 overflow-hidden">
+        <OfficialLogoWatermark opacity={0.045} />
+
+        <div className="relative z-10 max-w-lg w-full bg-slate-900/95 backdrop-blur-2xl rounded-3xl border border-slate-800 shadow-2xl overflow-hidden">
+          {/* Top Header */}
+          <div className="p-6 sm:p-8 bg-gradient-to-b from-orange-950/30 via-slate-900/90 to-transparent border-b border-slate-800 text-center relative">
+            <div className="flex justify-center mb-3">
+              <OfficialLogoBadge size={60} />
+            </div>
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-[11px] font-black text-orange-400 uppercase tracking-widest mb-3">
+              <Flame className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+              <span>
+                {lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ • ಅಧಿಕೃತ ಗ್ಯಾಸ್ ಬುಕಿಂಗ್' : 'SANDHYA ENTERPRISES • GAS BOOKING PORTAL'}
+              </span>
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              {lang === 'kn' ? 'ಗ್ರಾಹಕರ ಗ್ಯಾಸ್ ಬುಕಿಂಗ್ ಲಾಗಿನ್' : 'Commercial Customer Login'}
+            </h1>
+
+            <p className="text-xs sm:text-sm text-slate-300 mt-2 max-w-sm mx-auto leading-relaxed">
+              {lang === 'kn'
+                ? 'ಅಧಿಕೃತ AppSheet ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್ ಫಾರ್ಮ್‌ಗೆ ನೇರ ಪ್ರವೇಶ ಪಡೆಯಲು ನಿಮ್ಮ Google (Gmail) ಖಾತೆಯಿಂದ ಲಾಗಿನ್ ಆಗಿ.'
+                : 'Sign in with your Google (Gmail) account for direct instant access to the official AppSheet Gas Booking Form.'}
+            </p>
+
+            <div className="flex items-center justify-center gap-2 mt-3 text-[11px] text-slate-400 font-medium">
+              <span>Bharat Gas Commercial</span>
+              <span>•</span>
+              <span>Go Gas</span>
+              <span>•</span>
+              <span>Nelamangala (562123)</span>
+            </div>
+          </div>
+
+          {/* Status Messages */}
+          {error && (
+            <div className="mx-6 mt-4 p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-start gap-2.5">
+              <AlertTriangle className="w-4 h-4 shrink-0 text-rose-400 mt-0.5" />
+              <div className="flex-1">
+                <span className="font-bold block mb-0.5">
+                  {lang === 'kn' ? 'ಲಾಗಿನ್ ವಿಫಲವಾಗಿದೆ' : 'Authentication Notice'}
+                </span>
+                <span className="leading-relaxed">{error}</span>
+              </div>
+            </div>
+          )}
+
+          {successMsg && (
+            <div className="mx-6 mt-4 p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-start gap-2.5">
+              <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400 mt-0.5" />
+              <div className="flex-1">
+                <span className="font-bold block mb-0.5">
+                  {lang === 'kn' ? 'ಲಾಗಿನ್ ಯಶಸ್ವಿಯಾಗಿದೆ' : 'Signed In Successfully'}
+                </span>
+                <span className="leading-relaxed">{successMsg}</span>
+              </div>
+            </div>
+          )}
+
+          {/* SINGLE PROMINENT GOOGLE (GMAIL) LOGIN BUTTON */}
+          <div className="p-6 sm:p-8 space-y-5">
+            <button
+              type="button"
+              onClick={handleGoogleSignIn}
+              disabled={loading}
+              className="w-full py-4 px-5 rounded-2xl bg-white hover:bg-slate-100 text-slate-950 font-bold shadow-2xl hover:shadow-orange-500/10 transition-all duration-200 flex items-center justify-center gap-3.5 border-2 border-slate-200 cursor-pointer disabled:opacity-50 active:scale-[0.99] group"
+            >
+              {loading ? (
+                <RefreshCw className="w-6 h-6 shrink-0 animate-spin text-orange-600" />
+              ) : (
+                <svg className="w-6 h-6 shrink-0 transition-transform group-hover:scale-105" viewBox="0 0 24 24">
+                  <path
+                    fill="#4285F4"
+                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                  />
+                  <path
+                    fill="#EA4335"
+                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                  />
+                </svg>
+              )}
+              <div className="text-left">
+                <span className="block font-black text-slate-900 text-base sm:text-lg leading-tight">
+                  {lang === 'kn' ? 'Google (Gmail) ಮೂಲಕ ನೇರ ಲಾಗಿನ್ ಆಗಿ' : 'Sign in with Google / Gmail'}
+                </span>
+                <span className="block text-[11px] font-semibold text-slate-600 mt-0.5">
+                  {lang === 'kn'
+                    ? '1-ಕ್ಲಿಕ್ ಉಚಿತ ಪ್ರವೇಶ • ಯಾವುದೇ ಪಾಸ್‌ವರ್ಡ್ ಅಥವಾ ಒಟಿಪಿ ಇಲ್ಲ'
+                    : '1-Click Free Sign-In • Zero Passwords or OTPs Needed'}
+                </span>
+              </div>
+            </button>
+
+            {/* Direct Access & Security Guarantee Highlights */}
+            <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800 space-y-2.5 text-xs">
+              <div className="text-[11px] font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5 pb-1 border-b border-slate-800">
+                <Shield className="w-3.5 h-3.5" />
+                <span>
+                  {lang === 'kn' ? 'ಸುರಕ್ಷತೆ ಮತ್ತು ನೇರ ಸಿಂಕ್ ಖಾತರಿ' : 'Security & Direct Sync Guarantee'}
+                </span>
+              </div>
+
+              <div className="space-y-2 text-slate-300">
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>
+                    {lang === 'kn'
+                      ? 'ಜಿಮೇಲ್ ಲಾಗಿನ್ ಆದ ತಕ್ಷಣ ಯಾವುದೇ ಹೆಚ್ಚುವರಿ ಹಂತಗಳಿಲ್ಲದೆ ನೇರವಾಗಿ AppSheet ಗ್ಯಾಸ್ ಬುಕಿಂಗ್ ಫಾರ್ಮ್ ತೆರೆದುಕೊಳ್ಳುತ್ತದೆ.'
+                      : 'Opens the official AppSheet gas booking form directly without any extra steps upon Gmail login.'}
+                  </span>
+                </div>
+
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>
+                    {lang === 'kn'
+                      ? 'ಬುಕಿಂಗ್ ಡೇಟಾ ನೇರವಾಗಿ ಗ್ಯಾಸ್ ಬುಕಿಂಗ್ ಅಡ್ಮಿನ್ ಖಾತೆಗೆ ಮತ್ತು ಅಧಿಕೃತ ಗೂಗಲ್ ಶೀಟ್‌ಗೆ ಸುರಕ್ಷಿತವಾಗಿ ಸೇರುತ್ತದೆ.'
+                      : 'Booking entries submit directly to the Gas Booking Admin Account & synced Google Sheet.'}
+                  </span>
+                </div>
+
+                <div className="flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>
+                    {lang === 'kn'
+                      ? 'ನಿಮ್ಮ ಖಾತೆಯ ಮಾಹಿತಿಯು 100% ಸುರಕ್ಷಿತ ಮತ್ತು ಎನ್‌ಕ್ರಿಪ್ಟ್ ಆಗಿರುತ್ತದೆ (ಯಾವುದೇ ಪಾಸ್‌ವರ್ಡ್ ನೆನಪಿಡುವ ಅಗತ್ಯವಿಲ್ಲ).'
+                      : 'Your customer credentials are 100% confidential & encrypted with zero password fatigue.'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer Info */}
+          <div className="px-6 py-3.5 bg-slate-950 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
+            <span className="flex items-center gap-1.5 text-orange-400 font-bold">
+              <Flame className="w-3.5 h-3.5 text-orange-500" />
+              Sandhya Enterprises (Estd. 2010)
+            </span>
+            <span className="font-mono text-slate-400">GSTIN: {BUSINESS_INFO.gstin}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // =========================================================================
+  // CASE 3C: DISTRIBUTOR OPERATIONS DESK (Delivery Personnel & Route Supervisors)
   // =========================================================================
   return (
     <div className="relative min-h-[720px] flex items-center justify-center p-4 sm:p-6 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100 overflow-hidden">

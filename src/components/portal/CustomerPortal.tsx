@@ -23,7 +23,9 @@ import {
   Eye,
   EyeOff,
   Lock,
-  Printer
+  Printer,
+  FileSpreadsheet,
+  ExternalLink
 } from 'lucide-react';
 import { Language, CustomerAccount, OrderRecord, LedgerEntry } from '../../types';
 import { portalStore, PortalState } from '../../data/portalStore';
@@ -38,7 +40,8 @@ interface CustomerPortalProps {
 
 export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
   const [storeState, setStoreState] = useState<PortalState>(portalStore.getState());
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'reorder' | 'ledger' | 'safety'>('dashboard');
+  // Default to appsheet: Opens AppSheet Gas Booking Form directly upon login
+  const [activeTab, setActiveTab] = useState<'appsheet' | 'dashboard' | 'reorder' | 'ledger' | 'safety'>('appsheet');
   const [showThermalReceipt, setShowThermalReceipt] = useState(false);
 
   // Sync with portalAuth session on load
@@ -104,7 +107,7 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
     try {
       const session = await portalAuth.loginWithGoogle('customer');
       setAuthSuccess(`Welcome, ${session.displayName}! Authenticated via Google.`);
-      setActiveTab('dashboard');
+      setActiveTab('appsheet');
     } catch (err: any) {
       setAuthError(err.message || 'Google Sign-In was cancelled or failed.');
     }
@@ -290,15 +293,43 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
 
       {/* If Not Logged In */}
       {!currentCustomer ? (
-        <div className="max-w-lg mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-lg space-y-4">
-          {/* 1-Click Free Google Sign-In */}
-          <div className="pb-3 border-b border-slate-200">
+        <div className="max-w-lg mx-auto bg-slate-900 text-white p-6 sm:p-8 rounded-2xl border border-slate-800 shadow-2xl space-y-6">
+          <div className="text-center space-y-2">
+            <div className="w-12 h-12 rounded-2xl bg-orange-600/20 text-orange-400 border border-orange-500/30 flex items-center justify-center mx-auto shadow-inner">
+              <Flame className="w-6 h-6" />
+            </div>
+            <h2 className="text-xl sm:text-2xl font-black text-white">
+              {lang === 'kn' ? 'ಗ್ರಾಹಕರ ಗ್ಯಾಸ್ ಬುಕಿಂಗ್ ಪ್ರವೇಶ' : 'Commercial Customer Login'}
+            </h2>
+            <p className="text-xs text-slate-300 max-w-sm mx-auto">
+              {lang === 'kn'
+                ? 'ಅಧಿಕೃತ AppSheet ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್ ಫಾರ್ಮ್‌ಗೆ ನೇರ ಪ್ರವೇಶ ಪಡೆಯಲು ನಿಮ್ಮ Google (Gmail) ಖಾತೆಯಿಂದ ಲಾಗಿನ್ ಆಗಿ.'
+                : 'Sign in with your Google (Gmail) account for direct access to the official AppSheet Gas Booking Form.'}
+            </p>
+          </div>
+
+          {authError && (
+            <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs font-bold flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 shrink-0 text-red-400" />
+              <span>{authError}</span>
+            </div>
+          )}
+
+          {authSuccess && (
+            <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-bold flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
+              <span>{authSuccess}</span>
+            </div>
+          )}
+
+          {/* Single Prominent Google (Gmail) Login Button */}
+          <div>
             <button
               type="button"
               onClick={handleGoogleSignIn}
-              className="w-full py-2.5 px-4 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs shadow-xs transition flex items-center justify-center gap-2.5 border border-slate-300 cursor-pointer"
+              className="w-full py-4 px-5 rounded-2xl bg-white hover:bg-slate-100 text-slate-950 font-bold shadow-xl transition-all duration-200 flex items-center justify-center gap-3.5 border-2 border-slate-200 cursor-pointer active:scale-[0.99] group"
             >
-              <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 shrink-0 transition-transform group-hover:scale-105" viewBox="0 0 24 24">
                 <path
                   fill="#4285F4"
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -316,267 +347,44 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                 />
               </svg>
-              <span>{lang === 'kn' ? 'ಗೂಗಲ್ ಖಾತೆಯಿಂದ ನೇರ ಲಾಗಿನ್ (ಉಚಿತ)' : '1-Click Free Sign-In with Google / Gmail'}</span>
-            </button>
-            <p className="text-[10px] text-center text-slate-400 mt-1">
-              Zero SMS Gateway / DLT registration costs
-            </p>
-          </div>
-
-          {/* Auth Mode Tabs */}
-          <div className="flex items-center border-b border-slate-200 pb-2 gap-2 text-xs font-black uppercase tracking-wider">
-            <button
-              onClick={() => setAuthMode('login')}
-              className={`pb-2 px-3 border-b-2 transition-all ${
-                authMode === 'login' ? 'border-orange-600 text-orange-600' : 'border-transparent text-slate-500'
-              }`}
-            >
-              {lang === 'kn' ? 'ಲಾಗಿನ್' : 'Customer Login'}
-            </button>
-            <button
-              onClick={() => setAuthMode('register')}
-              className={`pb-2 px-3 border-b-2 transition-all ${
-                authMode === 'register' ? 'border-orange-600 text-orange-600' : 'border-transparent text-slate-500'
-              }`}
-            >
-              {lang === 'kn' ? 'ಖಾತೆ ತೆರೆಯಿರಿ' : 'Create Account'}
-            </button>
-            <button
-              onClick={() => setAuthMode('forgot')}
-              className={`pb-2 px-3 border-b-2 transition-all ${
-                authMode === 'forgot' ? 'border-orange-600 text-orange-600' : 'border-transparent text-slate-500'
-              }`}
-            >
-              {lang === 'kn' ? 'ಪಾಸ್‌ವರ್ಡ್ ಮರೆತಿದ್ದೀರಾ' : 'Forgot Password'}
+              <div className="text-left">
+                <span className="block font-black text-slate-900 text-sm sm:text-base leading-tight">
+                  {lang === 'kn' ? 'Google (Gmail) ಮೂಲಕ ನೇರ ಲಾಗಿನ್ ಆಗಿ' : 'Sign in with Google / Gmail'}
+                </span>
+                <span className="block text-[11px] font-semibold text-slate-600 mt-0.5">
+                  {lang === 'kn'
+                    ? '1-ಕ್ಲಿಕ್ ಉಚಿತ ಪ್ರವೇಶ • ಯಾವುದೇ ಪಾಸ್‌ವರ್ಡ್ ಅಥವಾ ಒಟಿಪಿ ಇಲ್ಲ'
+                    : '1-Click Free Sign-In • Zero Passwords or OTPs'}
+                </span>
+              </div>
             </button>
           </div>
 
-          {authError && (
-            <div className="p-2.5 rounded bg-red-50 border border-red-200 text-red-700 text-xs font-bold flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 flex-shrink-0" />
-              <span>{authError}</span>
+          {/* Security & Direct Sync Guarantee Highlights */}
+          <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-2 text-xs">
+            <div className="text-[11px] font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5 pb-1 border-b border-slate-800">
+              <Shield className="w-3.5 h-3.5" />
+              <span>{lang === 'kn' ? 'ಸುರಕ್ಷತೆ & ನೇರ ಸಿಂಕ್' : 'Security & Direct Sync'}</span>
             </div>
-          )}
-
-          {authSuccess && (
-            <div className="p-2.5 rounded bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
-              <span>{authSuccess}</span>
+            <div className="space-y-1.5 text-slate-300">
+              <div className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                <span>
+                  {lang === 'kn'
+                    ? 'ಜಿಮೇಲ್ ಲಾಗಿನ್ ಆದ ತಕ್ಷಣ ಯಾವುದೇ ಹೆಚ್ಚುವರಿ ಹಂತಗಳಿಲ್ಲದೆ ನೇರವಾಗಿ AppSheet ಗ್ಯಾಸ್ ಬುಕಿಂಗ್ ಫಾರ್ಮ್ ತೆರೆದುಕೊಳ್ಳುತ್ತದೆ.'
+                    : 'Directly opens the AppSheet gas booking form immediately upon Gmail login.'}
+                </span>
+              </div>
+              <div className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                <span>
+                  {lang === 'kn'
+                    ? 'ಬುಕಿಂಗ್ ಡೇಟಾ ನೇರವಾಗಿ ಗ್ಯಾಸ್ ಬುಕಿಂಗ್ ಅಡ್ಮಿನ್ ಖಾತೆಗೆ ಮತ್ತು ಅಧಿಕೃತ ಗೂಗಲ್ ಶೀಟ್‌ಗೆ ಸೇರುತ್ತದೆ.'
+                    : 'Booking data submits directly to the Gas Booking Admin Account & Google Sheet.'}
+                </span>
+              </div>
             </div>
-          )}
-
-          {/* Login Form */}
-          {authMode === 'login' && (
-            <form onSubmit={handleLogin} className="space-y-3">
-              <div>
-                <label className="block text-[11px] font-black uppercase tracking-wider text-slate-700 mb-1">
-                  {lang === 'kn' ? 'ನೋಂದಾಯಿತ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ' : 'Registered Mobile Number'}
-                </label>
-                <input
-                  type="tel"
-                  required
-                  value={loginPhone}
-                  onChange={(e) => setLoginPhone(e.target.value)}
-                  placeholder="9845112233"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-600"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-black uppercase tracking-wider text-slate-700 mb-1">
-                  {lang === 'kn' ? 'ಪಾಸ್‌ವರ್ಡ್' : 'Password'}
-                </label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full px-3 py-2 pr-10 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-600"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
-                    title={showPassword ? 'Hide Password' : 'Show Password'}
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-black text-xs uppercase tracking-wider shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <LogIn className="w-4 h-4" />
-                <span>{lang === 'kn' ? 'ಖಾತೆಗೆ ಸುರಕ್ಷಿತವಾಗಿ ಪ್ರವೇಶಿಸಿ' : 'Secure Sign In'}</span>
-              </button>
-
-              <div className="pt-2 border-t border-slate-100">
-                <a
-                  href={`https://wa.me/91${BUSINESS_INFO.phoneWhatsApp}?text=${encodeURIComponent(
-                    'Hello Sandhya Enterprises! Please verify my commercial LPG customer account on WhatsApp.'
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-2 px-3 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center gap-2 border border-emerald-200 transition"
-                >
-                  <span>📱 {lang === 'kn' ? 'ವಾಟ್ಸಾಪ್ ಮೂಲಕ ಪರಿಶೀಲಿಸಿ' : 'Verify via WhatsApp (+91 8073407706)'}</span>
-                </a>
-              </div>
-            </form>
-
-          )}
-
-          {/* Register Form */}
-          {authMode === 'register' && (
-            <form onSubmit={handleRegister} className="space-y-3">
-              <div>
-                <label className="block text-[10px] font-black uppercase tracking-wider text-slate-700 mb-1">
-                  {lang === 'kn' ? 'ಹೋಟೆಲ್ / ವ್ಯಾಪಾರ ಸಂಸ್ಥೆಯ ಹೆಸರು' : 'Hotel / Restaurant / Business Name'}
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={regBusinessName}
-                  onChange={(e) => setRegBusinessName(e.target.value)}
-                  placeholder="e.g. Udupi Ruchi Grand"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-600"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-700 mb-1">
-                    {lang === 'kn' ? 'ಸಂಪರ್ಕ ವ್ಯಕ್ತಿಯ ಹೆಸರು' : 'Contact Person'}
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={regContactPerson}
-                    onChange={(e) => setRegContactPerson(e.target.value)}
-                    placeholder="Owner / Manager"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-600"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-700 mb-1">
-                    {lang === 'kn' ? 'ಮೊಬೈಲ್ ಸಂಖ್ಯೆ' : 'Mobile Number'}
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    value={regPhone}
-                    onChange={(e) => setRegPhone(e.target.value)}
-                    placeholder="98XXXXXXXX"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-600"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-700 mb-1">
-                    {lang === 'kn' ? 'ವ್ಯವಹಾರ ವಿಧ' : 'Business Type'}
-                  </label>
-                  <select
-                    value={regBusinessType}
-                    onChange={(e) => setRegBusinessType(e.target.value as any)}
-                    className="w-full px-2.5 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold text-slate-900 focus:outline-none"
-                  >
-                    <option value="Restaurant / Hotel">Restaurant / Hotel</option>
-                    <option value="Bakery / Sweets">Bakery / Sweets</option>
-                    <option value="Wedding / Banquet Hall">Wedding / Banquet Hall</option>
-                    <option value="Highway Dhaba">Highway Dhaba</option>
-                    <option value="Industrial / Factory Canteen">Industrial / Factory Canteen</option>
-                    <option value="Other">Other Commercial</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-[10px] font-black uppercase tracking-wider text-slate-700 mb-1">
-                    {lang === 'kn' ? 'ಪ್ರದೇಶ' : 'Delivery Area'}
-                  </label>
-                  <select
-                    value={regArea}
-                    onChange={(e) => setRegArea(e.target.value)}
-                    className="w-full px-2.5 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold text-slate-900 focus:outline-none"
-                  >
-                    <option value="Nelamangala Town (562123)">Nelamangala Town (562123)</option>
-                    <option value="Nelamangala Rural (562123)">Nelamangala Rural (562123)</option>
-                    <option value="Bengaluru Rural Hub">Bengaluru Rural Hub</option>
-                    <option value="Tumkur Highway (Bulk Orders 10-15+)">Tumkur (Bulk 10-15+)</option>
-                    <option value="Sira Region (Bulk Orders 10-15+)">Sira (Bulk 10-15+)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-black uppercase tracking-wider text-slate-700 mb-1">
-                  {lang === 'kn' ? 'ಪಾಸ್‌ವರ್ಡ್ ಆಯ್ಕೆಮಾಡಿ' : 'Set Password'}
-                </label>
-                <input
-                  type="password"
-                  required
-                  value={regPassword}
-                  onChange={(e) => setRegPassword(e.target.value)}
-                  placeholder="Min 6 characters"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-600"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-black text-xs uppercase tracking-wider shadow-xs transition-colors flex items-center justify-center gap-2"
-              >
-                <UserPlus className="w-4 h-4" />
-                <span>{lang === 'kn' ? 'ಖಾತೆ ರಚಿಸಿ' : 'Register Account'}</span>
-              </button>
-            </form>
-          )}
-
-          {/* Forgot Password */}
-          {authMode === 'forgot' && (
-            <form onSubmit={handleForgotPass} className="space-y-3">
-              <div>
-                <label className="block text-[10px] font-black uppercase tracking-wider text-slate-700 mb-1">
-                  {lang === 'kn' ? 'ನಿಮ್ಮ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ' : 'Registered Mobile Number'}
-                </label>
-                <input
-                  type="tel"
-                  required
-                  value={forgotPhone}
-                  onChange={(e) => setForgotPhone(e.target.value)}
-                  placeholder="98XXXXXXXX"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-600"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-black uppercase tracking-wider text-slate-700 mb-1">
-                  {lang === 'kn' ? 'ಹೊಸ ಪಾಸ್‌ವರ್ಡ್' : 'New Password'}
-                </label>
-                <input
-                  type="password"
-                  required
-                  value={forgotNewPass}
-                  onChange={(e) => setForgotNewPass(e.target.value)}
-                  placeholder="Enter new password"
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-600"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-lg font-black text-xs uppercase tracking-wider shadow-xs transition-colors flex items-center justify-center gap-2"
-              >
-                <KeyRound className="w-4 h-4" />
-                <span>{lang === 'kn' ? 'ಪಾಸ್‌ವರ್ಡ್ ರೀಸೆಟ್ ಮಾಡಿ' : 'Reset Password'}</span>
-              </button>
-            </form>
-          )}
+          </div>
         </div>
       ) : (
         /* Logged-In Customer Experience */
@@ -669,12 +477,54 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
             </div>
           )}
 
+          {/* Security & Direct Sync Guarantee Banner */}
+          <div className="p-4 rounded-2xl bg-slate-900 border border-emerald-500/40 text-emerald-200 shadow-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="flex items-start gap-3">
+              <div className="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0 mt-0.5">
+                <CheckCircle2 className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="font-black text-sm text-white">
+                    {lang === 'kn' ? 'Google ಖಾತೆಯ ಮೂಲಕ ಸುರಕ್ಷಿತವಾಗಿ ಪರಿಶೀಲಿಸಲಾಗಿದೆ' : 'Authenticated via Google Account'}
+                  </span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    {lang === 'kn' ? '✓ ನೇರ ಅಡ್ಮಿನ್ ಸಿಂಕ್' : '✓ Live Sheet Sync'}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-300 mt-0.5">
+                  {lang === 'kn'
+                    ? `ಗ್ರಾಹಕರು: ${currentCustomer.contactPerson || currentCustomer.businessName} (${currentCustomer.email}) • ನಿಮ್ಮ ಬುಕಿಂಗ್ ಡೇಟಾ ನೇರವಾಗಿ ಗ್ಯಾಸ್ ಬುಕಿಂಗ್ ಅಡ್ಮಿನ್ ಖಾತೆ / ಗೂಗಲ್ ಶೀಟ್‌ಗೆ ತಲುಪುತ್ತದೆ.`
+                    : `Customer: ${currentCustomer.contactPerson || currentCustomer.businessName} (${currentCustomer.email}) • All booking submissions sync directly to Gas Booking Admin Account & Google Sheet.`}
+                </p>
+              </div>
+            </div>
+
+            <div className="text-right shrink-0 hidden sm:block">
+              <span className="text-[10px] text-slate-400 font-mono block">GSTIN: {BUSINESS_INFO.gstin}</span>
+              <span className="text-[11px] text-emerald-400 font-bold">100% Verified Weight & Safety</span>
+            </div>
+          </div>
+
           {/* Sub Navigation Tabs */}
           <div className="flex items-center border-b border-slate-200 gap-2 overflow-x-auto text-xs font-black uppercase tracking-wider">
             <button
+              onClick={() => setActiveTab('appsheet')}
+              className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer ${
+                activeTab === 'appsheet' ? 'border-orange-600 text-orange-600 font-black' : 'border-transparent text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5 text-orange-500" />
+              <span>{lang === 'kn' ? 'ಅಧಿಕೃತ AppSheet ಬುಕಿಂಗ್ (ನೇರ)' : 'Official AppSheet Booking (Direct)'}</span>
+              <span className="px-1.5 py-0.2 rounded-full bg-orange-100 text-[10px] text-orange-700 font-black">
+                Online
+              </span>
+            </button>
+
+            <button
               onClick={() => setActiveTab('dashboard')}
-              className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap ${
-                activeTab === 'dashboard' ? 'border-orange-600 text-orange-600' : 'border-transparent text-slate-600 hover:text-slate-900'
+              className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer ${
+                activeTab === 'dashboard' ? 'border-orange-600 text-orange-600 font-black' : 'border-transparent text-slate-600 hover:text-slate-900'
               }`}
             >
               <Truck className="w-3.5 h-3.5" />
@@ -686,8 +536,8 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
 
             <button
               onClick={() => setActiveTab('ledger')}
-              className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap ${
-                activeTab === 'ledger' ? 'border-orange-600 text-orange-600' : 'border-transparent text-slate-600 hover:text-slate-900'
+              className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer ${
+                activeTab === 'ledger' ? 'border-orange-600 text-orange-600 font-black' : 'border-transparent text-slate-600 hover:text-slate-900'
               }`}
             >
               <FileText className="w-3.5 h-3.5" />
@@ -696,8 +546,8 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
 
             <button
               onClick={() => setActiveTab('reorder')}
-              className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap ${
-                activeTab === 'reorder' ? 'border-orange-600 text-orange-600' : 'border-transparent text-slate-600 hover:text-slate-900'
+              className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer ${
+                activeTab === 'reorder' ? 'border-orange-600 text-orange-600 font-black' : 'border-transparent text-slate-600 hover:text-slate-900'
               }`}
             >
               <Send className="w-3.5 h-3.5" />
@@ -706,8 +556,8 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
 
             <button
               onClick={() => setActiveTab('safety')}
-              className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap ${
-                activeTab === 'safety' ? 'border-red-600 text-red-600' : 'border-transparent text-slate-600 hover:text-slate-900'
+              className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap cursor-pointer ${
+                activeTab === 'safety' ? 'border-red-600 text-red-600 font-black' : 'border-transparent text-slate-600 hover:text-slate-900'
               }`}
             >
               <ShieldAlert className="w-3.5 h-3.5" />
@@ -717,6 +567,54 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
               </span>
             </button>
           </div>
+
+          {/* TAB 0: OFFICIAL APPSHEET GAS BOOKING FORM (DIRECT ACCESS ON LOGIN) */}
+          {activeTab === 'appsheet' && (
+            <div className="space-y-4 animate-in fade-in duration-200">
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-white">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-orange-500/20 text-orange-400 border border-orange-500/30">
+                      {lang === 'kn' ? 'ನೇರ AppSheet ಗ್ಯಾಸ್ ಬುಕಿಂಗ್ ಫಾರ್ಮ್' : 'Direct AppSheet Gas Booking Form'}
+                    </span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-500/30">
+                      {lang === 'kn' ? '✓ ಅಡ್ಮಿನ್ ಶೀಟ್‌ಗೆ ನೇರ ಸಿಂಕ್' : '✓ Live Sheet Sync'}
+                    </span>
+                  </div>
+                  <h2 className="text-lg sm:text-xl font-black text-white mt-1">
+                    {lang === 'kn' ? 'ವಾಣಿಜ್ಯ ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್ ನಮೂನೆ' : 'Commercial LPG Cylinder Booking Form'}
+                  </h2>
+                  <p className="text-xs text-slate-300">
+                    {lang === 'kn'
+                      ? 'ಈ ಫಾರ್ಮ್ ಮೂಲಕ ಸಲ್ಲಿಸಲಾದ ಬುಕಿಂಗ್ ಡೇಟಾ ನೇರವಾಗಿ ಗ್ಯಾಸ್ ಬುಕಿಂಗ್ ಅಡ್ಮಿನ್ ಖಾತೆಗೆ ಮತ್ತು ಗೂಗಲ್ ಶೀಟ್‌ಗೆ ಸುರಕ್ಷಿತವಾಗಿ ದಾಖಲಾಗುತ್ತದೆ.'
+                      : 'Orders submitted via this form sync immediately & securely to the Gas Booking Admin Account and Google Sheet.'}
+                  </p>
+                </div>
+
+                <a
+                  href="https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac?raw=true"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-black text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-2 shrink-0 cursor-pointer"
+                >
+                  <span>{lang === 'kn' ? 'ಪೂರ್ಣಸ್ಕ್ರೀನ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ' : 'Open Fullscreen'}</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+
+              {/* Sandhya Enterprises Embedded AppSheet Form */}
+              <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
+                <iframe 
+                  src="https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac?raw=true" 
+                  width="100%" 
+                  height="650px" 
+                  style={{ border: '2px solid #ff5722', borderRadius: '8px' }} 
+                  allow="geolocation"
+                  title="Sandhya Enterprises Embedded AppSheet Form"
+                />
+              </div>
+            </div>
+          )}
 
           {/* TAB 1: Active Orders */}
           {activeTab === 'dashboard' && (
