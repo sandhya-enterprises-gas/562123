@@ -30,12 +30,14 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
           <div className="lg:col-span-7 space-y-4">
             {/* Top Badge with Official Logo */}
             <div className="flex items-center gap-3">
-              <img
-                src={sandhyaNewLogo}
-                alt="Sandhya Enterprises Official Logo"
-                className="w-12 h-12 sm:w-14 sm:h-14 rounded-full drop-shadow-md flex-shrink-0 border-2 border-orange-500/40 bg-slate-900 p-0.5"
-                referrerPolicy="no-referrer"
-              />
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-orange-500 ring-2 ring-orange-500/25 bg-slate-900 p-1 flex items-center justify-center shrink-0 shadow-lg">
+                <img
+                  src={sandhyaNewLogo}
+                  alt="Sandhya Enterprises Official Logo"
+                  className="w-full h-full object-contain filter drop-shadow-xs select-none"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-bold uppercase tracking-wider">
                 <Flame className="w-3.5 h-3.5 text-orange-400" />
                 <span>

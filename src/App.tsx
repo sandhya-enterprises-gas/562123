@@ -26,6 +26,7 @@ import { OfficialFAQ } from './components/OfficialFAQ';
 import { PortalAccessGuard } from './components/portal/PortalAccessGuard';
 import { CylinderBookingPage } from './components/CylinderBookingPage';
 import { TrackOrderPage } from './components/TrackOrderPage';
+import { AppSheetPage } from './components/AppSheetPage';
 
 // Helper component to handle scroll behaviors on route changes
 function ScrollManager({
@@ -99,6 +100,7 @@ function MainAppLayout() {
     if (location.pathname.startsWith('/distributor')) return 'distributor';
     if (location.pathname.startsWith('/admin')) return 'admin';
     if (location.pathname.startsWith('/gmail')) return 'gmail';
+    if (location.pathname.startsWith('/appsheet')) return 'appsheet';
     return 'website';
   };
 
@@ -117,6 +119,9 @@ function MainAppLayout() {
         break;
       case 'gmail':
         navigate('/gmail');
+        break;
+      case 'appsheet':
+        navigate('/appsheet');
         break;
       default:
         navigate('/');
@@ -214,6 +219,11 @@ function MainAppLayout() {
           {/* ROUTE 2: Dedicated Cylinder Booking Page */}
           <Route path="/booking" element={<CylinderBookingPage lang={lang} />} />
           <Route path="/cylinder-booking" element={<CylinderBookingPage lang={lang} />} />
+
+          {/* ROUTE 2B: Dedicated AppSheet Portal Page */}
+          <Route path="/appsheet" element={<AppSheetPage lang={lang} />} />
+          <Route path="/appsheet-booking" element={<AppSheetPage lang={lang} />} />
+          <Route path="/appsheet-form" element={<AppSheetPage lang={lang} />} />
 
           {/* ROUTE 3: Dedicated Track Order Page */}
           <Route path="/track-order" element={<TrackOrderPage lang={lang} />} />

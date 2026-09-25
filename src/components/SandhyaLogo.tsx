@@ -17,24 +17,28 @@ export const SandhyaLogo: React.FC<LogoProps> = ({
   withBadge = false
 }) => {
   const sizeMap = {
-    sm: { seal: 'w-10 h-10', text: 'text-sm', sub: 'text-[10px]' },
-    md: { seal: 'w-12 h-12', text: 'text-base', sub: 'text-xs' },
-    lg: { seal: 'w-16 h-16', text: 'text-xl', sub: 'text-sm' },
-    xl: { seal: 'w-24 h-24', text: 'text-2xl', sub: 'text-base' },
-    '2xl': { seal: 'w-32 h-32', text: 'text-3xl', sub: 'text-lg' }
+    sm: { seal: 'w-10 h-10', pad: 'p-0.5', text: 'text-sm', sub: 'text-[10px]' },
+    md: { seal: 'w-12 h-12', pad: 'p-1', text: 'text-base', sub: 'text-xs' },
+    lg: { seal: 'w-16 h-16', pad: 'p-1', text: 'text-xl', sub: 'text-sm' },
+    xl: { seal: 'w-24 h-24', pad: 'p-1.5', text: 'text-2xl', sub: 'text-base' },
+    '2xl': { seal: 'w-32 h-32', pad: 'p-2', text: 'text-3xl', sub: 'text-lg' }
   };
 
   return (
     <div className={`flex items-center gap-3 ${className}`}>
-      {/* High Definition Official Logo Emblem */}
+      {/* High Definition Official Logo Emblem with Precision Border */}
       <div
-        className={`relative ${sizeMap[size].seal} flex-shrink-0 rounded-full shadow-md transition-transform hover:scale-105 select-none`}
+        className={`relative ${sizeMap[size].seal} ${sizeMap[size].pad} flex-shrink-0 rounded-full border-2 ${
+          inverted
+            ? 'border-orange-500 bg-slate-900 ring-2 ring-orange-500/30 shadow-lg'
+            : 'border-orange-500 bg-white ring-2 ring-orange-500/25 shadow-md'
+        } flex items-center justify-center transition-transform hover:scale-105 select-none`}
         title="Sandhya Enterprises - Commercial Gas Service"
       >
         <img
           src={sandhyaNewLogo}
           alt="Sandhya Enterprises Commercial Gas Service Official Logo"
-          className="w-full h-full object-contain filter drop-shadow-sm rounded-full"
+          className="w-full h-full object-contain filter drop-shadow-xs select-none"
           referrerPolicy="no-referrer"
           loading="eager"
         />

@@ -11,13 +11,16 @@ import {
   ArrowRight,
   Info,
   Calendar,
-  Lock
+  Lock,
+  FileSpreadsheet,
+  ExternalLink
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Language, OrderRecord } from '../types';
 import { portalStore } from '../data/portalStore';
 import { BUSINESS_INFO } from '../data/content';
 import { OfficialLogoWatermark } from './common/OfficialLogoWatermark';
+import { AppSheetEmbed } from './AppSheetEmbed';
 
 interface CylinderBookingPageProps {
   lang: Language;
@@ -25,6 +28,9 @@ interface CylinderBookingPageProps {
 
 export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }) => {
   const navigate = useNavigate();
+
+  // Booking Mode: WhatsApp quick order or Official AppSheet Form
+  const [bookingMode, setBookingMode] = useState<'whatsapp' | 'appsheet'>('whatsapp');
 
   // Booking Form State
   const [selectedBrand, setSelectedBrand] = useState<'Bharat Gas' | 'Go Gas' | 'Power Gas'>('Bharat Gas');
@@ -171,8 +177,70 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
           </div>
         )}
 
-        {/* Main 2-Column Booking Form & Quality Assurance */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Booking Method Selector (WhatsApp Quick Order vs Official AppSheet Form) */}
+        <div className="flex flex-wrap items-center justify-between gap-3 p-2 rounded-2xl bg-slate-950/80 border border-slate-800">
+          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-900 border border-slate-800 w-full sm:w-auto">
+            <button
+              type="button"
+              id="booking-mode-whatsapp-btn"
+              onClick={() => setBookingMode('whatsapp')}
+              className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                bookingMode === 'whatsapp'
+                  ? 'bg-emerald-600 text-white shadow-md'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <MessageCircle className="w-3.5 h-3.5" />
+              <span>{lang === 'kn' ? 'WhatsApp ತ್ವರಿತ ಬುಕಿಂಗ್' : 'Quick WhatsApp Order'}</span>
+            </button>
+            <button
+              type="button"
+              id="booking-mode-appsheet-btn"
+              onClick={() => setBookingMode('appsheet')}
+              className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                bookingMode === 'appsheet'
+                  ? 'bg-orange-600 text-white shadow-md'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5" />
+              <span>{lang === 'kn' ? 'ಅಧಿಕೃತ AppSheet ಫಾರ್ಮ್' : 'Official AppSheet Form'}</span>
+              <span className="hidden sm:inline-block px-1.5 py-0.5 rounded text-[9px] font-bold bg-white/20 text-white">
+                Online
+              </span>
+            </button>
+          </div>
+
+          <div className="text-[11px] text-slate-400 px-2 hidden sm:block">
+            {bookingMode === 'whatsapp' ? (
+              <span>
+                {lang === 'kn' ? 'ನೇರ WhatsApp ಮೆಸೇಜ್ ಮೂಲಕ ಆರ್ಡರ್ ಕನ್ಫರ್ಮ್ ಆಗುತ್ತದೆ (+91 8073407706)' : 'Direct dispatch confirmation to +91 8073407706'}
+              </span>
+            ) : (
+              <span>
+                {lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಅಧಿಕೃತ AppSheet ಆನ್‌ಲೈನ್ ನಮೂನೆ' : 'Official Sandhya Enterprises AppSheet Portal'}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* View Mode 1: AppSheet Embedded Form */}
+        {bookingMode === 'appsheet' ? (
+          <div className="space-y-6 animate-in fade-in duration-200">
+            <AppSheetEmbed lang={lang} height="680px" showCardWrapper={true} />
+            <div className="text-center pt-2">
+              <button
+                type="button"
+                onClick={() => setBookingMode('whatsapp')}
+                className="text-xs font-bold text-slate-400 hover:text-amber-400 inline-flex items-center gap-1.5 transition cursor-pointer"
+              >
+                <span>{lang === 'kn' ? '← WhatsApp ತ್ವರಿತ ಬುಕಿಂಗ್ ಫಾರ್ಮ್‌ಗೆ ಹಿಂತಿರುಗಿ' : '← Switch back to WhatsApp Quick Order'}</span>
+              </button>
+            </div>
+          </div>
+        ) : (
+          /* View Mode 2: Main 2-Column Booking Form & Quality Assurance */
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left 2 Cols: Interactive Booking Form */}
           <div className="lg:col-span-2 p-5 sm:p-7 rounded-3xl bg-slate-950/90 border border-slate-800 shadow-2xl space-y-6">
             <div className="space-y-5">
@@ -387,6 +455,17 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
                     WhatsApp: <strong className="text-emerald-400 font-mono">+91 8073407706</strong> • Instant Dispatch Confirmation
                   </span>
                 </div>
+
+                <div className="mt-4 pt-3 border-t border-slate-800 text-center">
+                  <button
+                    type="button"
+                    onClick={() => setBookingMode('appsheet')}
+                    className="inline-flex items-center gap-2 text-xs font-bold text-orange-400 hover:text-orange-300 transition cursor-pointer"
+                  >
+                    <FileSpreadsheet className="w-3.5 h-3.5" />
+                    <span>{lang === 'kn' ? 'ಅಧಿಕೃತ AppSheet ಆನ್‌ಲೈನ್ ಫಾರ್ಮ್ ಮೂಲಕ ಸಲ್ಲಿಸಿ →' : 'Switch to Official AppSheet Online Form →'}</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -450,6 +529,7 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
             </div>
           </div>
         </div>
+        )}
       </div>
     </div>
   );

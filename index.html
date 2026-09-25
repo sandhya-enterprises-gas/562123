@@ -25,6 +25,41 @@
   <body class="bg-slate-50 text-slate-900 antialiased selection:bg-amber-500 selection:text-white">
     <div id="root"></div>
     <script>
+      // 1. Right Click (ಬಲ ಕ್ಲಿಕ್) ಬ್ಲಾಕ್ ಮಾಡಲು
+      document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+      });
+
+      // 2. F12 ಮತ್ತು ಪ್ರಮುಖ ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು (Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U) ಬ್ಲಾಕ್ ಮಾಡಲು
+      document.addEventListener('keydown', function(e) {
+        // F12 ಒತ್ತಿದರೆ
+        if (e.keyCode === 123 || e.key === 'F12') {
+          e.preventDefault();
+          return false;
+        }
+        // Ctrl+Shift+I / Cmd+Opt+I (Inspect Element)
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.keyCode === 73 || e.key === 'I' || e.key === 'i')) {
+          e.preventDefault();
+          return false;
+        }
+        // Ctrl+Shift+J / Cmd+Opt+J (Console)
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.keyCode === 74 || e.key === 'J' || e.key === 'j')) {
+          e.preventDefault();
+          return false;
+        }
+        // Ctrl+Shift+C (Inspect Element selector)
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.keyCode === 67 || e.key === 'C' || e.key === 'c')) {
+          e.preventDefault();
+          return false;
+        }
+        // Ctrl+U / Cmd+U (View Source Code)
+        if ((e.ctrlKey || e.metaKey) && (e.keyCode === 85 || e.key === 'u' || e.key === 'U')) {
+          e.preventDefault();
+          return false;
+        }
+      });
+    </script>
+    <script>
       // Register service worker in top-level window (not in iframe preview) to avoid sandbox restrictions
       if ('serviceWorker' in navigator && window.self === window.top) {
         window.addEventListener('load', function() {

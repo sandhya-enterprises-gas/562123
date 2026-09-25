@@ -19,7 +19,8 @@ import {
   Calculator,
   UtensilsCrossed,
   Radio,
-  Home
+  Home,
+  FileSpreadsheet
 } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Language, ActivePortalTab } from '../types';
@@ -167,6 +168,17 @@ export const Header: React.FC<HeaderProps> = ({
       icon: Mail,
       color: 'bg-red-600 text-white',
       badge: 'Gmail API'
+    },
+    {
+      to: '/appsheet',
+      id: 'appsheet' as ActivePortalTab,
+      nameEn: 'Official AppSheet Form',
+      nameKn: 'ಅಧಿಕೃತ AppSheet ಫಾರ್ಮ್',
+      descEn: 'Online cylinder booking & dispatch form',
+      descKn: 'ಆನ್‌ಲೈನ್ ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್ ಮತ್ತು ಗ್ರಾಹಕರ ನಮೂನೆ',
+      icon: FileSpreadsheet,
+      color: 'bg-amber-600 text-white',
+      badge: 'AppSheet'
     }
   ];
 

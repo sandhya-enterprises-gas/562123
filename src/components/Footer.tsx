@@ -34,7 +34,7 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
           {/* Col 1: Brand & Identity */}
           <div className="lg:col-span-4 space-y-3.5">
             <Link to="/" className="inline-block">
-              <SandhyaLogo size="lg" />
+              <SandhyaLogo size="lg" inverted={true} />
             </Link>
 
             <p className="text-xs text-slate-400 leading-relaxed">

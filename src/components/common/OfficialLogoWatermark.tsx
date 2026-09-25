@@ -248,7 +248,7 @@ export const OfficialLogoBadge: React.FC<{
     <div className={`inline-flex items-center gap-2.5 sm:gap-3 ${className}`}>
       <div
         style={{ width: size, height: size, minWidth: size, minHeight: size }}
-        className="relative shrink-0 rounded-full overflow-hidden border-2 border-amber-500/50 shadow-sm bg-white ring-1 ring-amber-400/30 flex items-center justify-center"
+        className="relative shrink-0 rounded-full border-2 border-orange-500 shadow-md bg-white ring-2 ring-orange-500/25 p-1 flex items-center justify-center select-none"
       >
         {useVectorFallback ? (
           <HDVectorSeal size={size} className="w-full h-full" />
@@ -259,7 +259,7 @@ export const OfficialLogoBadge: React.FC<{
             referrerPolicy="no-referrer"
             loading="eager"
             decoding="async"
-            className="w-full h-full object-contain p-0.5 select-none"
+            className="w-full h-full object-contain filter drop-shadow-xs select-none"
             onError={handleImgError}
           />
         )}
