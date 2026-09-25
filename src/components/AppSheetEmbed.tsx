@@ -13,7 +13,7 @@ export const AppSheetEmbed: React.FC<AppSheetEmbedProps> = ({
   height = '650px',
   showCardWrapper = true
 }) => {
-  const appsheetUrl = 'https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac';
+  const appsheetUrl = 'https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac?raw=true';
 
   return (
     <div className="w-full max-w-[850px] mx-auto">

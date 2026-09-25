@@ -150,6 +150,37 @@ function MainAppLayout() {
         onOpenDistributorDesk={() => navigate('/distributor')}
       />
 
+      {/* Official Sandhya Enterprises Embedded AppSheet Form Section */}
+      <section id="online-booking" className="py-10 bg-slate-900 text-white border-y border-slate-800 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-6 space-y-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-500/20 text-orange-400 border border-orange-500/30">
+              🔥 Official Online Booking Form
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight">
+              {lang === 'kn' ? 'ಆನ್‌ಲೈನ್ ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್' : 'Commercial LPG Cylinder Booking'}
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-400">
+              {lang === 'kn'
+                ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಅಧಿಕೃತ AppSheet ಮೂಲಕ ನೇರವಾಗಿ ಆರ್ಡರ್ ಸಲ್ಲಿಸಿ.'
+                : 'Direct commercial order dispatch via Sandhya Enterprises official AppSheet portal.'}
+            </p>
+          </div>
+
+          {/* Sandhya Enterprises Embedded AppSheet Form */}
+          <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
+            <iframe 
+              src="https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac?raw=true" 
+              width="100%" 
+              height="650px" 
+              style={{ border: '2px solid #ff5722', borderRadius: '8px' }} 
+              allow="geolocation"
+              title="Sandhya Enterprises Embedded AppSheet Form"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* Main Interactive Sections Hub (PAGES: Brands, Services, Customers, Booking & Rate, Accessories, Agency Location) */}
       <div id="home-sections-hub">
         <HomePageSectionsHub

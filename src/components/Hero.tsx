@@ -77,7 +77,7 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
               </p>
             </div>
 
-            {/* High Density Rate Advisory Box */}
+            {/* Rate Notice */}
             <div className="bg-orange-500/10 border-l-4 border-orange-500 p-3 rounded-r-lg border-y border-r border-orange-500/20">
               <div className="flex items-start gap-2.5">
                 <AlertTriangle className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />

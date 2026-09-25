@@ -276,10 +276,35 @@ export const HomePageSectionsHub: React.FC<HomePageSectionsHubProps> = ({
 
             {/* 4. Booking & Order Rate Quote Calculator */}
             {activeSection === 'calculator' && (
-              <div className="animate-in fade-in duration-300">
-                <OrderQuoteCalculator
-                  lang={lang}
-                />
+              <div className="animate-in fade-in duration-300 space-y-8">
+                {/* Official Sandhya Enterprises Embedded AppSheet Form */}
+                <div className="space-y-4 pt-2">
+                  <div className="text-center max-w-xl mx-auto space-y-1">
+                    <span className="text-xs font-black uppercase tracking-wider text-orange-600 bg-orange-100 px-3 py-1 rounded-full border border-orange-200">
+                      {lang === 'kn' ? 'ಅಧಿಕೃತ AppSheet ನಮೂನೆ' : 'Official AppSheet Form'}
+                    </span>
+                    <h3 className="text-xl font-black text-slate-900">
+                      {lang === 'kn' ? 'ಆನ್‌ಲೈನ್ ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್' : 'Book Commercial Cylinders Online'}
+                    </h3>
+                  </div>
+                  {/* Sandhya Enterprises Embedded AppSheet Form */}
+                  <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
+                    <iframe 
+                      src="https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac?raw=true" 
+                      width="100%" 
+                      height="650px" 
+                      style={{ border: '2px solid #ff5722', borderRadius: '8px' }} 
+                      allow="geolocation"
+                      title="Sandhya Enterprises Embedded AppSheet Form"
+                    />
+                  </div>
+                </div>
+
+                <div className="border-t border-slate-200 pt-6">
+                  <OrderQuoteCalculator
+                    lang={lang}
+                  />
+                </div>
               </div>
             )}
 

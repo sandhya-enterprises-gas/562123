@@ -29,8 +29,8 @@ interface CylinderBookingPageProps {
 export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }) => {
   const navigate = useNavigate();
 
-  // Booking Mode: WhatsApp quick order or Official AppSheet Form
-  const [bookingMode, setBookingMode] = useState<'whatsapp' | 'appsheet'>('whatsapp');
+  // Booking Mode: Official AppSheet Form or WhatsApp quick order
+  const [bookingMode, setBookingMode] = useState<'whatsapp' | 'appsheet'>('appsheet');
 
   // Booking Form State
   const [selectedBrand, setSelectedBrand] = useState<'Bharat Gas' | 'Go Gas' | 'Power Gas'>('Bharat Gas');
@@ -227,7 +227,18 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
         {/* View Mode 1: AppSheet Embedded Form */}
         {bookingMode === 'appsheet' ? (
           <div className="space-y-6 animate-in fade-in duration-200">
-            <AppSheetEmbed lang={lang} height="680px" showCardWrapper={true} />
+            {/* Sandhya Enterprises Embedded AppSheet Form */}
+            <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
+              <iframe 
+                src="https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac?raw=true" 
+                width="100%" 
+                height="650px" 
+                style={{ border: '2px solid #ff5722', borderRadius: '8px' }} 
+                allow="geolocation"
+                title="Sandhya Enterprises Embedded AppSheet Form"
+              />
+            </div>
+
             <div className="text-center pt-2">
               <button
                 type="button"

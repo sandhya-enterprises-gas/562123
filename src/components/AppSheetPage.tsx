@@ -62,7 +62,17 @@ export const AppSheetPage: React.FC<AppSheetPageProps> = ({ lang }) => {
 
         {/* Embedded AppSheet Form */}
         <div className="py-2">
-          <AppSheetEmbed lang={lang} height="700px" showCardWrapper={true} />
+          {/* Sandhya Enterprises Embedded AppSheet Form */}
+          <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
+            <iframe 
+              src="https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac?raw=true" 
+              width="100%" 
+              height="650px" 
+              style={{ border: '2px solid #ff5722', borderRadius: '8px' }} 
+              allow="geolocation"
+              title="Sandhya Enterprises Embedded AppSheet Form"
+            />
+          </div>
         </div>
 
         {/* Direct WhatsApp Fallback */}
