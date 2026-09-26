@@ -552,6 +552,87 @@ class PortalAuthService {
   }
 
   /**
+   * Log in customer using User ID
+   * For existing customers to access old booking history, MT cylinder counts, balance amount,
+   * and direct AppSheet booking form.
+   */
+  public async loginWithUserId(userId: string): Promise<PortalUserSession> {
+    const cleanId = userId.trim();
+    if (!cleanId) {
+      throw new Error('ದಯವಿಟ್ಟು ನಿಮ್ಮ ಯೂಸರ್ ಐಡಿ (User ID) ನಮೂದಿಸಿ.');
+    }
+
+    const state = portalStore.getState();
+    const cleanDigits = cleanId.replace(/\D/g, '');
+
+    // Look for customer match by ID, phone, email, or business name
+    let match = state.customers.find((c) =>
+      c.id.toLowerCase() === cleanId.toLowerCase() ||
+      (cleanDigits.length >= 7 && c.phone.includes(cleanDigits)) ||
+      (c.email && c.email.toLowerCase() === cleanId.toLowerCase()) ||
+      c.businessName.toLowerCase() === cleanId.toLowerCase()
+    );
+
+    if (!match) {
+      match = state.customers.find((c) =>
+        c.id.toLowerCase().includes(cleanId.toLowerCase()) ||
+        c.businessName.toLowerCase().includes(cleanId.toLowerCase())
+      );
+    }
+
+    if (match) {
+      portalStore.setCurrentCustomer(match.id);
+      const session: PortalUserSession = {
+        uid: match.id,
+        email: match.email || `${match.phone || cleanId}@sandhyaclient.in`,
+        displayName: match.contactPerson || match.businessName,
+        businessName: match.businessName,
+        phone: match.phone,
+        area: match.area,
+        role: 'customer',
+        isEmailVerified: true,
+        authMethod: 'email_password',
+        lastLoginAt: new Date().toISOString()
+      };
+      this.saveSession(session);
+      return session;
+    }
+
+    // If customer record is new or custom ID, register and load
+    const newCust = {
+      id: cleanId.startsWith('cust-') ? cleanId : `cust-${cleanId.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}`,
+      businessName: `Customer (${cleanId})`,
+      contactPerson: cleanId,
+      phone: cleanDigits.length >= 10 ? cleanDigits : '9845112233',
+      email: `${cleanId.replace(/[^a-zA-Z0-9]/g, '_')}@sandhyaclient.in`,
+      businessType: 'Restaurant / Hotel' as const,
+      area: 'Nelamangala Town (562123)',
+      pincode: '562123',
+      preferredBrand: 'Bharat Gas 19kg' as const,
+      balanceAmount: 0,
+      emptyCylindersDue: 0,
+      createdAt: new Date().toISOString().split('T')[0]
+    };
+    portalStore.registerCustomer(newCust as any);
+    portalStore.setCurrentCustomer(newCust.id);
+
+    const session: PortalUserSession = {
+      uid: newCust.id,
+      email: newCust.email,
+      displayName: newCust.contactPerson,
+      businessName: newCust.businessName,
+      phone: newCust.phone,
+      area: newCust.area,
+      role: 'customer',
+      isEmailVerified: true,
+      authMethod: 'email_password',
+      lastLoginAt: new Date().toISOString()
+    };
+    this.saveSession(session);
+    return session;
+  }
+
+  /**
    * Link Firebase Authenticated Google User
    */
   public linkFirebaseUser(user: User, assignedRole: UserRole = 'customer') {

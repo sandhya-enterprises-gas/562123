@@ -177,22 +177,125 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
           </div>
         )}
 
-        {/* Booking Method Selector (WhatsApp Quick Order vs Official AppSheet Form) */}
+        {/* DUAL PATH BOOKING SELECTION (EXISTING CUSTOMERS VS NEW CUSTOMERS) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Card 1: Existing Customers (ಖಾಯಂ ಗ್ರಾಹಕರಿಗೆ) */}
+          <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-orange-500/40 shadow-xl space-y-4 relative overflow-hidden flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-orange-500/20 text-orange-400 border border-orange-500/30">
+                  {lang === 'kn' ? 'ಖಾಯಂ ಗ್ರಾಹಕರಿಗೆ' : 'Existing Customers'}
+                </span>
+                <span className="text-[11px] font-bold text-slate-400">
+                  {lang === 'kn' ? 'AppSheet ಲಾಗಿನ್' : 'AppSheet Login'}
+                </span>
+              </div>
+
+              <h2 className="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+                <FileSpreadsheet className="w-5 h-5 text-orange-500 shrink-0" />
+                <span>
+                  {lang === 'kn'
+                    ? 'ಖಾಯಂ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್ (Existing Customer Login)'
+                    : 'Existing Customer Booking (Login)'}
+                </span>
+              </h2>
+
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                {lang === 'kn'
+                  ? 'ಖಾಯಂ/ಹಳೆಯ ಗ್ರಾಹಕರು: ನಿಮ್ಮ ಯೂಸರ್ ಐಡಿ (User ID) ಬಳಸಿ ಲಾಗಿನ್ ಆಗುವ ಮೂಲಕ ನಿಮ್ಮ ಹಳೆಯ ಬುಕಿಂಗ್ ವಿವರ, ಎಂಟಿ ಸಿಲಿಂಡರ್ ಲೆಕ್ಕ ಮತ್ತು ಬಾಕಿ ಹಣವನ್ನು ನೋಡಿಕೊಂಡು ನೇರವಾಗಿ ಬುಕಿಂಗ್ ಮಾಡಬಹುದು.'
+                  : 'Existing Customers: Log in with your User ID to check your previous booking history, empty (MT) cylinder count, balance amount, and book cylinders directly.'}
+              </p>
+            </div>
+
+            <div className="pt-2 flex flex-col sm:flex-row gap-2.5">
+              <button
+                type="button"
+                onClick={() => setBookingMode('appsheet')}
+                className={`flex-1 py-3 px-4 rounded-xl font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md ${
+                  bookingMode === 'appsheet'
+                    ? 'bg-orange-600 text-white ring-2 ring-orange-400'
+                    : 'bg-slate-800 hover:bg-slate-700 text-orange-300 border border-slate-700'
+                }`}
+              >
+                <FileSpreadsheet className="w-4 h-4" />
+                <span>
+                  {lang === 'kn'
+                    ? 'AppSheet ಫಾರ್ಮ್ ತೆರೆಯಿರಿ'
+                    : 'Open AppSheet Booking Form'}
+                </span>
+              </button>
+
+              <Link
+                to="/customer"
+                className="py-3 px-4 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 text-orange-300 border border-orange-500/30 font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 text-center"
+              >
+                <Lock className="w-3.5 h-3.5" />
+                <span>{lang === 'kn' ? 'ಖಾತೆ ಲಾಗಿನ್ (User ID)' : 'Account Login (User ID)'}</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Card 2: New Customers / Public (ಹೊಸ ಗ್ರಾಹಕರಿಗೆ) */}
+          <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-emerald-500/40 shadow-xl space-y-4 relative overflow-hidden flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  {lang === 'kn' ? 'ಹೊಸ ಗ್ರಾಹಕರಿಗೆ / ಸಾರ್ವಜನಿಕರು' : 'New Customers / Public'}
+                </span>
+                <span className="text-[11px] font-bold text-emerald-400">
+                  {lang === 'kn' ? '✓ ಯಾವುದೇ ಲಾಗಿನ್ ಇಲ್ಲ' : '✓ Zero Sign-In Required'}
+                </span>
+              </div>
+
+              <h2 className="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+                <ExternalLink className="w-5 h-5 text-emerald-400 shrink-0" />
+                <span>
+                  {lang === 'kn'
+                    ? 'ಹೊಸ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್ (New Customer Booking)'
+                    : 'New Customer Booking'}
+                </span>
+              </h2>
+
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                {lang === 'kn'
+                  ? 'ಹೊಸ ಗ್ರಾಹಕರು/ಸಾರ್ವಜನಿಕರು: ನೀವು ಯಾವುದೇ ಲಾಗಿನ್ ಅಥವಾ ಸೈನ್-ಇನ್ ಇಲ್ಲದೆ ನೇರವಾಗಿ ಬುಕ್ ಮಾಡಲು ಕೆಳಗಿನ \'New Customer Booking\' ಫಾರ್ಮ್ ಅನ್ನು ಬಳಸಬಹುದು.'
+                  : 'New Customers / Public: You can book directly without any login or sign-in using the \'New Customer Booking\' form.'}
+              </p>
+            </div>
+
+            <div className="pt-2 flex flex-col sm:flex-row gap-2.5">
+              <a
+                href="https://forms.gle/msHNBSBVB9xy2T787"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 group"
+              >
+                <span>
+                  {lang === 'kn'
+                    ? 'ಹೊಸ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್ ಫಾರ್ಮ್ (Google Form)'
+                    : 'Open New Customer Booking (Google Form)'}
+                </span>
+                <ExternalLink className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+
+              <button
+                type="button"
+                onClick={() => setBookingMode('new_customer_google_form')}
+                className={`py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                  bookingMode === 'new_customer_google_form'
+                    ? 'bg-emerald-700 text-white ring-2 ring-emerald-400'
+                    : 'bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700'
+                }`}
+              >
+                <span>{lang === 'kn' ? 'ಇಲ್ಲೇ ವೀಕ್ಷಿಸಿ' : 'View Embedded'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Booking Method Selector Bar */}
         <div className="flex flex-wrap items-center justify-between gap-3 p-2 rounded-2xl bg-slate-950/80 border border-slate-800">
           <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-900 border border-slate-800 w-full sm:w-auto">
-            <button
-              type="button"
-              id="booking-mode-whatsapp-btn"
-              onClick={() => setBookingMode('whatsapp')}
-              className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                bookingMode === 'whatsapp'
-                  ? 'bg-emerald-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <MessageCircle className="w-3.5 h-3.5" />
-              <span>{lang === 'kn' ? 'WhatsApp ತ್ವರಿತ ಬುಕಿಂಗ್' : 'Quick WhatsApp Order'}</span>
-            </button>
             <button
               type="button"
               id="booking-mode-appsheet-btn"
@@ -204,29 +307,80 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
               }`}
             >
               <FileSpreadsheet className="w-3.5 h-3.5" />
-              <span>{lang === 'kn' ? 'ಅಧಿಕೃತ AppSheet ಫಾರ್ಮ್' : 'Official AppSheet Form'}</span>
-              <span className="hidden sm:inline-block px-1.5 py-0.5 rounded text-[9px] font-bold bg-white/20 text-white">
-                Online
-              </span>
+              <span>{lang === 'kn' ? 'ಖಾಯಂ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್ (AppSheet)' : 'Existing Customer (AppSheet)'}</span>
+            </button>
+
+            <button
+              type="button"
+              id="booking-mode-google-btn"
+              onClick={() => setBookingMode('new_customer_google_form')}
+              className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                bookingMode === 'new_customer_google_form'
+                  ? 'bg-emerald-600 text-white shadow-md'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span>{lang === 'kn' ? 'ಹೊಸ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್ (Google Form)' : 'New Customer (Google Form)'}</span>
+            </button>
+
+            <button
+              type="button"
+              id="booking-mode-whatsapp-btn"
+              onClick={() => setBookingMode('whatsapp')}
+              className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                bookingMode === 'whatsapp'
+                  ? 'bg-slate-700 text-white shadow-md'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <MessageCircle className="w-3.5 h-3.5" />
+              <span>{lang === 'kn' ? 'WhatsApp ತ್ವರಿತ ಬುಕಿಂಗ್' : 'Quick WhatsApp'}</span>
             </button>
           </div>
 
           <div className="text-[11px] text-slate-400 px-2 hidden sm:block">
-            {bookingMode === 'whatsapp' ? (
+            {bookingMode === 'appsheet' ? (
               <span>
-                {lang === 'kn' ? 'ನೇರ WhatsApp ಮೆಸೇಜ್ ಮೂಲಕ ಆರ್ಡರ್ ಕನ್ಫರ್ಮ್ ಆಗುತ್ತದೆ (+91 8073407706)' : 'Direct dispatch confirmation to +91 8073407706'}
+                {lang === 'kn' ? 'ಖಾಯಂ ಗ್ರಾಹಕರ ಅಧಿಕೃತ AppSheet ಆನ್‌ಲೈನ್ ನಮೂನೆ' : 'Official AppSheet Booking for Existing Customers'}
+              </span>
+            ) : bookingMode === 'new_customer_google_form' ? (
+              <span>
+                {lang === 'kn' ? 'ಹೊಸ ಗ್ರಾಹಕರು ಲಾಗಿನ್ ಇಲ್ಲದೆ ನೇರವಾಗಿ ಬುಕ್ ಮಾಡಬಹುದು' : 'Zero login instant booking for new customers'}
               </span>
             ) : (
               <span>
-                {lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಅಧಿಕೃತ AppSheet ಆನ್‌ಲೈನ್ ನಮೂನೆ' : 'Official Sandhya Enterprises AppSheet Portal'}
+                {lang === 'kn' ? 'ನೇರ WhatsApp ಮೆಸೇಜ್ ಮೂಲಕ ಆರ್ಡರ್ ಕನ್ಫರ್ಮ್ ಆಗುತ್ತದೆ (+91 8073407706)' : 'Direct dispatch confirmation to +91 8073407706'}
               </span>
             )}
           </div>
         </div>
 
-        {/* View Mode 1: AppSheet Embedded Form */}
-        {bookingMode === 'appsheet' ? (
-          <div className="space-y-6 animate-in fade-in duration-200">
+        {/* View Mode 1: AppSheet Embedded Form for Existing Customers */}
+        {bookingMode === 'appsheet' && (
+          <div className="space-y-4 animate-in fade-in duration-200">
+            <div className="p-4 rounded-2xl bg-orange-950/30 border border-orange-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+              <div className="flex items-center gap-2.5">
+                <FileSpreadsheet className="w-5 h-5 text-orange-400 shrink-0" />
+                <div>
+                  <span className="font-bold text-white block">
+                    {lang === 'kn' ? 'ಖಾಯಂ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್ (AppSheet Form)' : 'Existing Customer AppSheet Form'}
+                  </span>
+                  <span className="text-slate-300 text-[11px]">
+                    {lang === 'kn'
+                      ? 'ನಿಮ್ಮ ಹಳೆಯ ಬುಕಿಂಗ್ ವಿವರ, ಎಂಟಿ ಸಿಲಿಂಡರ್ ಮತ್ತು ಬಾಕಿ ಹಣ ವೀಕ್ಷಿಸಲು ಯೂಸರ್ ಐಡಿ ಬಳಸಿ ಲಾಗಿನ್ ಆಗಿ.'
+                      : 'Log in with User ID to view previous bookings, MT cylinder counts & balance due.'}
+                  </span>
+                </div>
+              </div>
+              <Link
+                to="/customer"
+                className="px-3.5 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-black text-xs uppercase tracking-wider shrink-0"
+              >
+                {lang === 'kn' ? 'ಯೂಸರ್ ಐಡಿ ಲಾಗಿನ್ →' : 'User ID Login →'}
+              </Link>
+            </div>
+
             {/* Sandhya Enterprises Embedded AppSheet Form */}
             <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
               <iframe 
@@ -238,19 +392,56 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
                 title="Sandhya Enterprises Embedded AppSheet Form"
               />
             </div>
+          </div>
+        )}
 
-            <div className="text-center pt-2">
-              <button
-                type="button"
-                onClick={() => setBookingMode('whatsapp')}
-                className="text-xs font-bold text-slate-400 hover:text-amber-400 inline-flex items-center gap-1.5 transition cursor-pointer"
+        {/* View Mode 2: Google Form for New Customers */}
+        {bookingMode === 'new_customer_google_form' && (
+          <div className="space-y-4 animate-in fade-in duration-200">
+            <div className="p-5 rounded-3xl bg-slate-950 border-2 border-emerald-500/40 shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-white">
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-black uppercase tracking-wider">
+                  <CheckCircle2 className="w-3 h-3" />
+                  <span>{lang === 'kn' ? 'ಯಾವುದೇ ಸೈನ್-ಇನ್ ಅಗತ್ಯವಿಲ್ಲ' : 'No Sign-In Required'}</span>
+                </div>
+                <h3 className="text-lg font-black text-white">
+                  {lang === 'kn' ? 'ಹೊಸ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್ (New Customer Booking)' : 'New Customer Booking Form'}
+                </h3>
+                <p className="text-xs text-slate-300 max-w-xl">
+                  {lang === 'kn'
+                    ? 'ಹೊಸ ಗ್ರಾಹಕರು/ಸಾರ್ವಜನಿಕರು: ನೀವು ಯಾವುದೇ ಲಾಗಿನ್ ಅಥವಾ ಸೈನ್-ಇನ್ ಇಲ್ಲದೆ ನೇರವಾಗಿ ಬುಕ್ ಮಾಡಲು ಈ ಗೂಗಲ್ ಫಾರ್ಮ್ ಅನ್ನು ಬಳಸಬಹುದು.'
+                    : 'New Customers / Public: You can book directly without any login or sign-in using this Google Form.'}
+                </p>
+              </div>
+
+              <a
+                href="https://forms.gle/msHNBSBVB9xy2T787"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider shadow-lg flex items-center gap-2 shrink-0 cursor-pointer active:scale-95"
               >
-                <span>{lang === 'kn' ? '← WhatsApp ತ್ವರಿತ ಬುಕಿಂಗ್ ಫಾರ್ಮ್‌ಗೆ ಹಿಂತಿರುಗಿ' : '← Switch back to WhatsApp Quick Order'}</span>
-              </button>
+                <span>{lang === 'kn' ? 'ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ (New Tab)' : 'Open in New Tab'}</span>
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
+
+            {/* Embedded Google Form Container */}
+            <div className="w-full max-w-[800px] mx-auto rounded-2xl overflow-hidden border-2 border-emerald-500/50 shadow-2xl bg-white">
+              <iframe
+                src="https://forms.gle/msHNBSBVB9xy2T787"
+                width="100%"
+                height="750px"
+                title="New Customer Booking Google Form"
+                className="w-full border-0"
+              >
+                Loading Google Form…
+              </iframe>
             </div>
           </div>
-        ) : (
-          /* View Mode 2: Main 2-Column Booking Form & Quality Assurance */
+        )}
+
+        {/* View Mode 3: Main 2-Column WhatsApp Booking Form & Quality Assurance */}
+        {bookingMode === 'whatsapp' && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left 2 Cols: Interactive Booking Form */}
           <div className="lg:col-span-2 p-5 sm:p-7 rounded-3xl bg-slate-950/90 border border-slate-800 shadow-2xl space-y-6">

@@ -20,7 +20,8 @@ import {
   UtensilsCrossed,
   Radio,
   Home,
-  FileSpreadsheet
+  FileSpreadsheet,
+  ExternalLink
 } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Language, ActivePortalTab } from '../types';
@@ -98,8 +99,8 @@ export const Header: React.FC<HeaderProps> = ({
     {
       to: '/customer',
       id: 'customer',
-      labelEn: 'Customer Login',
-      labelKn: 'ಗ್ರಾಹಕರ ಲಾಗಿನ್',
+      labelEn: 'Existing Customer Login',
+      labelKn: 'ಖಾಯಂ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್',
       icon: User,
       highlight: 'emerald'
     },
@@ -429,6 +430,32 @@ export const Header: React.FC<HeaderProps> = ({
                         </button>
                       );
                     })}
+                  </div>
+
+                  {/* Direct Link for New Customer Booking (Google Form) */}
+                  <div className="p-2 border-t border-slate-100 bg-emerald-50/50 rounded-b-2xl">
+                    <a
+                      href="https://forms.gle/msHNBSBVB9xy2T787"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-between p-2 rounded-xl text-left bg-white hover:bg-emerald-50 border border-emerald-200 transition-colors group cursor-pointer shadow-xs"
+                      onClick={() => setPortalDropdownOpen(false)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <div className="p-1.5 rounded-lg bg-emerald-600 text-white shrink-0 shadow-xs">
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </div>
+                        <div>
+                          <span className="text-xs font-black text-slate-900 group-hover:text-emerald-700 block leading-tight">
+                            {lang === 'kn' ? 'ಹೊಸ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್ (Google Form)' : 'New Customer Booking'}
+                          </span>
+                          <span className="text-[10px] text-slate-500">
+                            {lang === 'kn' ? 'ಲಾಗಿನ್ ಇಲ್ಲದೆ ನೇರ ಪ್ರವೇಶ (New Tab)' : 'Zero sign-in • Opens in New Tab'}
+                          </span>
+                        </div>
+                      </div>
+                      <ExternalLink className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    </a>
                   </div>
                 </div>
               )}

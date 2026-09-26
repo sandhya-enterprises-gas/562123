@@ -1,5 +1,5 @@
 import React from 'react';
-import { PhoneCall, MessageCircle, Truck, Flame, Sparkles, CheckCircle2, ChevronRight, MapPin, AlertTriangle, ArrowRight } from 'lucide-react';
+import { PhoneCall, MessageCircle, Truck, Flame, Sparkles, CheckCircle2, ChevronRight, MapPin, AlertTriangle, ArrowRight, ExternalLink, FileSpreadsheet, Lock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Language } from '../types';
 import { BUSINESS_INFO } from '../data/content';
@@ -136,6 +136,51 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
               >
                 <PhoneCall className="w-3.5 h-3.5 text-orange-400" />
                 <span>{lang === 'kn' ? 'ದರ ಕರೆ' : 'CALL DESK'}</span>
+              </a>
+            </div>
+
+            {/* DUAL PATH DIRECT BOOKING BUTTONS (EXISTING VS NEW CUSTOMERS) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+              <Link
+                to="/customer"
+                className="p-3 rounded-xl bg-orange-950/50 hover:bg-orange-900/60 border border-orange-500/40 transition flex items-center justify-between text-left group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-orange-600/30 text-orange-400 flex items-center justify-center shrink-0 border border-orange-500/30">
+                    <FileSpreadsheet className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="text-[11px] font-black uppercase text-orange-300 block leading-tight">
+                      {lang === 'kn' ? 'ಖಾಯಂ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್ (Login)' : 'Existing Customer Login'}
+                    </span>
+                    <span className="text-[10px] text-slate-400">
+                      {lang === 'kn' ? 'ಯೂಸರ್ ಐಡಿ ಬಳಸಿ ಹಳೆಯ ಬುಕಿಂಗ್ & ಲೆಡ್ಜರ್' : 'User ID • Booking History & MT tally'}
+                    </span>
+                  </div>
+                </div>
+                <ArrowRight className="w-3.5 h-3.5 text-orange-400 transition-transform group-hover:translate-x-1" />
+              </Link>
+
+              <a
+                href="https://forms.gle/msHNBSBVB9xy2T787"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 rounded-xl bg-emerald-950/50 hover:bg-emerald-900/60 border border-emerald-500/40 transition flex items-center justify-between text-left group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-600/30 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
+                    <ExternalLink className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="text-[11px] font-black uppercase text-emerald-300 block leading-tight">
+                      {lang === 'kn' ? 'ಹೊಸ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್ (Google Form)' : 'New Customer Booking'}
+                    </span>
+                    <span className="text-[10px] text-slate-400">
+                      {lang === 'kn' ? 'ಲಾಗಿನ್ ಇಲ್ಲದೆ ನೇರ ಬುಕ್ ಮಾಡಿ (New Tab)' : 'Zero Login Required • New Tab'}
+                    </span>
+                  </div>
+                </div>
+                <ExternalLink className="w-3.5 h-3.5 text-emerald-400 transition-transform group-hover:scale-110" />
               </a>
             </div>
 
