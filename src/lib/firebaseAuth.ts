@@ -3,7 +3,11 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   User,
-  signOut
+  signOut,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  sendPasswordResetEmail
 } from 'firebase/auth';
 import { auth, saveUserProfileToFirestore } from './firebase';
 export { auth };
@@ -141,6 +145,66 @@ export const googleSignInWithGmail = async (): Promise<{ user: User; accessToken
  */
 export const getAccessToken = async (): Promise<string | null> => {
   return cachedAccessToken;
+};
+
+/**
+ * Email & Password Sign In
+ */
+export const emailSignIn = async (email: string, pass: string): Promise<User> => {
+  try {
+    isSigningIn = true;
+    const cred = await signInWithEmailAndPassword(auth, email.trim(), pass);
+    await saveUserProfileToFirestore({
+      uid: cred.user.uid,
+      displayName: cred.user.displayName || email.split('@')[0],
+      email: cred.user.email || email,
+      role: 'customer',
+      createdAt: new Date().toISOString()
+    });
+    return cred.user;
+  } catch (error: any) {
+    console.error('[Firebase Auth] Email Sign-In error:', error);
+    throw error;
+  } finally {
+    isSigningIn = false;
+  }
+};
+
+/**
+ * Email & Password Registration / Sign Up
+ */
+export const emailSignUp = async (email: string, pass: string, displayName?: string): Promise<User> => {
+  try {
+    isSigningIn = true;
+    const cred = await createUserWithEmailAndPassword(auth, email.trim(), pass);
+    if (displayName && cred.user) {
+      try {
+        await updateProfile(cred.user, { displayName });
+      } catch (e) {
+        console.warn('Could not update profile display name:', e);
+      }
+    }
+    await saveUserProfileToFirestore({
+      uid: cred.user.uid,
+      displayName: displayName || email.split('@')[0],
+      email: cred.user.email || email,
+      role: 'customer',
+      createdAt: new Date().toISOString()
+    });
+    return cred.user;
+  } catch (error: any) {
+    console.error('[Firebase Auth] Email Sign-Up error:', error);
+    throw error;
+  } finally {
+    isSigningIn = false;
+  }
+};
+
+/**
+ * Send Password Reset Email
+ */
+export const resetPassword = async (email: string): Promise<void> => {
+  await sendPasswordResetEmail(auth, email.trim());
 };
 
 /**

@@ -71,9 +71,8 @@ service cloud.firestore {
 
     // Authenticated User Profiles
     match /users/{userId} {
-      allow read: if isValidId(userId);
-      allow create: if isValidId(userId);
-      allow update: if isValidId(userId);
+      allow read: if true;
+      allow create, update: if isValidId(userId);
       allow delete: if isSignedIn() && request.auth.uid == userId;
     }
 
@@ -86,38 +85,32 @@ service cloud.firestore {
 
     // Rate Inquiries Collection
     match /inquiries/{inquiryId} {
-      allow create: if isValidId(inquiryId) && isValidInquiry(incoming());
-      allow read: if isValidId(inquiryId);
-      allow update: if isValidId(inquiryId) && isValidInquiry(incoming()) &&
-                    incoming().id == existing().id &&
-                    incoming().createdAt == existing().createdAt;
+      allow read: if true;
+      allow create: if isValidInquiry(incoming());
+      allow update: if isValidInquiry(incoming());
       allow delete: if isSignedIn();
     }
 
     // LPG Cylinder Orders Collection
     match /orders/{orderId} {
-      allow create: if isValidId(orderId) && isValidOrder(incoming());
-      allow read: if isValidId(orderId);
-      allow update: if isValidId(orderId) && isValidOrder(incoming()) &&
-                    incoming().id == existing().id &&
-                    incoming().createdAt == existing().createdAt;
+      allow read: if true;
+      allow create: if isValidOrder(incoming());
+      allow update: if isValidOrder(incoming());
       allow delete: if isSignedIn();
     }
 
     // Distributor & Delivery Partner Applicants
     match /applicants/{applicantId} {
-      allow create: if isValidId(applicantId) && isValidApplicant(incoming());
-      allow read: if isValidId(applicantId);
-      allow update: if isValidId(applicantId) && isValidApplicant(incoming()) &&
-                    incoming().id == existing().id &&
-                    incoming().appliedAt == existing().appliedAt;
+      allow read: if true;
+      allow create: if isValidApplicant(incoming());
+      allow update: if isValidApplicant(incoming());
       allow delete: if isSignedIn();
     }
 
     // Daily Rate Notices
     match /rates/{rateId} {
-      allow read: if isValidId(rateId);
-      allow write: if isValidId(rateId) && isValidRateNotice(incoming());
+      allow read: if true;
+      allow write: if isValidRateNotice(incoming());
     }
   }
 }

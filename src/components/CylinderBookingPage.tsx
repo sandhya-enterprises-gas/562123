@@ -21,6 +21,7 @@ import { portalStore } from '../data/portalStore';
 import { BUSINESS_INFO } from '../data/content';
 import { OfficialLogoWatermark } from './common/OfficialLogoWatermark';
 import { AppSheetEmbed } from './AppSheetEmbed';
+import { FirebaseCylinderBookingApp } from './FirebaseCylinderBookingApp';
 
 interface CylinderBookingPageProps {
   lang: Language;
@@ -29,8 +30,8 @@ interface CylinderBookingPageProps {
 export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }) => {
   const navigate = useNavigate();
 
-  // Booking Mode: Official AppSheet Form or WhatsApp quick order
-  const [bookingMode, setBookingMode] = useState<'whatsapp' | 'appsheet'>('appsheet');
+  // Booking Mode: Firebase Auth & Firestore, Official AppSheet Form, Google Form or WhatsApp quick order
+  const [bookingMode, setBookingMode] = useState<'firebase' | 'appsheet' | 'new_customer_google_form' | 'whatsapp'>('firebase');
 
   // Booking Form State
   const [selectedBrand, setSelectedBrand] = useState<'Bharat Gas' | 'Go Gas' | 'Power Gas'>('Bharat Gas');
@@ -295,7 +296,24 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
 
         {/* Booking Method Selector Bar */}
         <div className="flex flex-wrap items-center justify-between gap-3 p-2 rounded-2xl bg-slate-950/80 border border-slate-800">
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-900 border border-slate-800 w-full sm:w-auto">
+          <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-slate-900 border border-slate-800 w-full sm:w-auto">
+            <button
+              type="button"
+              id="booking-mode-firebase-btn"
+              onClick={() => setBookingMode('firebase')}
+              className={`flex-1 sm:flex-none px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                bookingMode === 'firebase'
+                  ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-md'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Flame className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
+              <span>{lang === 'kn' ? 'Firebase ಲೈವ್ ಬುಕಿಂಗ್ & Auth' : 'Firebase Live Booking & Auth'}</span>
+              <span className="hidden sm:inline-block px-1.5 py-0.5 rounded text-[9px] font-bold bg-white/20 text-white">
+                Database
+              </span>
+            </button>
+
             <button
               type="button"
               id="booking-mode-appsheet-btn"
@@ -340,7 +358,11 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
           </div>
 
           <div className="text-[11px] text-slate-400 px-2 hidden sm:block">
-            {bookingMode === 'appsheet' ? (
+            {bookingMode === 'firebase' ? (
+              <span className="text-orange-300 font-bold">
+                {lang === 'kn' ? '🔥 Firebase Auth & Firestore ನೇರ ಡೇಟಾಬೇಸ್ ಸಿಂಕ್' : '🔥 Firebase Auth & Firestore Real-Time Database Sync'}
+              </span>
+            ) : bookingMode === 'appsheet' ? (
               <span>
                 {lang === 'kn' ? 'ಖಾಯಂ ಗ್ರಾಹಕರ ಅಧಿಕೃತ AppSheet ಆನ್‌ಲೈನ್ ನಮೂನೆ' : 'Official AppSheet Booking for Existing Customers'}
               </span>
@@ -355,6 +377,13 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
             )}
           </div>
         </div>
+
+        {/* View Mode 0: Firebase Live Engine & Firestore Booking App */}
+        {bookingMode === 'firebase' && (
+          <div className="animate-in fade-in duration-200">
+            <FirebaseCylinderBookingApp lang={lang} />
+          </div>
+        )}
 
         {/* View Mode 1: AppSheet Embedded Form for Existing Customers */}
         {bookingMode === 'appsheet' && (

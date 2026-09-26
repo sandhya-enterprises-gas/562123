@@ -127,6 +127,17 @@ export const Header: React.FC<HeaderProps> = ({
 
   const portalItems = [
     {
+      to: '/firebase-booking',
+      id: 'firebase-booking' as any,
+      nameEn: 'Firebase Cylinder Booking & Auth',
+      nameKn: 'Firebase ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್ & Auth',
+      descEn: 'Firestore real-time booking database & Email/Google login',
+      descKn: 'ಲೈವ್ Firestore ಡೇಟಾಬೇಸ್ ಮತ್ತು ಇಮೇಲ್/ಗೂಗಲ್ ಲಾಗಿನ್',
+      icon: Flame,
+      color: 'bg-gradient-to-r from-orange-600 to-amber-600 text-white',
+      badge: 'Firestore Live'
+    },
+    {
       to: '/customer',
       id: 'customer' as ActivePortalTab,
       nameEn: 'Customer Portal & Login',

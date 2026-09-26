@@ -5,9 +5,13 @@ import {
   doc,
   getDocFromServer,
   setDoc,
+  updateDoc,
+  deleteDoc,
   collection,
   getDocs,
-  onSnapshot
+  onSnapshot,
+  query,
+  orderBy
 } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
 
@@ -211,6 +215,74 @@ export async function fetchOrdersFromFirestore(): Promise<any[]> {
   } catch (error) {
     console.warn('[Firebase] Could not fetch orders:', error);
     return [];
+  }
+}
+
+/**
+ * Real-time subscription to Cylinder Orders from Firestore
+ */
+export function subscribeToCylinderBookings(
+  onUpdate: (orders: any[]) => void,
+  onError?: (err: any) => void
+): () => void {
+  try {
+    const colRef = collection(db, 'orders');
+    return onSnapshot(
+      colRef,
+      (snap) => {
+        const list: any[] = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+        // Sort descending by createdAt or orderNumber
+        list.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+        onUpdate(list);
+      },
+      (error) => {
+        console.warn('[Firebase] Orders subscription warning:', error);
+        if (onError) onError(error);
+      }
+    );
+  } catch (err) {
+    console.warn('[Firebase] Subscription exception:', err);
+    if (onError) onError(err);
+    return () => {};
+  }
+}
+
+/**
+ * Update cylinder booking status in Firestore
+ */
+export async function updateCylinderBookingStatus(
+  orderId: string,
+  newStatus: 'pending' | 'confirmed' | 'dispatched' | 'delivered' | 'cancelled'
+): Promise<void> {
+  const path = `orders/${orderId}`;
+  try {
+    await updateDoc(doc(db, 'orders', orderId), {
+      status: newStatus,
+      updatedAt: new Date().toISOString()
+    });
+    console.log('[Firebase] Order status updated in Firestore:', orderId, newStatus);
+  } catch (error) {
+    handleFirestoreError(error, OperationType.UPDATE, path);
+  }
+}
+
+/**
+ * Cancel cylinder booking in Firestore
+ */
+export async function cancelCylinderBooking(orderId: string): Promise<void> {
+  return updateCylinderBookingStatus(orderId, 'cancelled');
+}
+
+/**
+ * Delete cylinder booking from Firestore (for admin clean up)
+ */
+export async function deleteCylinderBooking(orderId: string): Promise<void> {
+  const path = `orders/${orderId}`;
+  try {
+    await deleteDoc(doc(db, 'orders', orderId));
+    console.log('[Firebase] Order deleted from Firestore:', orderId);
+  } catch (error) {
+    handleFirestoreError(error, OperationType.DELETE, path);
   }
 }
 

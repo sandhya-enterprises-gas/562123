@@ -27,6 +27,7 @@ import { PortalAccessGuard } from './components/portal/PortalAccessGuard';
 import { CylinderBookingPage } from './components/CylinderBookingPage';
 import { TrackOrderPage } from './components/TrackOrderPage';
 import { AppSheetPage } from './components/AppSheetPage';
+import { FirebaseCylinderBookingApp } from './components/FirebaseCylinderBookingApp';
 
 // Helper component to handle scroll behaviors on route changes
 function ScrollManager({
@@ -250,6 +251,32 @@ function MainAppLayout() {
           {/* ROUTE 2: Dedicated Cylinder Booking Page */}
           <Route path="/booking" element={<CylinderBookingPage lang={lang} />} />
           <Route path="/cylinder-booking" element={<CylinderBookingPage lang={lang} />} />
+
+          {/* ROUTE 2-FB: Dedicated Firebase Live Cylinder Booking & Auth */}
+          <Route
+            path="/firebase-booking"
+            element={
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <FirebaseCylinderBookingApp lang={lang} />
+              </div>
+            }
+          />
+          <Route
+            path="/firebase"
+            element={
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <FirebaseCylinderBookingApp lang={lang} />
+              </div>
+            }
+          />
+          <Route
+            path="/firebase-app"
+            element={
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <FirebaseCylinderBookingApp lang={lang} />
+              </div>
+            }
+          />
 
           {/* ROUTE 2B: Dedicated AppSheet Portal Page */}
           <Route path="/appsheet" element={<AppSheetPage lang={lang} />} />
