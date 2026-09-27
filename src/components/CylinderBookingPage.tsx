@@ -355,6 +355,17 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
               <MessageCircle className="w-3.5 h-3.5" />
               <span>{lang === 'kn' ? 'WhatsApp ತ್ವರಿತ ಬುಕಿಂಗ್' : 'Quick WhatsApp'}</span>
             </button>
+
+            <a
+              href="/standalone-firebase.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-blue-900/50 hover:bg-blue-800/60 text-blue-200 border border-blue-500/30"
+              title="Open Standalone Single-Page HTML App in New Tab"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
+              <span>Standalone HTML App</span>
+            </a>
           </div>
 
           <div className="text-[11px] text-slate-400 px-2 hidden sm:block">
