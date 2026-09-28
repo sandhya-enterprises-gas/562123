@@ -94,94 +94,119 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
               </div>
             </div>
 
-            {/* Quick Action CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-1">
-              <Link
-                to="/booking"
-                id="hero-book-cylinder-btn"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all active:scale-95"
-              >
-                <Flame className="w-4 h-4 text-amber-300" />
-                <span>{lang === 'kn' ? 'ಸಿಲಿಂಡರ್ ಬುಕ್ ಮಾಡಿ' : 'BOOK CYLINDERS NOW'}</span>
-              </Link>
+            {/* PROMINENT CUSTOMER BOOKING TOOLS (PRIMARY FOCUS) */}
+            <div className="space-y-3 pt-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* TOOL 1: Firebase Cylinder Booking (Email/Google Login) */}
+                <Link
+                  to="/booking"
+                  id="hero-firebase-booking-card"
+                  className="p-4 rounded-2xl bg-gradient-to-br from-orange-600 via-orange-700 to-amber-700 text-white shadow-xl hover:shadow-2xl border-2 border-orange-400/50 hover:border-amber-300 transition-all transform hover:-translate-y-0.5 group flex flex-col justify-between"
+                >
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black/30 text-amber-200 border border-amber-300/30">
+                        <Flame className="w-3 h-3 text-amber-300 fill-amber-300" />
+                        <span>Firebase Live</span>
+                      </span>
+                      <span className="text-[10px] font-bold text-orange-200 uppercase tracking-wider">
+                        Online Order
+                      </span>
+                    </div>
 
-              <Link
-                to="/track-order"
-                id="hero-track-order-btn"
-                className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40 font-bold text-xs uppercase tracking-wider transition-colors shadow-xs"
-              >
-                <Truck className="w-4 h-4 text-amber-400" />
-                <span>{lang === 'kn' ? 'ಆರ್ಡರ್ ಟ್ರ್ಯಾಕಿಂಗ್' : 'TRACK ORDER'}</span>
-              </Link>
+                    <h3 className="text-base sm:text-lg font-black text-white leading-snug">
+                      {lang === 'kn'
+                        ? 'ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್ (Firebase Email/Google)'
+                        : 'Firebase Cylinder Booking (Email/Google Login)'}
+                    </h3>
 
-              <a
-                id="hero-whatsapp-booking-btn"
-                href={`https://wa.me/91${BUSINESS_INFO.phoneWhatsApp}?text=${encodeURIComponent(
-                  lang === 'kn'
-                    ? 'ನಮಸ್ಕಾರ ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್, ನನಗೆ ಕಮರ್ಷಿಯಲ್ ಗ್ಯಾಸ್ ಸಿಲಿಂಡರ್ ಡೆಲಿವರಿ ಮತ್ತು ಇಂದಿನ ದರ ಬೇಕಾಗಿದೆ.'
-                    : 'Hello Sandhya Enterprises, I would like to inquire about today\'s commercial LPG cylinder rate & booking.'
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs uppercase tracking-wider shadow-md transition-all active:scale-95"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>{lang === 'kn' ? 'ವಾಟ್ಸಾಪ್' : 'WHATSAPP'}</span>
-              </a>
-
-              <a
-                id="hero-primary-call-btn"
-                href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`}
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs uppercase tracking-wider transition-colors"
-              >
-                <PhoneCall className="w-3.5 h-3.5 text-orange-400" />
-                <span>{lang === 'kn' ? 'ದರ ಕರೆ' : 'CALL DESK'}</span>
-              </a>
-            </div>
-
-            {/* DUAL PATH DIRECT BOOKING BUTTONS (EXISTING VS NEW CUSTOMERS) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
-              <Link
-                to="/customer"
-                className="p-3 rounded-xl bg-orange-950/50 hover:bg-orange-900/60 border border-orange-500/40 transition flex items-center justify-between text-left group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-orange-600/30 text-orange-400 flex items-center justify-center shrink-0 border border-orange-500/30">
-                    <FileSpreadsheet className="w-4 h-4" />
+                    <p className="text-xs text-orange-100/90 leading-relaxed font-normal">
+                      {lang === 'kn'
+                        ? 'ಗೂಗಲ್ ಅಥವಾ ಇಮೇಲ್ ಲಾಗಿನ್ ಮೂಲಕ ತಕ್ಷಣ ಸಿಲಿಂಡರ್ ಬುಕ್ ಮಾಡಿ & ಲೈವ್ ಟ್ರ್ಯಾಕ್ ಮಾಡಿ.'
+                        : 'Instant online cylinder booking with live Firestore tracking via Google or Email sign-in.'}
+                    </p>
                   </div>
-                  <div>
-                    <span className="text-[11px] font-black uppercase text-orange-300 block leading-tight">
-                      {lang === 'kn' ? 'ಖಾಯಂ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್ (Login)' : 'Existing Customer Login'}
-                    </span>
-                    <span className="text-[10px] text-slate-400">
-                      {lang === 'kn' ? 'ಯೂಸರ್ ಐಡಿ ಬಳಸಿ ಹಳೆಯ ಬುಕಿಂಗ್ & ಲೆಡ್ಜರ್' : 'User ID • Booking History & MT tally'}
-                    </span>
-                  </div>
-                </div>
-                <ArrowRight className="w-3.5 h-3.5 text-orange-400 transition-transform group-hover:translate-x-1" />
-              </Link>
 
-              <a
-                href="https://forms.gle/msHNBSBVB9xy2T787"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-3 rounded-xl bg-emerald-950/50 hover:bg-emerald-900/60 border border-emerald-500/40 transition flex items-center justify-between text-left group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-600/30 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30">
-                    <ExternalLink className="w-4 h-4" />
+                  <div className="pt-3 mt-2 border-t border-orange-500/40 flex items-center justify-between font-black text-xs uppercase tracking-wider text-amber-200 group-hover:text-white">
+                    <span>{lang === 'kn' ? 'ಬುಕಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ' : 'Book Cylinder Now'}</span>
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </div>
-                  <div>
-                    <span className="text-[11px] font-black uppercase text-emerald-300 block leading-tight">
-                      {lang === 'kn' ? 'ಹೊಸ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್ (Google Form)' : 'New Customer Booking'}
-                    </span>
-                    <span className="text-[10px] text-slate-400">
-                      {lang === 'kn' ? 'ಲಾಗಿನ್ ಇಲ್ಲದೆ ನೇರ ಬುಕ್ ಮಾಡಿ (New Tab)' : 'Zero Login Required • New Tab'}
-                    </span>
+                </Link>
+
+                {/* TOOL 2: New Customer Booking (Google Form) */}
+                <a
+                  href="https://forms.gle/msHNBSBVB9xy2T787"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  id="hero-new-customer-google-form-card"
+                  className="p-4 rounded-2xl bg-gradient-to-br from-emerald-700 via-emerald-800 to-teal-900 text-white shadow-xl hover:shadow-2xl border-2 border-emerald-400/50 hover:border-emerald-300 transition-all transform hover:-translate-y-0.5 group flex flex-col justify-between"
+                >
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-black/30 text-emerald-200 border border-emerald-300/30">
+                        <CheckCircle2 className="w-3 h-3 text-emerald-300" />
+                        <span>Zero Sign-In</span>
+                      </span>
+                      <span className="text-[10px] font-bold text-emerald-200 uppercase tracking-wider">
+                        Google Form
+                      </span>
+                    </div>
+
+                    <h3 className="text-base sm:text-lg font-black text-white leading-snug">
+                      {lang === 'kn'
+                        ? 'ಹೊಸ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್ (Google Form)'
+                        : 'New Customer Booking (Google Form)'}
+                    </h3>
+
+                    <p className="text-xs text-emerald-100/90 leading-relaxed font-normal">
+                      {lang === 'kn'
+                        ? 'ಯಾವುದೇ ಲಾಗಿನ್ ಅಗತ್ಯವಿಲ್ಲದೆ ಹೊಸ ಗ್ರಾಹಕರು ನೇರವಾಗಿ ಗೂಗಲ್ ಫಾರ್ಮ್ ಮೂಲಕ ಆರ್ಡರ್ ಮಾಡಿ.'
+                        : 'Zero login required. First-time customers, hotels & restaurants can order directly.'}
+                    </p>
                   </div>
-                </div>
-                <ExternalLink className="w-3.5 h-3.5 text-emerald-400 transition-transform group-hover:scale-110" />
-              </a>
+
+                  <div className="pt-3 mt-2 border-t border-emerald-600/40 flex items-center justify-between font-black text-xs uppercase tracking-wider text-emerald-200 group-hover:text-white">
+                    <span>{lang === 'kn' ? 'ಗೂಗಲ್ ಫಾರ್ಮ್ ತೆರೆಯಿರಿ' : 'Open Google Form'}</span>
+                    <ExternalLink className="w-4 h-4 transition-transform group-hover:scale-110" />
+                  </div>
+                </a>
+              </div>
+
+              {/* Customer Quick Assist Links (Tracking, WhatsApp, Desk Call) */}
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                <Link
+                  to="/track-order"
+                  id="hero-track-order-btn"
+                  className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40 font-bold text-xs uppercase tracking-wider transition-colors shadow-xs"
+                >
+                  <Truck className="w-3.5 h-3.5 text-amber-400" />
+                  <span>{lang === 'kn' ? 'ಆರ್ಡರ್ ಟ್ರ್ಯಾಕ್ ಮಾಡಿ' : 'Track Order'}</span>
+                </Link>
+
+                <a
+                  id="hero-whatsapp-booking-btn"
+                  href={`https://wa.me/91${BUSINESS_INFO.phoneWhatsApp}?text=${encodeURIComponent(
+                    lang === 'kn'
+                      ? 'ನಮಸ್ಕಾರ ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್, ನನಗೆ ಕಮರ್ಷಿಯಲ್ ಗ್ಯಾಸ್ ಸಿಲಿಂಡರ್ ಡೆಲಿವರಿ ಮತ್ತು ಇಂದಿನ ದರ ಬೇಕಾಗಿದೆ.'
+                      : 'Hello Sandhya Enterprises, I would like to inquire about today\'s commercial LPG cylinder rate & booking.'
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-800/80 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider shadow-sm transition-all"
+                >
+                  <MessageCircle className="w-3.5 h-3.5" />
+                  <span>{lang === 'kn' ? 'WhatsApp ಬುಕಿಂಗ್' : 'WhatsApp'}</span>
+                </a>
+
+                <a
+                  id="hero-primary-call-btn"
+                  href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`}
+                  className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs uppercase tracking-wider transition-colors"
+                >
+                  <PhoneCall className="w-3.5 h-3.5 text-orange-400" />
+                  <span>{lang === 'kn' ? 'ದರ ಕರೆ' : 'Call Desk'}</span>
+                </a>
+              </div>
             </div>
 
             {/* Quick feature checks */}

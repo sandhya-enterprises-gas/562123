@@ -75,8 +75,8 @@ export const Header: React.FC<HeaderProps> = ({
     {
       to: '/booking',
       id: 'booking',
-      labelEn: 'Cylinder Booking',
-      labelKn: 'ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್',
+      labelEn: 'Firebase Cylinder Booking',
+      labelKn: 'Firebase ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್',
       icon: Flame,
       highlight: 'orange'
     },
@@ -99,18 +99,10 @@ export const Header: React.FC<HeaderProps> = ({
     {
       to: '/customer',
       id: 'customer',
-      labelEn: 'Existing Customer Login',
-      labelKn: 'ಖಾಯಂ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್',
+      labelEn: 'Customer Portal',
+      labelKn: 'ಗ್ರಾಹಕರ ಪೋರ್ಟಲ್',
       icon: User,
       highlight: 'emerald'
-    },
-    {
-      to: '/distributor',
-      id: 'distributor',
-      labelEn: 'Delivery Partner',
-      labelKn: 'ಡೆಲಿವರಿ ಪಾರ್ಟ್ನರ್',
-      icon: Truck,
-      highlight: 'blue'
     }
   ];
 

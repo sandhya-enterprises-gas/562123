@@ -28,6 +28,7 @@ import { CylinderBookingPage } from './components/CylinderBookingPage';
 import { TrackOrderPage } from './components/TrackOrderPage';
 import { AppSheetPage } from './components/AppSheetPage';
 import { FirebaseCylinderBookingApp } from './components/FirebaseCylinderBookingApp';
+import { ArrowRight, ExternalLink } from 'lucide-react';
 
 // Helper component to handle scroll behaviors on route changes
 function ScrollManager({
@@ -151,33 +152,80 @@ function MainAppLayout() {
         onOpenDistributorDesk={() => navigate('/distributor')}
       />
 
-      {/* Official Sandhya Enterprises Embedded AppSheet Form Section */}
-      <section id="online-booking" className="py-10 bg-slate-900 text-white border-y border-slate-800 relative">
+      {/* Prominent Customer Booking Hub (Clean, Dedicated & Primary) */}
+      <section id="customer-booking-hub" className="py-8 bg-slate-900/90 text-white border-y border-slate-800 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-6 space-y-2">
+          <div className="text-center max-w-3xl mx-auto mb-6 space-y-1.5">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-500/20 text-orange-400 border border-orange-500/30">
-              🔥 Official Online Booking Form
+              🔥 Customer Online Booking Hub
             </span>
             <h2 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight">
-              {lang === 'kn' ? 'ಆನ್‌ಲೈನ್ ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್' : 'Commercial LPG Cylinder Booking'}
+              {lang === 'kn' ? 'ಗ್ರಾಹಕರ ಆನ್‌ಲೈನ್ ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್' : 'Customer LPG Cylinder Booking'}
             </h2>
             <p className="text-xs sm:text-sm text-slate-400">
               {lang === 'kn'
-                ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಅಧಿಕೃತ AppSheet ಮೂಲಕ ನೇರವಾಗಿ ಆರ್ಡರ್ ಸಲ್ಲಿಸಿ.'
-                : 'Direct commercial order dispatch via Sandhya Enterprises official AppSheet portal.'}
+                ? 'ನಿಮ್ಮ ಅಗತ್ಯಕ್ಕೆ ತಕ್ಕಂತೆ Firebase ಲೈವ್ ಡೇಟಾಬೇಸ್ ಅಥವಾ ಗೂಗಲ್ ಫಾರ್ಮ್ ಮೂಲಕ ತಕ್ಷಣ ಬುಕ್ ಮಾಡಿ.'
+                : 'Choose your preferred booking tool below for instant commercial delivery dispatch.'}
             </p>
           </div>
 
-          {/* Sandhya Enterprises Embedded AppSheet Form */}
-          <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
-            <iframe 
-              src="https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac?raw=true" 
-              width="100%" 
-              height="650px" 
-              style={{ border: '2px solid #ff5722', borderRadius: '8px' }} 
-              allow="geolocation"
-              title="Sandhya Enterprises Embedded AppSheet Form"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+            {/* Primary Tool 1: Firebase Cylinder Booking */}
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-orange-950/60 to-slate-900 border-2 border-orange-500/50 shadow-xl flex flex-col justify-between space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-orange-500/20 text-orange-400 border border-orange-500/30">
+                    🔥 Firebase Live Database
+                  </span>
+                  <span className="text-[10px] font-bold text-slate-400">Email & Google Login</span>
+                </div>
+                <h3 className="text-xl font-black text-white">
+                  {lang === 'kn' ? 'Firebase ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್' : 'Firebase Cylinder Booking'}
+                </h3>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  {lang === 'kn'
+                    ? 'ಗೂಗಲ್ ಅಥವಾ ಇಮೇಲ್ ಮೂಲಕ ಲಾಗಿನ್ ಆಗಿ, ಲೈವ್ ರಿಯಲ್-ಟೈಮ್ Firestore ಡೇಟಾಬೇಸ್‌ನಲ್ಲಿ ಸಿಲಿಂಡರ್ ಬುಕ್ ಮಾಡಿ.'
+                    : 'Sign in with Google or Email to place direct cylinder orders with live real-time Firestore tracking.'}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => navigate('/booking')}
+                className="py-3 px-4 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>{lang === 'kn' ? 'ಬುಕಿಂಗ್ ಪ್ರಾರಂಭಿಸಿ' : 'Launch Firebase Booking'}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Primary Tool 2: New Customer Booking (Google Form) */}
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-emerald-950/60 to-slate-900 border-2 border-emerald-500/50 shadow-xl flex flex-col justify-between space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                    ✓ Zero Sign-In Required
+                  </span>
+                  <span className="text-[10px] font-bold text-slate-400">Instant Dispatch</span>
+                </div>
+                <h3 className="text-xl font-black text-white">
+                  {lang === 'kn' ? 'ಹೊಸ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್ (Google Form)' : 'New Customer Booking (Google Form)'}
+                </h3>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  {lang === 'kn'
+                    ? 'ಯಾವುದೇ ಖಾತೆ ಅಥವಾ ಲಾಗಿನ್ ಇಲ್ಲದೆ ಹೊಸ ಗ್ರಾಹಕರು, ಹೋಟೆಲ್‌ಗಳು ನೇರವಾಗಿ ಗೂಗಲ್ ಫಾರ್ಮ್ ಮೂಲಕ ಆರ್ಡರ್ ಸಲ್ಲಿಸಿ.'
+                    : 'Zero login needed. Fast commercial LPG order dispatch for first-time customers, hotels & restaurants.'}
+                </p>
+              </div>
+              <a
+                href="https://forms.gle/msHNBSBVB9xy2T787"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 text-center"
+              >
+                <span>{lang === 'kn' ? 'ಗೂಗಲ್ ಫಾರ್ಮ್ ತೆರೆಯಿರಿ' : 'Open Google Form'}</span>
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </div>
           </div>
         </div>
       </section>

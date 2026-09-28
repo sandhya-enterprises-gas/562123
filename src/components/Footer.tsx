@@ -14,7 +14,10 @@ import {
   Facebook,
   Truck,
   User,
-  Calculator
+  Calculator,
+  Lock,
+  FileSpreadsheet,
+  ExternalLink
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Language } from '../types';
@@ -75,8 +78,19 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
               <li>
                 <Link to="/booking" className="hover:text-amber-400 text-orange-400 font-bold transition-colors flex items-center gap-1.5">
                   <Flame className="w-3 h-3 text-orange-500" />
-                  <span>{lang === 'kn' ? 'ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್' : 'Cylinder Booking'}</span>
+                  <span>{lang === 'kn' ? 'Firebase ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್' : 'Firebase Cylinder Booking'}</span>
                 </Link>
+              </li>
+              <li>
+                <a
+                  href="https://forms.gle/msHNBSBVB9xy2T787"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-emerald-300 text-emerald-400 font-bold transition-colors flex items-center gap-1.5"
+                >
+                  <ExternalLink className="w-3 h-3 text-emerald-400" />
+                  <span>{lang === 'kn' ? 'ಹೊಸ ಗ್ರಾಹಕರ ಬುಕಿಂಗ್ (Google Form)' : 'New Customer Booking (Google Form)'}</span>
+                </a>
               </li>
               <li>
                 <Link to="/track-order" className="hover:text-amber-400 text-amber-300 font-bold transition-colors flex items-center gap-1.5">
@@ -85,15 +99,9 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
                 </Link>
               </li>
               <li>
-                <Link to="/customer" className="hover:text-amber-400 text-emerald-400 font-bold transition-colors flex items-center gap-1.5">
-                  <User className="w-3 h-3 text-emerald-400" />
+                <Link to="/customer" className="hover:text-amber-400 text-slate-300 transition-colors flex items-center gap-1.5">
+                  <User className="w-3 h-3 text-slate-400" />
                   <span>{lang === 'kn' ? 'ಗ್ರಾಹಕರ ಪೋರ್ಟಲ್ & ಲಾಗಿನ್' : 'Customer Portal & Login'}</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/distributor" className="hover:text-amber-400 text-blue-400 font-bold transition-colors flex items-center gap-1.5">
-                  <Truck className="w-3 h-3 text-blue-400" />
-                  <span>{lang === 'kn' ? 'ಡೆಲಿವರಿ ಪಾರ್ಟ್ನರ್ ಡೆಸ್ಕ್' : 'Delivery Partner Desk'}</span>
                 </Link>
               </li>
               <li>
@@ -204,6 +212,91 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
                 </a>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* SUBTLE ADMINISTRATIVE & STAFF OPERATIONS SECTION (SHIFTED TO FOOTER) */}
+        <div className="mt-8 pt-5 pb-1 border-t border-slate-900 bg-slate-900/60 rounded-2xl p-4 sm:p-5 border border-slate-800/80">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800">
+            <div className="flex items-center gap-2 text-slate-400 text-xs">
+              <Lock className="w-3.5 h-3.5 text-slate-500" />
+              <span className="font-bold uppercase tracking-wider text-[11px] text-slate-400">
+                {lang === 'kn' ? 'ಅಧಿಕೃತ ಸಿಬ್ಬಂದಿ ಮತ್ತು ಆಡಳಿತ ಪ್ರವೇಶ' : 'Authorized Staff & Administration Portal'}
+              </span>
+            </div>
+            <span className="text-[10px] text-slate-500 font-medium">
+              {lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಸಿಬ್ಬಂದಿಗೆ ಮಾತ್ರ ಸೀಮಿತ' : 'Restricted to authorized Sandhya Enterprises personnel'}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+            {/* 1. Vitharakara Karyacharane & Delivery Desk */}
+            <Link
+              to="/distributor"
+              id="footer-staff-distributor-link"
+              className="p-2.5 rounded-xl bg-slate-950/80 hover:bg-slate-800 border border-slate-800/90 hover:border-slate-700 transition flex items-center gap-2.5 group"
+            >
+              <div className="w-7 h-7 rounded-lg bg-blue-950/60 text-blue-400 flex items-center justify-center shrink-0 border border-blue-900/40">
+                <Truck className="w-3.5 h-3.5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <span className="text-[11px] font-bold text-slate-300 group-hover:text-blue-300 block truncate leading-tight">
+                  {lang === 'kn' ? 'ವಿತರಕರ ಕಾರ್ಯಾಚರಣೆ & ಡೆಲಿವರಿ ಡೆಸ್ಕ್' : 'Vitharakara Karyacharane & Delivery Desk'}
+                </span>
+                <span className="text-[9px] text-slate-500 block truncate">Route tally & dispatch fleet</span>
+              </div>
+            </Link>
+
+            {/* 2. Admin Command Center */}
+            <Link
+              to="/admin"
+              id="footer-staff-admin-link"
+              className="p-2.5 rounded-xl bg-slate-950/80 hover:bg-slate-800 border border-slate-800/90 hover:border-slate-700 transition flex items-center gap-2.5 group"
+            >
+              <div className="w-7 h-7 rounded-lg bg-purple-950/60 text-purple-400 flex items-center justify-center shrink-0 border border-purple-900/40">
+                <ShieldCheck className="w-3.5 h-3.5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <span className="text-[11px] font-bold text-slate-300 group-hover:text-purple-300 block truncate leading-tight">
+                  {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಕಮಾಂಡ್ ಸೆಂಟರ್' : 'Admin Command Center'}
+                </span>
+                <span className="text-[9px] text-slate-500 block truncate">Master rates, credentials & audit</span>
+              </div>
+            </Link>
+
+            {/* 3. Adhikrutha Gmail & Invoices */}
+            <Link
+              to="/gmail"
+              id="footer-staff-gmail-link"
+              className="p-2.5 rounded-xl bg-slate-950/80 hover:bg-slate-800 border border-slate-800/90 hover:border-slate-700 transition flex items-center gap-2.5 group"
+            >
+              <div className="w-7 h-7 rounded-lg bg-amber-950/60 text-amber-400 flex items-center justify-center shrink-0 border border-amber-900/40">
+                <Mail className="w-3.5 h-3.5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <span className="text-[11px] font-bold text-slate-300 group-hover:text-amber-300 block truncate leading-tight">
+                  {lang === 'kn' ? 'ಅಧಿಕೃತ Gmail & ಇನ್‌ವಾಯ್ಸ್' : 'Adhikrutha Gmail & Invoices'}
+                </span>
+                <span className="text-[9px] text-slate-500 block truncate">Commercial billing & communications</span>
+              </div>
+            </Link>
+
+            {/* 4. Adhikrutha AppSheet Form */}
+            <Link
+              to="/appsheet"
+              id="footer-staff-appsheet-link"
+              className="p-2.5 rounded-xl bg-slate-950/80 hover:bg-slate-800 border border-slate-800/90 hover:border-slate-700 transition flex items-center gap-2.5 group"
+            >
+              <div className="w-7 h-7 rounded-lg bg-orange-950/60 text-orange-400 flex items-center justify-center shrink-0 border border-orange-900/40">
+                <FileSpreadsheet className="w-3.5 h-3.5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <span className="text-[11px] font-bold text-slate-300 group-hover:text-orange-300 block truncate leading-tight">
+                  {lang === 'kn' ? 'ಅಧಿಕೃತ AppSheet ನಮೂನೆ' : 'Adhikrutha AppSheet Form'}
+                </span>
+                <span className="text-[9px] text-slate-500 block truncate">Back-office dispatch sheets</span>
+              </div>
+            </Link>
           </div>
         </div>
 
