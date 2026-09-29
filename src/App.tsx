@@ -146,12 +146,6 @@ function MainAppLayout() {
         }}
       />
 
-      {/* Official Distributor & Delivery Partner Banner */}
-      <OfficialDistributorShowcase
-        lang={lang}
-        onOpenDistributorDesk={() => navigate('/distributor')}
-      />
-
       {/* Prominent Customer Booking Hub (Clean, Dedicated & Primary) */}
       <section id="customer-booking-hub" className="py-8 bg-slate-900/90 text-white border-y border-slate-800 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -243,9 +237,6 @@ function MainAppLayout() {
           onOpenCustomerPortal={() => navigate('/customer')}
         />
       </div>
-
-      {/* Official FAQ Component (Delivery Timelines, Payment Terms, Installation, Security) */}
-      <OfficialFAQ lang={lang} />
     </>
   );
 
@@ -435,6 +426,11 @@ function MainAppLayout() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+
+      {/* Official FAQ Section (Positioned at Very Bottom / Footer) */}
+      <div id="faq">
+        <OfficialFAQ lang={lang} />
+      </div>
 
       {/* Official Global Footer */}
       <Footer lang={lang} onOpenInquiryModal={() => handleOpenInquiry()} />
