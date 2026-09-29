@@ -4,13 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sandhya Enterprises - Gas Booking</title>
+    <!-- Social & SEO Meta Tags -->
+    <meta property="og:title" content="Sandhya Enterprises Commercial & Domestic LPG Gas Agency" />
+    <meta property="og:description" content="Sandhya Enterprises: Authorized commercial & domestic LPG cylinder supplier, pipeline setup & 24/7 delivery in Nelamangala & Bangalore." />
+    <meta property="og:image" content="https://sandhya-enterprises-gas.github.io/your-logo.png" />
+    <meta property="og:url" content="https://sandhya-enterprises-gas.github.io/gas-booking.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://sandhya-enterprises-gas.github.io/your-logo.png" />
     <!-- PWA App Setup -->
     <meta name="theme-color" content="#d32f2f">
     <meta name="mobile-web-app-capable" content="yes">
     
-    <!-- Google Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts & Icons (Non-Render-Blocking) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </noscript>
 
     <style>
         * {
@@ -264,7 +279,7 @@
 
         .order-meta {
             font-size: 13px;
-            color: #718096;
+            color: #334155;
             margin-top: 4px;
         }
 
@@ -272,7 +287,7 @@
             text-align: center;
             padding: 18px;
             font-size: 13px;
-            color: #718096;
+            color: #334155;
             background: #fff;
             border-top: 1px solid #eef2f5;
         }
@@ -357,16 +372,16 @@
             <div id="phone-form">
                 <div id="recaptcha-container" style="margin-bottom: 12px;"></div>
                 <div class="input-group">
-                    <label>Mobile Number (with country code)</label>
-                    <input type="tel" id="phone-number" placeholder="+91 8073407706" value="+91 ">
+                    <label for="phone-number">Mobile Number (with country code)</label>
+                    <input type="tel" id="phone-number" name="tel" autocomplete="tel" placeholder="+91 8073407706" value="+91 ">
                 </div>
                 <button id="send-otp-btn" class="btn" onclick="sendOTP()">
                     <i class="fa-solid fa-paper-plane"></i> Send OTP
                 </button>
 
                 <div id="otp-group" class="input-group" style="display: none; margin-top: 15px;">
-                    <label>Enter 6-Digit OTP</label>
-                    <input type="text" id="otp-input" placeholder="123456" maxlength="6" style="letter-spacing: 0.25em; text-align: center; font-size: 18px; font-weight: 700;">
+                    <label for="otp-input">Enter 6-Digit OTP</label>
+                    <input type="text" id="otp-input" name="one-time-code" autocomplete="one-time-code" placeholder="123456" maxlength="6" style="letter-spacing: 0.25em; text-align: center; font-size: 18px; font-weight: 700;">
                     <button class="btn" style="background:#2e7d32; margin-top: 10px;" onclick="verifyOTP()">
                         <i class="fa-solid fa-check"></i> Verify OTP & Login
                     </button>
@@ -376,12 +391,12 @@
             <!-- Email Form (Hidden by default) -->
             <div id="email-form" style="display: none;">
                 <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="email" id="email-input" placeholder="customer@gmail.com">
+                    <label for="email-input">Email Address</label>
+                    <input type="email" id="email-input" name="email" autocomplete="username email" placeholder="customer@gmail.com">
                 </div>
                 <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" id="password-input" placeholder="••••••••">
+                    <label for="password-input">Password</label>
+                    <input type="password" id="password-input" name="password" autocomplete="current-password" placeholder="••••••••">
                 </div>
                 <button class="btn" onclick="loginEmail()">
                     <i class="fa-solid fa-right-to-bracket"></i> Sign In with Email
@@ -413,18 +428,18 @@
                 <h2><i class="fa-solid fa-gas-pump" style="color: #d32f2f;"></i> Book Gas Cylinder</h2>
                 
                 <div class="input-group">
-                    <label>Full Name / Business Name</label>
-                    <input type="text" id="cust-name" placeholder="Enter your full name or hotel name">
+                    <label for="cust-name">Full Name / Business Name</label>
+                    <input type="text" id="cust-name" name="name" autocomplete="name" placeholder="Enter your full name or hotel name">
                 </div>
 
                 <div class="input-group">
-                    <label>Delivery Address & Landmark</label>
-                    <input type="text" id="cust-address" placeholder="Door No, Street, Landmark, Nelamangala (562123)">
+                    <label for="cust-address">Delivery Address & Landmark</label>
+                    <input type="text" id="cust-address" name="street-address" autocomplete="street-address" placeholder="Door No, Street, Landmark, Nelamangala (562123)">
                 </div>
 
                 <div class="input-group">
-                    <label>Cylinder Type</label>
-                    <select id="cylinder-type">
+                    <label for="cylinder-type">Cylinder Type</label>
+                    <select id="cylinder-type" name="cylinder-type">
                         <option value="19kg Commercial VOT">19kg Commercial Cylinder (Hotel / Restaurant)</option>
                         <option value="14.2kg Domestic">14.2kg Domestic Cylinder (Household)</option>
                         <option value="33kg LOT Commercial">33kg LOT Commercial (Bakery / Catering)</option>
@@ -433,8 +448,8 @@
                 </div>
 
                 <div class="input-group">
-                    <label>Quantity (Cylinders)</label>
-                    <input type="number" id="cylinder-qty" value="1" min="1" max="50">
+                    <label for="cylinder-qty">Quantity (Cylinders)</label>
+                    <input type="number" id="cylinder-qty" name="quantity" value="1" min="1" max="50">
                 </div>
 
                 <button id="book-btn" class="btn" onclick="bookCylinder()">

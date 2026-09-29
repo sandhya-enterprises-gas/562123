@@ -20,6 +20,8 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
           src={heroImage}
           alt="Sandhya Enterprises Commercial LPG Yard"
           className="w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
           referrerPolicy="no-referrer"
         />
       </div>
@@ -35,6 +37,9 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
                   src={sandhyaNewLogo}
                   alt="Sandhya Enterprises Official Logo"
                   className="w-full h-full object-contain filter drop-shadow-xs select-none"
+                  width="56"
+                  height="56"
+                  decoding="async"
                   referrerPolicy="no-referrer"
                 />
               </div>
@@ -243,6 +248,10 @@ export const Hero: React.FC<HeroProps> = ({ lang, onOpenInquiryModal }) => {
                     src={sandhyaNewLogo}
                     alt="Sandhya Seal"
                     className="w-full h-full object-contain rounded-full"
+                    width="40"
+                    height="40"
+                    loading="lazy"
+                    decoding="async"
                     referrerPolicy="no-referrer"
                   />
                 </div>

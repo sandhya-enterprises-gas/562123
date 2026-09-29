@@ -125,6 +125,8 @@ export const ServicesSpecialties: React.FC<ServicesSpecialtiesProps> = ({
               src={serviceImage}
               alt="LPG Pipeline Technician"
               className="w-full h-full object-cover"
+              loading="lazy"
+              decoding="async"
               referrerPolicy="no-referrer"
             />
           </div>
