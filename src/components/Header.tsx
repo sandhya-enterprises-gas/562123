@@ -21,7 +21,8 @@ import {
   Radio,
   Home,
   FileSpreadsheet,
-  ExternalLink
+  ExternalLink,
+  HelpCircle
 } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Language, ActivePortalTab } from '../types';
@@ -97,6 +98,14 @@ export const Header: React.FC<HeaderProps> = ({
       highlight: false
     },
     {
+      to: '/faq-rules',
+      id: 'faq-rules',
+      labelEn: 'FAQ & Rules',
+      labelKn: 'ಪ್ರಶ್ನೋತ್ತರ & ನಿಯಮಗಳು',
+      icon: HelpCircle,
+      highlight: false
+    },
+    {
       to: '/customer',
       id: 'customer',
       labelEn: 'Customer Portal',
@@ -109,6 +118,7 @@ export const Header: React.FC<HeaderProps> = ({
   // Secondary Home Hub Section Links
   const sectionLinks = [
     { to: '/brands', id: 'brands', labelEn: 'Gas Brands', labelKn: 'ಗ್ಯಾಸ್ ಬ್ರ್ಯಾಂಡ್‌ಗಳು', icon: Flame },
+    { to: '/faq-rules', id: 'faq-rules', labelEn: 'FAQ & Rules', labelKn: 'ಪ್ರಶ್ನೋತ್ತರ & ನಿಯಮಗಳು', icon: HelpCircle },
     { to: '/services', id: 'services', labelEn: 'Services', labelKn: 'ಸೇವೆಗಳು', icon: Wrench },
     { to: '/customers', id: 'customers', labelEn: 'Who We Serve', labelKn: 'ಗ್ರಾಹಕರು', icon: Users },
     { to: '/calculator', id: 'calculator', labelEn: 'Rate & Booking', labelKn: 'ಬುಕಿಂಗ್ & ದರ', icon: Calculator },

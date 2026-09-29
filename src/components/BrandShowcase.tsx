@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Flame, Check, MessageCircle, PhoneCall, ArrowRight, Shield, Zap, Sparkles, AlertTriangle } from 'lucide-react';
 import { Language, GasBrand } from '../types';
 import { CYLINDER_PRODUCTS, BUSINESS_INFO } from '../data/content';
@@ -149,30 +150,40 @@ export const BrandShowcase: React.FC<BrandShowcaseProps> = ({
                   </div>
 
                   {/* Direct Action Buttons */}
-                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
-                    <a
-                      href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`}
-                      className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-black text-[11px] uppercase tracking-wider transition-colors text-center"
-                      title={lang === 'kn' ? 'ದರಕ್ಕೆ ಕರೆ ಮಾಡಿ' : "Call for Today's Rate"}
+                  <div className="space-y-2 pt-3 border-t border-slate-100">
+                    <Link
+                      to="/booking"
+                      className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg bg-orange-600 hover:bg-orange-700 text-white font-black text-xs uppercase tracking-wider transition-colors text-center shadow-xs"
                     >
-                      <PhoneCall className="w-3 h-3 text-orange-400" />
-                      <span>{lang === 'kn' ? 'ದರಕ್ಕೆ ಕರೆ' : 'Call for Rate'}</span>
-                    </a>
+                      <Flame className="w-3.5 h-3.5 text-amber-300" />
+                      <span>{lang === 'kn' ? 'ಸಿಲಿಂಡರ್ ಬುಕ್ ಮಾಡಿ' : 'Book Cylinder Now'}</span>
+                    </Link>
 
-                    <a
-                      href={`https://wa.me/91${BUSINESS_INFO.phoneWhatsApp}?text=${encodeURIComponent(
-                        lang === 'kn'
-                          ? `ನಮಸ್ಕಾರ ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್, ನನಗೆ ${product.nameKn} (${product.capacity}) ಇಂದಿನ ದರ ಮತ್ತು ಡೆಲಿವರಿ ಮಾಹಿತಿ ಬೇಕಾಗಿದೆ.`
-                          : `Hello Sandhya Enterprises, Please share today's rate & delivery availability for ${product.nameEn} (${product.capacity}).`
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-black text-[11px] uppercase tracking-wider transition-colors text-center"
-                      title="WhatsApp"
-                    >
-                      <MessageCircle className="w-3 h-3" />
-                      <span>WhatsApp</span>
-                    </a>
+                    <div className="grid grid-cols-2 gap-2">
+                      <a
+                        href={`tel:${BUSINESS_INFO.phoneRateEnquiry}`}
+                        className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-black text-[11px] uppercase tracking-wider transition-colors text-center"
+                        title={lang === 'kn' ? 'ದರಕ್ಕೆ ಕರೆ ಮಾಡಿ' : "Call for Today's Rate"}
+                      >
+                        <PhoneCall className="w-3 h-3 text-orange-400" />
+                        <span>{lang === 'kn' ? 'ದರಕ್ಕೆ ಕರೆ' : 'Call for Rate'}</span>
+                      </a>
+
+                      <a
+                        href={`https://wa.me/91${BUSINESS_INFO.phoneWhatsApp}?text=${encodeURIComponent(
+                          lang === 'kn'
+                            ? `ನಮಸ್ಕಾರ ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್, ನನಗೆ ${product.nameKn} (${product.capacity}) ಇಂದಿನ ದರ ಮತ್ತು ಡೆಲಿವರಿ ಮಾಹಿತಿ ಬೇಕಾಗಿದೆ.`
+                            : `Hello Sandhya Enterprises, Please share today's rate & delivery availability for ${product.nameEn} (${product.capacity}).`
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-black text-[11px] uppercase tracking-wider transition-colors text-center"
+                        title="WhatsApp"
+                      >
+                        <MessageCircle className="w-3 h-3" />
+                        <span>WhatsApp</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>

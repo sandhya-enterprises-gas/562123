@@ -129,10 +129,10 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
                 </Link>
               </li>
               <li>
-                <a href="#faq" className="hover:text-amber-400 text-amber-200 transition-colors flex items-center gap-1.5 font-bold">
+                <Link to="/faq-rules" className="hover:text-amber-400 text-amber-200 transition-colors flex items-center gap-1.5 font-bold">
                   <span>?</span>
-                  <span>{lang === 'kn' ? 'ಅಧಿಕೃತ ಪ್ರಶ್ನೋತ್ತರಗಳು (FAQ)' : 'Official FAQs & Timelines'}</span>
-                </a>
+                  <span>{lang === 'kn' ? 'ಅಧಿಕೃತ ಪ್ರಶ್ನೋತ್ತರಗಳು (FAQ & Rules)' : 'Official FAQs & Operating Rules'}</span>
+                </Link>
               </li>
               <li>
                 <Link to="/safety" className="hover:text-red-400 transition-colors flex items-center gap-1.5">
