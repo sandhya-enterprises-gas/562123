@@ -24,7 +24,8 @@ import {
   EyeOff,
   ExternalLink,
   Code,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Sparkles
 } from 'lucide-react';
 
 interface PortalAccessGuardProps {
@@ -256,7 +257,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
       );
 
       if (requiredRole === 'admin') {
-        portalStore.authenticateAdmin('9500');
+        portalStore.unlockAdminSession();
       } else if (requiredRole === 'distributor') {
         portalStore.authenticateDistributor('1234');
       } else {
@@ -576,7 +577,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                   required
                   value={masterKey}
                   onChange={(e) => setMasterKey(e.target.value)}
-                  placeholder="Enter Master Key (e.g. 9500 or ADMIN2026)"
+                  placeholder="Enter Executive Master Key / Passcode"
                   className="w-full pl-10 pr-10 py-3 bg-slate-950 border border-slate-700 focus:border-red-500 rounded-xl text-sm font-mono text-white placeholder-slate-500 focus:outline-none transition tracking-wider"
                 />
                 <button
@@ -589,7 +590,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                 </button>
               </div>
               <p className="text-[11px] text-slate-400 mt-1">
-                Authorized Executive Key: <span className="font-mono text-amber-400 font-bold">9500</span> or <span className="font-mono text-amber-400 font-bold">ADMIN2026</span>
+                Restricted to authorized Sandhya Enterprises management personnel only.
               </p>
             </div>
 
@@ -802,12 +803,25 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                 </button>
               </div>
 
-              <div className="pt-2 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
-                <span className="flex items-center gap-1 text-emerald-400 font-bold">
-                  <CheckCircle2 className="w-3 h-3" />
-                  <span>{lang === 'kn' ? 'ಅಧಿಕೃತ AppSheet' : 'Official AppSheet'}</span>
-                </span>
-                <span className="font-mono text-[10px]">Nelamangala</span>
+              <div className="pt-2 border-t border-slate-800 space-y-2">
+                <a
+                  href="https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-2.5 px-3 rounded-xl bg-orange-600/20 hover:bg-orange-600/30 text-orange-300 hover:text-orange-200 border border-orange-500/40 font-bold text-xs flex items-center justify-center gap-2 transition"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                  <span>{lang === 'kn' ? 'ಒಪನ್ ಮಾಡಿ / Open AppSheet Booking' : 'ಒಪನ್ ಮಾಡಿ / Open AppSheet Booking'}</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+
+                <div className="text-[11px] text-slate-400 flex items-center justify-between">
+                  <span className="flex items-center gap-1 text-emerald-400 font-bold">
+                    <CheckCircle2 className="w-3 h-3" />
+                    <span>{lang === 'kn' ? 'ಅಧಿಕೃತ AppSheet' : 'Official AppSheet'}</span>
+                  </span>
+                  <span className="font-mono text-[10px]">Nelamangala Hub</span>
+                </div>
               </div>
             </div>
 
@@ -1308,7 +1322,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                       maxLength={6}
                       value={waInputCode}
                       onChange={(e) => setWaInputCode(e.target.value.replace(/\D/g, ''))}
-                      placeholder={waGeneratedCode || 'Enter 6-digit code'}
+                      placeholder="Enter 6-digit code"
                       className="w-full py-3 px-4 bg-slate-950 border border-slate-700 focus:border-emerald-400 rounded-xl text-center font-mono text-lg text-white focus:outline-none"
                     />
                   </div>
@@ -1356,7 +1370,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Passcode (DIST2026 or 1234)"
+                      placeholder="••••••••"
                       className="w-full px-3 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-amber-500 font-mono"
                     />
                   </div>

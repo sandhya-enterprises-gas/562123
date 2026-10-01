@@ -25,7 +25,8 @@ import {
   Lock,
   Printer,
   FileSpreadsheet,
-  ExternalLink
+  ExternalLink,
+  Sparkles
 } from 'lucide-react';
 import { Language, CustomerAccount, OrderRecord, LedgerEntry } from '../../types';
 import { portalStore, PortalState } from '../../data/portalStore';
@@ -720,48 +721,98 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
 
           {/* TAB 0: OFFICIAL APPSHEET GAS BOOKING FORM (DIRECT ACCESS ON LOGIN) */}
           {activeTab === 'appsheet' && (
-            <div className="space-y-4 animate-in fade-in duration-200">
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-white">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-orange-500/20 text-orange-400 border border-orange-500/30">
-                      {lang === 'kn' ? 'ನೇರ AppSheet ಗ್ಯಾಸ್ ಬುಕಿಂಗ್ ಫಾರ್ಮ್' : 'Direct AppSheet Gas Booking Form'}
+            <div className="space-y-6 animate-in fade-in duration-200">
+              {/* Main Booking Hero Card */}
+              <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border-2 border-orange-500/40 rounded-3xl p-6 sm:p-8 shadow-2xl text-white relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="relative z-10 max-w-3xl space-y-6">
+                  {/* Badges */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-orange-500/20 text-orange-400 border border-orange-500/30 flex items-center gap-1.5">
+                      <Flame className="w-3.5 h-3.5 text-orange-500" />
+                      <span>{lang === 'kn' ? 'ಅಧಿಕೃತ AppSheet ಪೋರ್ಟಲ್' : 'Official AppSheet Booking Portal'}</span>
                     </span>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-500/30">
-                      {lang === 'kn' ? '✓ ಅಡ್ಮಿನ್ ಶೀಟ್‌ಗೆ ನೇರ ಸಿಂಕ್' : '✓ Live Sheet Sync'}
+                    <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                      <span>{lang === 'kn' ? '✓ ಲೈವ್ ಗೂಗಲ್ ಶೀಟ್ ಸಿಂಕ್' : '✓ Live Sheet Sync'}</span>
+                    </span>
+                    <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-blue-950/80 text-blue-400 border border-blue-500/30 flex items-center gap-1.5">
+                      <Truck className="w-3.5 h-3.5 text-blue-400" />
+                      <span>{lang === 'kn' ? '30-45 ನಿಮಿಷ ಎಕ್ಸ್‌ಪ್ರೆಸ್ ಡೆಲಿವರಿ' : '30-45 Min Express Fleet'}</span>
                     </span>
                   </div>
-                  <h2 className="text-lg sm:text-xl font-black text-white mt-1">
-                    {lang === 'kn' ? 'ವಾಣಿಜ್ಯ ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್ ನಮೂನೆ' : 'Commercial LPG Cylinder Booking Form'}
-                  </h2>
-                  <p className="text-xs text-slate-300">
-                    {lang === 'kn'
-                      ? 'ಈ ಫಾರ್ಮ್ ಮೂಲಕ ಸಲ್ಲಿಸಲಾದ ಬುಕಿಂಗ್ ಡೇಟಾ ನೇರವಾಗಿ ಗ್ಯಾಸ್ ಬುಕಿಂಗ್ ಅಡ್ಮಿನ್ ಖಾತೆಗೆ ಮತ್ತು ಗೂಗಲ್ ಶೀಟ್‌ಗೆ ಸುರಕ್ಷಿತವಾಗಿ ದಾಖಲಾಗುತ್ತದೆ.'
-                      : 'Orders submitted via this form sync immediately & securely to the Gas Booking Admin Account and Google Sheet.'}
-                  </p>
+
+                  {/* Title & Description */}
+                  <div>
+                    <h2 className="text-xl sm:text-3xl font-black text-white tracking-tight">
+                      {lang === 'kn'
+                        ? 'ವಾಣಿಜ್ಯ ಎಲ್‌ಪಿಜಿ ಸಿಲಿಂಡರ್ ಅಧಿಕೃತ ಆನ್‌ಲೈನ್ ಬುಕಿಂಗ್'
+                        : 'Commercial LPG Cylinder Online AppSheet Booking'}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
+                      {lang === 'kn'
+                        ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಅಧಿಕೃತ ಗೂಗಲ್ AppSheet ನಮೂನೆ ಮೂಲಕ ನೇರವಾಗಿ ಬುಕ್ ಮಾಡಿ. ಯಾವುದೇ ಲಾಗಿನ್ ಸಮಸ್ಯೆಗಳಿಲ್ಲದೆ, ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತಕ್ಷಣವೇ ಲೋಡ್ ಆಗುತ್ತದೆ ಮತ್ತು ನಿಮ್ಮ ಬುಕಿಂಗ್ ವಿವರ ನೇರವಾಗಿ ಡೆಲಿವರಿ ಟ್ರಕ್‌ಗೆ ತಲುಪುತ್ತದೆ.'
+                        : 'Book directly through the Sandhya Enterprises official Google AppSheet portal. Fast, clean, and instant loading with direct synchronization to the agency dispatch dashboard.'}
+                    </p>
+                  </div>
+
+                  {/* High-Converting Direct Action Button Requested by User */}
+                  <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                    <a
+                      href="https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-8 py-4 rounded-2xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 hover:from-orange-500 hover:to-amber-400 text-white font-black text-sm uppercase tracking-wider transition-all shadow-xl hover:shadow-orange-500/25 active:scale-95 flex items-center justify-center gap-3 cursor-pointer border border-orange-400/40"
+                    >
+                      <Sparkles className="w-5 h-5 text-amber-200" />
+                      <span>{lang === 'kn' ? 'ಒಪನ್ ಮಾಡಿ / Open AppSheet Booking' : 'ಒಪನ್ ಮಾಡಿ / Open AppSheet Booking'}</span>
+                      <ExternalLink className="w-4 h-4 text-white" />
+                    </a>
+
+                    <button
+                      type="button"
+                      onClick={handleQuickOneClickOrder}
+                      className="px-6 py-4 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-bold text-xs uppercase tracking-wider transition border border-slate-700 flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <Zap className="w-4 h-4 text-amber-400" />
+                      <span>{lang === 'kn' ? 'ಅಥವಾ ತಕ್ಷಣದ 1-ಕ್ಲಿಕ್ ಆರ್ಡರ್' : 'Or Quick 1-Click Reorder'}</span>
+                    </button>
+                  </div>
+
+                  {/* 3 Step Instructions */}
+                  <div className="pt-4 border-t border-slate-800/80 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                    <div className="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800">
+                      <span className="font-mono text-orange-400 font-bold text-[11px] block">STEP 01</span>
+                      <strong className="text-white block mt-0.5">
+                        {lang === 'kn' ? 'ಬಟನ್ ಕ್ಲಿಕ್ ಮಾಡಿ' : 'Click Open AppSheet'}
+                      </strong>
+                      <span className="text-slate-400 text-[11px] block mt-0.5">
+                        {lang === 'kn' ? 'ಮೇಲಿನ ಬಟನ್ ಒತ್ತಿ ಅಧಿಕೃತ ಫಾರ್ಮ್ ತೆರೆಯಿರಿ' : 'Launches official form in secure view'}
+                      </span>
+                    </div>
+
+                    <div className="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800">
+                      <span className="font-mono text-orange-400 font-bold text-[11px] block">STEP 02</span>
+                      <strong className="text-white block mt-0.5">
+                        {lang === 'kn' ? 'ಸಿಲಿಂಡರ್ ಆಯ್ಕೆಮಾಡಿ' : 'Select Quantity & Brand'}
+                      </strong>
+                      <span className="text-slate-400 text-[11px] block mt-0.5">
+                        {lang === 'kn' ? '19kg ವಾಣಿಜ್ಯ ಅಥವಾ 47.5kg ಆಯ್ಕೆಮಾಡಿ' : '19kg Commercial or 47.5kg Jumbo'}
+                      </span>
+                    </div>
+
+                    <div className="bg-slate-950/60 p-3.5 rounded-xl border border-slate-800">
+                      <span className="font-mono text-orange-400 font-bold text-[11px] block">STEP 03</span>
+                      <strong className="text-white block mt-0.5">
+                        {lang === 'kn' ? 'ತ್ವರಿತ ವಿತರಣೆ' : 'Immediate Dispatch'}
+                      </strong>
+                      <span className="text-slate-400 text-[11px] block mt-0.5">
+                        {lang === 'kn' ? 'ನೆಲಮಂಗಲ ವ್ಯಾಪ್ತಿಯಲ್ಲಿ 30-45 ನಿಮಿಷದಲ್ಲಿ ತಲುಪುತ್ತದೆ' : 'Dispatched to vehicle for quick doorstep delivery'}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-
-                <a
-                  href="https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac?raw=true"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-black text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-2 shrink-0 cursor-pointer"
-                >
-                  <span>{lang === 'kn' ? 'ಪೂರ್ಣಸ್ಕ್ರೀನ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ' : 'Open Fullscreen'}</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </a>
-              </div>
-
-              {/* Sandhya Enterprises Embedded AppSheet Form */}
-              <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
-                <iframe 
-                  src="https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac?raw=true" 
-                  width="100%" 
-                  height="650px" 
-                  style={{ border: '2px solid #ff5722', borderRadius: '8px' }} 
-                  allow="geolocation"
-                  title="Sandhya Enterprises Embedded AppSheet Form"
-                />
               </div>
             </div>
           )}

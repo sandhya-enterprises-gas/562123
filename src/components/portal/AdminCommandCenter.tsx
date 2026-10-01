@@ -26,12 +26,23 @@ import {
   Image,
   Sliders,
   Upload,
-  RefreshCcw
+  RefreshCcw,
+  Key,
+  Save,
+  Copy
 } from 'lucide-react';
 import { Language, CustomerAccount, AuditReportItem, UserRole } from '../../types';
 import { portalStore, PortalState } from '../../data/portalStore';
 import { portalAuth } from '../../lib/portalAuth';
 import { BUSINESS_INFO } from '../../data/content';
+import {
+  getAdminMasterKey,
+  setCustomAdminKey,
+  verifyAdminMasterKey,
+  resetAdminMasterKey,
+  hasCustomAdminKeySet,
+  DEFAULT_CUSTOM_ADMIN_KEY
+} from '../../config/adminSecurity';
 import {
   OfficialLogoWatermark,
   OfficialLogoBadge,
@@ -47,7 +58,7 @@ interface AdminCommandCenterProps {
 
 export const AdminCommandCenter: React.FC<AdminCommandCenterProps> = ({ lang }) => {
   const [storeState, setStoreState] = useState<PortalState>(portalStore.getState());
-  const [adminTab, setAdminTab] = useState<'audit' | 'customers' | 'rates' | 'applicants' | 'branding'>('audit');
+  const [adminTab, setAdminTab] = useState<'audit' | 'customers' | 'rates' | 'applicants' | 'branding' | 'security'>('audit');
 
   // Branding & Logo Management State
   const [currentLogo, setCurrentLogo] = useState(getOfficialLogoUrl());
@@ -55,11 +66,23 @@ export const AdminCommandCenter: React.FC<AdminCommandCenterProps> = ({ lang }) 
   const [opacityValue, setOpacityValue] = useState(getWatermarkOpacity());
   const [logoSaveSuccess, setLogoSaveSuccess] = useState(false);
 
+  // Custom Master Key Management State
+  const [currentMasterKeyInput, setCurrentMasterKeyInput] = useState('');
+  const [newMasterKeyInput, setNewMasterKeyInput] = useState('');
+  const [confirmMasterKeyInput, setConfirmMasterKeyInput] = useState('');
+  const [showKeyInput, setShowKeyInput] = useState(false);
+  const [securitySuccessMsg, setSecuritySuccessMsg] = useState('');
+  const [securityErrorMsg, setSecurityErrorMsg] = useState('');
+  const [activeMasterKeyDisplay, setActiveMasterKeyDisplay] = useState(getAdminMasterKey());
+  const [revealActiveKey, setRevealActiveKey] = useState(false);
+  const [keyCopied, setKeyCopied] = useState(false);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+
   // Sync with portalAuth session on load
   useEffect(() => {
     const session = portalAuth.getSession();
     if (session && session.role === 'admin' && !storeState.isAdminAuth) {
-      portalStore.authenticateAdmin('9500');
+      portalStore.unlockAdminSession();
     }
   }, [storeState.isAdminAuth]);
 
@@ -103,12 +126,67 @@ export const AdminCommandCenter: React.FC<AdminCommandCenterProps> = ({ lang }) 
     }
   };
 
-  const handleQuickDemoUnlock = () => {
-    portalStore.authenticateAdmin('ADMIN2026');
-  };
-
   const handleLockAdmin = () => {
     portalStore.lockAdmin();
+  };
+
+  const handleChangeMasterKey = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSecurityErrorMsg('');
+    setSecuritySuccessMsg('');
+
+    if (!verifyAdminMasterKey(currentMasterKeyInput)) {
+      setSecurityErrorMsg(
+        lang === 'kn'
+          ? 'ಪ್ರಸ್ತುತ ಮಾಸ್ಟರ್ ಕೀ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ಪರಿಶೀಲಿಸಿ.'
+          : 'Current Master Key is incorrect. Please verify your current administrative key.'
+      );
+      return;
+    }
+
+    if (newMasterKeyInput.trim().length < 4) {
+      setSecurityErrorMsg(
+        lang === 'kn'
+          ? 'ಹೊಸ ಮಾಸ್ಟರ್ ಕೀ ಕನಿಷ್ಠ 4 ಅಕ್ಷರಗಳನ್ನು ಹೊಂದಿರಬೇಕು.'
+          : 'New Master Key must be at least 4 characters long.'
+      );
+      return;
+    }
+
+    if (newMasterKeyInput.trim() !== confirmMasterKeyInput.trim()) {
+      setSecurityErrorMsg(
+        lang === 'kn'
+          ? 'ಹೊಸ ಕೀ ಮತ್ತು ಖಚಿತಪಡಿಸಿದ ಕೀ ಹೊಂದಾಣಿಕೆಯಾಗುತ್ತಿಲ್ಲ.'
+          : 'New key and confirmation key do not match.'
+      );
+      return;
+    }
+
+    const res = setCustomAdminKey(newMasterKeyInput.trim());
+    if (res.success) {
+      setActiveMasterKeyDisplay(newMasterKeyInput.trim());
+      setSecuritySuccessMsg(
+        lang === 'kn'
+          ? 'ಹೊಸ ಅಡ್ಮಿನ್ ಮಾಸ್ಟರ್ ಕೀ ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ!'
+          : 'Admin Master Key / Passcode updated successfully! Your custom key is now live.'
+      );
+      setCurrentMasterKeyInput('');
+      setNewMasterKeyInput('');
+      setConfirmMasterKeyInput('');
+    } else {
+      setSecurityErrorMsg(res.message);
+    }
+  };
+
+  const handleResetMasterKey = () => {
+    resetAdminMasterKey();
+    setActiveMasterKeyDisplay(getAdminMasterKey());
+    setShowResetConfirm(false);
+    setSecuritySuccessMsg(
+      lang === 'kn'
+        ? 'ಮಾಸ್ಟರ್ ಕೀಯನ್ನು ಡೀಫಾಲ್ಟ್‌ಗೆ ಯಶಸ್ವಿಯಾಗಿ ಮರುಹೊಂದಿಸಲಾಗಿದೆ.'
+        : 'Master Key has been reset to system default.'
+    );
   };
 
   // If not authorized, show official master management gate
@@ -168,26 +246,11 @@ export const AdminCommandCenter: React.FC<AdminCommandCenterProps> = ({ lang }) 
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-black uppercase tracking-wider shadow-lg transition-all"
+              className="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-black uppercase tracking-wider shadow-lg transition-all cursor-pointer"
             >
               {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಪ್ಯಾನೆಲ್ ಪ್ರವೇಶಿಸಿ' : 'Authorize Admin Session'}
             </button>
           </form>
-
-          {/* Secure Admin Verification */}
-          <div className="pt-4 border-t border-slate-800 text-center space-y-2">
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">
-              {lang === 'kn' ? 'ಸರ್ಕಾರಿ ಮಾನದಂಡದ ಆಡಳಿತ ಪರಿಶೀಲನೆ:' : 'Executive Management Verification:'}
-            </span>
-            <button
-              type="button"
-              onClick={handleQuickDemoUnlock}
-              className="w-full py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 flex items-center justify-center gap-1.5 transition-colors"
-            >
-              <Shield className="w-3.5 h-3.5 text-purple-400" />
-              <span>{lang === 'kn' ? 'ಅಧಿಕೃತ ಅಡ್ಮಿನ್ ಕಮಾಂಡ್ ಅನ್‌ಲಾಕ್' : 'Authorize Master Admin Command'}</span>
-            </button>
-          </div>
         </div>
       </div>
     );
@@ -387,6 +450,16 @@ export const AdminCommandCenter: React.FC<AdminCommandCenterProps> = ({ lang }) 
         >
           <Image className="w-3.5 h-3.5" />
           <span>{lang === 'kn' ? 'ಲೋಗೋ & ವಾಟರ್‌ಮಾರ್ಕ್ ಬ್ರ್ಯಾಂಡಿಂಗ್' : 'Official Logo & Watermark'}</span>
+        </button>
+
+        <button
+          onClick={() => setAdminTab('security')}
+          className={`py-2 px-4 border-b-2 flex items-center gap-1.5 transition-colors whitespace-nowrap ${
+            adminTab === 'security' ? 'border-purple-600 text-purple-600' : 'border-transparent text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          <Key className="w-3.5 h-3.5" />
+          <span>{lang === 'kn' ? 'ಮಾಸ್ಟರ್ ಕೀ & ಭದ್ರತೆ' : 'Master Key & Security'}</span>
         </button>
       </div>
 
@@ -862,6 +935,273 @@ export const AdminCommandCenter: React.FC<AdminCommandCenterProps> = ({ lang }) 
               <div className="bg-slate-50 rounded-xl p-3 border border-slate-200 text-xs text-slate-600">
                 <span className="font-bold text-slate-800">Automatic Propagation:</span> Any logo updated or uploaded here is stored securely and dynamically projected as the background watermark across all three portals (Customer, Distributor, and Admin).
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 5: Master Key & Executive Security Management */}
+      {adminTab === 'security' && (
+        <div className="space-y-6">
+          {/* Header Banner */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700 text-[11px] font-black uppercase tracking-wider mb-1">
+                <Key className="w-3.5 h-3.5" />
+                <span>{lang === 'kn' ? 'ಖಾಸಗಿ ಆಡಳಿತ ಕೀ ನಿರ್ವಹಣೆ' : 'Proprietor Credential Authority'}</span>
+              </div>
+              <h2 className="text-lg font-black text-slate-900">
+                {lang === 'kn' ? 'ಅಡ್ಮಿನ್ ಮಾಸ್ಟರ್ ಕೀ & ಪಾಸ್‌ಕೋಡ್ ಭದ್ರತೆ' : 'Executive Admin Master Key & Passcode Security'}
+              </h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                {lang === 'kn'
+                  ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಅಡ್ಮಿನ್ ಕಮಾಂಡ್ ಪ್ಯಾನೆಲ್, ಗ್ರಾಹಕರ ಲೆಡ್ಜರ್ ಹೊಂದಾಣಿಕೆ ಮತ್ತು ಆಡಿಟ್ ಲಾಗ್‌ಗಳ ಪ್ರವೇಶಕ್ಕಾಗಿ ಕಸ್ಟಮ್ ಪಾಸ್‌ಕೋಡ್ ಹೊಂದಿಸಿ.'
+                  : 'Configure and update your custom administrative passcode used to access the Admin Command Center, ledger balance controls, and confidential audit reports.'}
+              </p>
+            </div>
+
+            {securitySuccessMsg && (
+              <div className="px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-bold flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                <span>{securitySuccessMsg}</span>
+              </div>
+            )}
+            {securityErrorMsg && (
+              <div className="px-3.5 py-2 rounded-xl bg-rose-50 border border-rose-300 text-rose-800 text-xs font-bold flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-rose-600 flex-shrink-0" />
+                <span>{securityErrorMsg}</span>
+              </div>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left Card: Active Key Status & Overview */}
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-5">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-purple-600" />
+                  <span>{lang === 'kn' ? 'ಪ್ರಸ್ತುತ ಸಕ್ರಿಯ ಮಾಸ್ಟರ್ ಕೀ' : 'Active Admin Passcode Status'}</span>
+                </h3>
+                <span
+                  className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${
+                    hasCustomAdminKeySet()
+                      ? 'bg-purple-100 text-purple-800 border border-purple-300'
+                      : 'bg-slate-100 text-slate-700 border border-slate-200'
+                  }`}
+                >
+                  {hasCustomAdminKeySet() ? 'Custom Key Active' : 'Default System Key'}
+                </span>
+              </div>
+
+              {/* Masked / Revealed Key Display Box */}
+              <div className="bg-slate-900 text-white rounded-2xl p-4 border border-slate-800 space-y-3">
+                <div className="flex items-center justify-between text-xs text-slate-400 font-bold">
+                  <span>{lang === 'kn' ? 'ಸಕ್ರಿಯ ಆಡಳಿತ ಕೀ (ಪರಿಶೀಲನೆ):' : 'Current Active Key (Verified):'}</span>
+                  <button
+                    type="button"
+                    onClick={() => setRevealActiveKey(!revealActiveKey)}
+                    className="flex items-center gap-1 text-purple-400 hover:text-purple-300 transition text-[11px] cursor-pointer"
+                  >
+                    {revealActiveKey ? (
+                      <>
+                        <EyeOff className="w-3.5 h-3.5" />
+                        <span>{lang === 'kn' ? 'ಮರೆಮಾಡಿ' : 'Mask Key'}</span>
+                      </>
+                    ) : (
+                      <>
+                        <Eye className="w-3.5 h-3.5" />
+                        <span>{lang === 'kn' ? 'ತೋರಿಸಿ' : 'Reveal Key'}</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between bg-slate-950 px-3.5 py-3 rounded-xl border border-slate-800">
+                  <span className="font-mono text-sm tracking-widest text-amber-300 select-all font-bold">
+                    {revealActiveKey ? activeMasterKeyDisplay : '••••••••••••••••'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText(activeMasterKeyDisplay);
+                      setKeyCopied(true);
+                      setTimeout(() => setKeyCopied(false), 2000);
+                    }}
+                    className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition flex items-center gap-1 text-[11px] font-bold cursor-pointer"
+                    title="Copy Key to Clipboard"
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>{keyCopied ? 'Copied!' : 'Copy'}</span>
+                  </button>
+                </div>
+
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  {lang === 'kn'
+                    ? 'ಈ ಕೀಲಿಯನ್ನು ಅಡ್ಮಿನ್ ಕಮಾಂಡ್ ಸೆಂಟರ್ ಲಾಗಿನ್ ಮತ್ತು ಆಡಳಿತಾತ್ಮಕ ನಿರ್ಧಾರಗಳ ದೃಢೀಕರಣಕ್ಕೆ ಬಳಸಲಾಗುತ್ತದೆ.'
+                    : 'This key is strictly required to unlock the Admin Command Center and authorize manual ledger corrections.'}
+                </p>
+              </div>
+
+              {/* Zero-Leak Security Checklist */}
+              <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-2.5">
+                <span className="text-xs font-black uppercase tracking-wider text-slate-800 block">
+                  {lang === 'kn' ? 'ಭದ್ರತಾ ಮಾನದಂಡಗಳು (Zero Password Leaks):' : 'Hardened Security Protocol:'}
+                </span>
+                <ul className="text-xs text-slate-600 space-y-1.5">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                    <span>
+                      <strong>Zero UI Leaks:</strong> All hint text, preset buttons, and leaked default passwords have been eliminated from login screens.
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                    <span>
+                      <strong>Client Storage Isolation:</strong> Custom keys persist privately inside your browser’s secure local storage (`sandhya_custom_admin_master_key`).
+                    </span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                    <span>
+                      <strong>Environment Override:</strong> Set `VITE_ADMIN_MASTER_KEY` in environment files for server or deployment level override.
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Reset to Factory Default */}
+              <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+                <div>
+                  <span className="text-xs font-bold text-slate-800 block">
+                    {lang === 'kn' ? 'ಡೀಫಾಲ್ಟ್ ಕೀಗೆ ಮರುಹೊಂದಿಸಿ' : 'Emergency Key Reset'}
+                  </span>
+                  <span className="text-[11px] text-slate-500">
+                    {lang === 'kn' ? 'ಕಸ್ಟಮ್ ಕೀ ಮರೆತಿದ್ದರೆ ಸಿಸ್ಟಮ್ ಡೀಫಾಲ್ಟ್‌ಗೆ ಹಿಂತಿರುಗಿ' : 'Reverts back to original system default configuration'}
+                  </span>
+                </div>
+                {!showResetConfirm ? (
+                  <button
+                    type="button"
+                    onClick={() => setShowResetConfirm(true)}
+                    className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-rose-50 hover:text-rose-700 text-slate-700 text-xs font-bold border border-slate-300 transition cursor-pointer"
+                  >
+                    {lang === 'kn' ? 'ಮರುಹೊಂದಿಸಿ' : 'Reset to Default'}
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handleResetMasterKey}
+                      className="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black uppercase tracking-wider transition cursor-pointer"
+                    >
+                      Confirm Reset
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowResetConfirm(false)}
+                      className="px-2.5 py-1.5 rounded-xl bg-slate-100 text-slate-600 text-xs font-bold"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Right Card: Change / Set Custom Key Form */}
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-5">
+              <div className="border-b border-slate-100 pb-3">
+                <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                  <Edit3 className="w-4 h-4 text-purple-600" />
+                  <span>{lang === 'kn' ? 'ಹೊಸ ಕಸ್ಟಮ್ ಕೀ ಹೊಂದಿಸಿ' : 'Set New Custom Admin Key'}</span>
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  {lang === 'kn'
+                    ? 'ನಿಮ್ಮ ಸ್ವಂತ ಕಸ್ಟಮ್ ಪಾಸ್‌ಕೋಡ್ ಹೊಂದಿಸಲು ಕೆಳಗಿನ ಫಾರ್ಮ್ ಬಳಸಿ.'
+                    : 'Choose any strong custom passcode of your choice. Must be at least 4 characters long.'}
+                </p>
+              </div>
+
+              <form onSubmit={handleChangeMasterKey} className="space-y-4">
+                {/* Current Key Input */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    {lang === 'kn' ? 'ಪ್ರಸ್ತುತ ಮಾಸ್ಟರ್ ಕೀ (Current Key)' : 'Current Admin Master Key'}
+                  </label>
+                  <div className="relative">
+                    <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input
+                      type={showKeyInput ? 'text' : 'password'}
+                      required
+                      value={currentMasterKeyInput}
+                      onChange={(e) => setCurrentMasterKeyInput(e.target.value)}
+                      placeholder="••••••••••••"
+                      className="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 tracking-wider focus:outline-none focus:border-purple-600"
+                    />
+                  </div>
+                </div>
+
+                {/* New Key Input */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    {lang === 'kn' ? 'ಹೊಸ ಕಸ್ಟಮ್ ಮಾಸ್ಟರ್ ಕೀ (New Custom Key)' : 'New Custom Master Key / Passcode'}
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-purple-600" />
+                    <input
+                      type={showKeyInput ? 'text' : 'password'}
+                      required
+                      value={newMasterKeyInput}
+                      onChange={(e) => setNewMasterKeyInput(e.target.value)}
+                      placeholder="e.g. MySecuredPasscode@2026"
+                      className="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 tracking-wider focus:outline-none focus:border-purple-600"
+                    />
+                  </div>
+                  <span className="text-[10px] text-slate-400 mt-1 block">
+                    Supports letters, numbers, and symbols. Minimum 4 characters.
+                  </span>
+                </div>
+
+                {/* Confirm New Key Input */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                    {lang === 'kn' ? 'ಹೊಸ ಕೀ ಖಚಿತಪಡಿಸಿ (Confirm New Key)' : 'Confirm New Custom Key'}
+                  </label>
+                  <div className="relative">
+                    <CheckCircle2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <input
+                      type={showKeyInput ? 'text' : 'password'}
+                      required
+                      value={confirmMasterKeyInput}
+                      onChange={(e) => setConfirmMasterKeyInput(e.target.value)}
+                      placeholder="e.g. MySecuredPasscode@2026"
+                      className="w-full pl-9 pr-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-slate-900 tracking-wider focus:outline-none focus:border-purple-600"
+                    />
+                  </div>
+                </div>
+
+                {/* Show/Hide Inputs Toggle */}
+                <div className="flex items-center justify-between pt-1">
+                  <label className="flex items-center gap-2 text-xs font-semibold text-slate-600 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={showKeyInput}
+                      onChange={(e) => setShowKeyInput(e.target.checked)}
+                      className="rounded text-purple-600 focus:ring-purple-500 w-4 h-4"
+                    />
+                    <span>{lang === 'kn' ? 'ಪಾಸ್‌ವರ್ಡ್ ಅಕ್ಷರಗಳನ್ನು ತೋರಿಸಿ' : 'Show Passcode Characters'}</span>
+                  </label>
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  className="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-black uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Save className="w-4 h-4" />
+                  <span>{lang === 'kn' ? 'ಹೊಸ ಕಸ್ಟಮ್ ಕೀ ಉಳಿಸಿ & ಸಕ್ರಿಯಗೊಳಿಸಿ' : 'Save & Activate Custom Admin Key'}</span>
+                </button>
+              </form>
             </div>
           </div>
         </div>

@@ -91,10 +91,6 @@ export const DistributorDesk: React.FC<DistributorDeskProps> = ({ lang }) => {
     }
   };
 
-  const handleQuickDemoUnlock = () => {
-    portalStore.authenticateDistributor('DIST2026');
-  };
-
   const handleLockDesk = () => {
     portalStore.lockDistributor();
   };
@@ -160,22 +156,10 @@ export const DistributorDesk: React.FC<DistributorDeskProps> = ({ lang }) => {
             >
               {lang === 'kn' ? 'ಡೆಸ್ಕ್ ಸುರಕ್ಷಿತವಾಗಿ ಪ್ರವೇಶಿಸಿ' : 'Authorized Desk Login'}
             </button>
+            <div className="pt-3 border-t border-slate-800 text-[11px] text-slate-400 text-center">
+              <span>{lang === 'kn' ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಅಧಿಕೃತ ಸಿಬ್ಬಂದಿಗೆ ಮಾತ್ರ ಸೀಮಿತವಾಗಿದೆ.' : 'Restricted to authorized Sandhya Enterprises staff personnel only.'}</span>
+            </div>
           </form>
-
-          {/* Secure Staff Verification Preset */}
-          <div className="pt-4 border-t border-slate-800 text-center space-y-2">
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider font-bold block">
-              {lang === 'kn' ? 'ಅಧಿಕೃತ ಸಿಬ್ಬಂದಿ ಪರಿಶೀಲನೆ:' : 'Authorized Dispatch In-Charge Check:'}
-            </span>
-            <button
-              type="button"
-              onClick={handleQuickDemoUnlock}
-              className="w-full py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 flex items-center justify-center gap-1.5 transition-colors"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
-              <span>{lang === 'kn' ? 'ಅಧಿಕೃತ ಸಿಬ್ಬಂದಿ ಡೆಸ್ಕ್ ಪ್ರವೇಶ' : 'Authorize Official Dispatch Session'}</span>
-            </button>
-          </div>
         </div>
       </div>
     );

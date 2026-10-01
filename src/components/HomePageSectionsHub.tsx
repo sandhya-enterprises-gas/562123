@@ -10,7 +10,8 @@ import {
   ShieldCheck,
   CheckCircle2,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  ExternalLink
 } from 'lucide-react';
 import { Language } from '../types';
 import { BrandShowcase } from './BrandShowcase';
@@ -287,16 +288,23 @@ export const HomePageSectionsHub: React.FC<HomePageSectionsHubProps> = ({
                       {lang === 'kn' ? 'ಆನ್‌ಲೈನ್ ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್' : 'Book Commercial Cylinders Online'}
                     </h3>
                   </div>
-                  {/* Sandhya Enterprises Embedded AppSheet Form */}
-                  <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
-                    <iframe 
-                      src="https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac?raw=true" 
-                      width="100%" 
-                      height="650px" 
-                      style={{ border: '2px solid #ff5722', borderRadius: '8px' }} 
-                      allow="geolocation"
-                      title="Sandhya Enterprises Embedded AppSheet Form"
-                    />
+                  {/* Official Sandhya Enterprises Direct AppSheet Button */}
+                  <div className="bg-slate-900 border-2 border-orange-500/40 rounded-3xl p-6 sm:p-8 text-center text-white space-y-4 max-w-2xl mx-auto shadow-xl">
+                    <p className="text-xs sm:text-sm text-slate-300">
+                      {lang === 'kn'
+                        ? 'ಸಂಧ್ಯಾ ಎಂಟರ್‌ಪ್ರೈಸಸ್ ಅಧಿಕೃತ ಗೂಗಲ್ AppSheet ಬುಕಿಂಗ್ ಲಿಂಕ್ ಮೂಲಕ ಯಾವುದೇ ತಡೆ ಇಲ್ಲದೆ ತಕ್ಷಣವೇ ಆರ್ಡರ್ ಸಲ್ಲಿಸಿ.'
+                        : 'Access the official Sandhya Enterprises Google AppSheet portal directly in full resolution.'}
+                    </p>
+                    <a 
+                      href="https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 hover:from-orange-500 hover:to-amber-400 text-white font-black text-sm uppercase tracking-wider transition-all shadow-xl hover:shadow-orange-500/25 active:scale-95 border border-orange-400/40 cursor-pointer"
+                    >
+                      <Sparkles className="w-5 h-5 text-amber-200" />
+                      <span>{lang === 'kn' ? 'ಒಪನ್ ಮಾಡಿ / Open AppSheet Booking' : 'ಒಪನ್ ಮಾಡಿ / Open AppSheet Booking'}</span>
+                      <ExternalLink className="w-4 h-4 text-white" />
+                    </a>
                   </div>
                 </div>
 

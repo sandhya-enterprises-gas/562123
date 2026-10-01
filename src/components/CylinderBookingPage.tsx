@@ -421,17 +421,8 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
               </Link>
             </div>
 
-            {/* Sandhya Enterprises Embedded AppSheet Form */}
-            <div style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
-              <iframe 
-                src="https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac?raw=true" 
-                width="100%" 
-                height="650px" 
-                style={{ border: '2px solid #ff5722', borderRadius: '8px' }} 
-                allow="geolocation"
-                title="Sandhya Enterprises Embedded AppSheet Form"
-              />
-            </div>
+            {/* Official Sandhya Enterprises AppSheet Form */}
+            <AppSheetEmbed lang={lang} />
           </div>
         )}
 

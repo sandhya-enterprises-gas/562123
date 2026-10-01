@@ -4,6 +4,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { UserRole } from '../types';
 import { googleSignIn } from './firebaseAuth';
 import { portalStore } from '../data/portalStore';
+import { verifyAdminMasterKey } from '../config/adminSecurity';
 import emailjs from '@emailjs/browser';
 
 export interface EmailJsConfig {
@@ -400,17 +401,12 @@ class PortalAuthService {
       }
     }
 
-    // Master verification override for Sandhya management testing
-    const isMasterAdminBypass =
-      AUTHORIZED_ADMIN_EMAILS.includes(cleanEmail) && cleanCode === '950000';
-    const isMasterDistributorBypass =
-      targetRole === 'distributor' && cleanCode === '202600';
-
-    if (!validRecord && !isMasterAdminBypass && !isMasterDistributorBypass) {
+    // Check for valid OTP record
+    if (!validRecord) {
       throw new Error('Invalid or expired OTP. Please request a fresh verification code.');
     }
 
-    if (validRecord && validRecord.otp !== cleanCode && !isMasterAdminBypass && !isMasterDistributorBypass) {
+    if (validRecord && validRecord.otp !== cleanCode) {
       throw new Error('Incorrect 6-digit OTP code. Please re-check the email from Sandhya Enterprises.');
     }
 
@@ -472,7 +468,7 @@ class PortalAuthService {
           `Unauthorized executive email. Access to Admin Portal is restricted to official Sandhya management.`
         );
       }
-      if (pass !== 'ADMIN2026' && pass !== 'Sandhya@9500' && pass !== 'password123') {
+      if (!verifyAdminMasterKey(pass)) {
         throw new Error('Invalid Management Security Password. Access denied.');
       }
 
@@ -701,7 +697,7 @@ class PortalAuthService {
           portalStore.setCurrentCustomer(newCust.id);
         }
       } else if (role === 'admin') {
-        portalStore.authenticateAdmin('9500');
+        portalStore.unlockAdminSession();
       } else if (role === 'distributor') {
         portalStore.authenticateDistributor('1234');
       }
@@ -722,8 +718,7 @@ class PortalAuthService {
       throw new Error('Please enter the Executive Master Key or PIN.');
     }
 
-    const validMasterKeys = ['ADMIN2026', '9500', 'Sandhya@9500', 'SANDHYA@2026', 'SANDHYA2026'];
-    if (!validMasterKeys.includes(key)) {
+    if (!verifyAdminMasterKey(key)) {
       throw new Error('Invalid Executive Master Key. Management access denied.');
     }
 

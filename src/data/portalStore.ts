@@ -1,4 +1,5 @@
 import { CustomerAccount, OrderRecord, LedgerEntry, AuditReportItem, PaymentMode, OrderStatus, UserRole } from '../types';
+import { verifyAdminMasterKey } from '../config/adminSecurity';
 
 const STORAGE_KEY = 'sandhya_portal_state_v2';
 
@@ -702,13 +703,18 @@ class PortalStore {
   }
 
   public authenticateAdmin(pin: string): { success: boolean; message: string } {
-    // Official Master Management Security PIN
-    if (pin.trim() === 'ADMIN2026' || pin.trim() === '9500') {
+    // Verify against configurable custom Admin Master Key
+    if (verifyAdminMasterKey(pin)) {
       this.state.isAdminAuth = true;
       this.saveState();
       return { success: true, message: 'Admin Command Center Unlocked. Welcome, Management.' };
     }
-    return { success: false, message: 'Invalid Admin Master PIN. Unauthorized access blocked.' };
+    return { success: false, message: 'Invalid Admin Master Key / Passcode. Unauthorized access blocked.' };
+  }
+
+  public unlockAdminSession() {
+    this.state.isAdminAuth = true;
+    this.saveState();
   }
 
   public lockAdmin() {
