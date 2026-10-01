@@ -13,7 +13,8 @@ import {
   Calendar,
   Lock,
   FileSpreadsheet,
-  ExternalLink
+  ExternalLink,
+  Sparkles
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Language, OrderRecord } from '../types';
@@ -357,14 +358,15 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
             </button>
 
             <a
-              href="/standalone-firebase.html"
+              href="https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-blue-900/50 hover:bg-blue-800/60 text-blue-200 border border-blue-500/30"
-              title="Open Standalone Single-Page HTML App in New Tab"
+              className="flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white shadow-md border border-orange-400/40 cursor-pointer"
+              title="Open Official Sandhya AppSheet Portal in New Tab"
             >
-              <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
-              <span>Standalone HTML App</span>
+              <Sparkles className="w-3.5 h-3.5 text-amber-200" />
+              <span>{lang === 'kn' ? 'ಅಧಿಕೃತ AppSheet ಆನ್‌ಲೈನ್' : 'Official AppSheet App'}</span>
+              <ExternalLink className="w-3.5 h-3.5 text-white" />
             </a>
           </div>
 

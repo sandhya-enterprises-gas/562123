@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -41,6 +42,24 @@ app.get(["/sw.js", "/service-worker.js", "/562123/sw.js", "/562123/service-worke
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Cache-Control", "no-cache");
   res.sendFile(swPath);
+});
+
+// Explicit Standalone HTML App endpoints (support both root / and /562123/ base path with zero 404s)
+app.get([
+  "/standalone-firebase.html",
+  "/562123/standalone-firebase.html",
+  "/gas-booking.html",
+  "/562123/gas-booking.html"
+], (req, res) => {
+  const requestedFile = req.path.includes("gas-booking.html") ? "gas-booking.html" : "standalone-firebase.html";
+  const filePath = path.join(process.cwd(), "public", requestedFile);
+  if (fs.existsSync(filePath)) {
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Cache-Control", "no-cache");
+    return res.sendFile(filePath);
+  }
+  return res.redirect("https://www.appsheet.com/start/789fbccb-644c-4975-a5ab-c345a8a4b5ac");
 });
 
 // API routes FIRST
