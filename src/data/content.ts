@@ -17,6 +17,7 @@ export const BUSINESS_INFO = {
   phonePrimary: '7676398782',
   phoneSecondary: '8073407706',
   emailOfficial: 'works.with.sandhya.enterprises@gmail.com',
+  emailYahoo: 'sandhyaenterprises.gas@yahoo.com',
   emailEmergency: 'shamrocky80@gmail.com',
   address: {
     line1: 'Sharapurapalya',
@@ -38,7 +39,9 @@ export const BUSINESS_INFO = {
   socials: {
     instagram: 'https://www.instagram.com/sandhya___enterprises?igsh=MW1oMzlxNXhkazBwZQ%3D%3D',
     facebook: 'https://www.facebook.com/people/Bharat-Gas-KA-52/61572941177893/',
-    google: 'https://share.google/98q5xeXBlsxtlWStG',
+    google: 'https://share.google/svvElU3xemJjKKKKv',
+    youtube: 'https://youtube.com/@sandhyaenterprisesgas?si=YsVge90A37ikC66i',
+    whatsappBusiness: 'https://wa.me/sandhya___enterprises',
     indiamart: 'https://www.indiamart.com/sandhyaenterprises-241256462/photos.html?srsltid=AfmBOornLz5WkgQeJqX3qw5u_UJ30Zi-eM1mPLBTSMCRlR7S_TaM-9FJ',
     linktree: 'https://share.google/ZYNTVB5Zjy7BaqBil'
   }

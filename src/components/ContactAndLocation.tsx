@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, PhoneCall, MessageCircle, Mail, ExternalLink, Globe, Instagram, Facebook, ShieldCheck, Clock, Navigation, ShieldAlert } from 'lucide-react';
+import { MapPin, PhoneCall, MessageCircle, Mail, ExternalLink, Globe, Instagram, Facebook, ShieldCheck, Clock, Navigation, ShieldAlert, Youtube } from 'lucide-react';
 import { Language } from '../types';
 import { BUSINESS_INFO } from '../data/content';
 
@@ -204,6 +204,15 @@ export const ContactAndLocation: React.FC<ContactAndLocationProps> = ({ lang }) 
                     </a>
                   </div>
                   <div className="pt-0.5">
+                    <span className="text-purple-700 font-bold text-[11px] block">Yahoo Mail Desk:</span>
+                    <a
+                      href={`mailto:${BUSINESS_INFO.emailYahoo}`}
+                      className="font-bold text-xs text-slate-900 hover:text-purple-700 break-all"
+                    >
+                      {BUSINESS_INFO.emailYahoo}
+                    </a>
+                  </div>
+                  <div className="pt-0.5">
                     <span className="text-red-600 font-bold text-[11px] block">Emergency / Escalations:</span>
                     <a
                       href={`mailto:${BUSINESS_INFO.emailEmergency}`}
@@ -235,6 +244,60 @@ export const ContactAndLocation: React.FC<ContactAndLocationProps> = ({ lang }) 
 
               {/* Social Buttons List */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {/* Google Business Profile */}
+                <a
+                  href={BUSINESS_INFO.socials.google}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2.5 p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors group"
+                >
+                  <div className="p-1.5 rounded-md bg-orange-500 text-slate-950">
+                    <MapPin className="w-3.5 h-3.5" />
+                  </div>
+                  <div className="overflow-hidden">
+                    <div className="text-xs font-bold text-white group-hover:text-orange-400 truncate">
+                      Google Business
+                    </div>
+                    <div className="text-[10px] text-slate-400">Official Profile & Ratings</div>
+                  </div>
+                </a>
+
+                {/* YouTube Official Channel */}
+                <a
+                  href={BUSINESS_INFO.socials.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2.5 p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors group"
+                >
+                  <div className="p-1.5 rounded-md bg-red-600 text-white">
+                    <Youtube className="w-3.5 h-3.5" />
+                  </div>
+                  <div className="overflow-hidden">
+                    <div className="text-xs font-bold text-white group-hover:text-red-400 truncate">
+                      @sandhyaenterprisesgas
+                    </div>
+                    <div className="text-[10px] text-slate-400">YouTube Channel</div>
+                  </div>
+                </a>
+
+                {/* WhatsApp Business Direct */}
+                <a
+                  href={BUSINESS_INFO.socials.whatsappBusiness}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2.5 p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors group"
+                >
+                  <div className="p-1.5 rounded-md bg-emerald-600 text-white">
+                    <MessageCircle className="w-3.5 h-3.5" />
+                  </div>
+                  <div className="overflow-hidden">
+                    <div className="text-xs font-bold text-white group-hover:text-emerald-400 truncate">
+                      WhatsApp Business
+                    </div>
+                    <div className="text-[10px] text-slate-400">@sandhya___enterprises</div>
+                  </div>
+                </a>
+
                 {/* Instagram */}
                 <a
                   href={BUSINESS_INFO.socials.instagram}
@@ -286,24 +349,6 @@ export const ContactAndLocation: React.FC<ContactAndLocationProps> = ({ lang }) 
                       IndiaMART Verified
                     </div>
                     <div className="text-[10px] text-slate-400">Commercial Catalog</div>
-                  </div>
-                </a>
-
-                {/* Google Maps / Reviews */}
-                <a
-                  href={BUSINESS_INFO.socials.google}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2.5 p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 transition-colors group"
-                >
-                  <div className="p-1.5 rounded-md bg-orange-500 text-slate-950">
-                    <MapPin className="w-3.5 h-3.5" />
-                  </div>
-                  <div className="overflow-hidden">
-                    <div className="text-xs font-bold text-white group-hover:text-orange-400 truncate">
-                      Google Business
-                    </div>
-                    <div className="text-[10px] text-slate-400">Ratings & Location</div>
                   </div>
                 </a>
               </div>

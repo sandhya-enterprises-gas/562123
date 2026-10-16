@@ -145,7 +145,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
       }
     }
     if (!waIdentifier) {
-      setWaIdentifier(requiredRole === 'customer' ? '9845112233' : '9876543210');
+      setWaIdentifier('');
     }
   }, [requiredRole]);
 
@@ -743,7 +743,7 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
                       type="text"
                       value={customerUserId}
                       onChange={(e) => setCustomerUserId(e.target.value)}
-                      placeholder={lang === 'kn' ? 'ಉದಾ: cust-1 ಅಥವಾ 9845112233' : 'e.g. cust-1, cust-2, phone'}
+                      placeholder={lang === 'kn' ? 'ಉದಾ: cust-1 ಅಥವಾ 7676398782' : 'e.g. cust-1, cust-2, phone'}
                       className="w-full px-3.5 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-xs font-bold text-white placeholder-slate-500 focus:outline-none focus:border-orange-500"
                     />
                   </div>

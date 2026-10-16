@@ -599,7 +599,7 @@ class PortalAuthService {
       id: cleanId.startsWith('cust-') ? cleanId : `cust-${cleanId.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}`,
       businessName: `Customer (${cleanId})`,
       contactPerson: cleanId,
-      phone: cleanDigits.length >= 10 ? cleanDigits : '9845112233',
+      phone: cleanDigits.length >= 10 ? cleanDigits : '7676398782',
       email: `${cleanId.replace(/[^a-zA-Z0-9]/g, '_')}@sandhyaclient.in`,
       businessType: 'Restaurant / Hotel' as const,
       area: 'Nelamangala Town (562123)',

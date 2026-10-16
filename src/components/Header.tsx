@@ -259,6 +259,14 @@ export const Header: React.FC<HeaderProps> = ({
             </a>
             <span className="text-slate-600 hidden sm:inline">|</span>
             <a
+              href={`mailto:${BUSINESS_INFO.emailYahoo}`}
+              className="text-purple-300 hover:text-white transition-colors hidden lg:inline font-medium"
+              title="Official Yahoo Mail"
+            >
+              {BUSINESS_INFO.emailYahoo}
+            </a>
+            <span className="text-slate-600 hidden lg:inline">|</span>
+            <a
               href={`mailto:${BUSINESS_INFO.emailOfficial}`}
               className="text-slate-300 hover:text-white transition-colors hidden sm:inline"
             >

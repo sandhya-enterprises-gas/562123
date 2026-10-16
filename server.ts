@@ -83,6 +83,7 @@ interface ServerOtpItem {
 
 const serverOtpCache = new Map<string, ServerOtpItem>();
 const OFFICIAL_EMAIL_SENDER = "works.with.sandhya.enterprises@gmail.com";
+const OFFICIAL_YAHOO_EMAIL = "sandhyaenterprises.gas@yahoo.com";
 const EMERGENCY_ADMIN_EMAIL = "shamrocky80@gmail.com";
 
 // Official Email Service Health & Status
@@ -90,6 +91,7 @@ app.get("/api/auth/email-service", (req, res) => {
   res.json({
     status: "online",
     officialSender: OFFICIAL_EMAIL_SENDER,
+    officialYahoo: OFFICIAL_YAHOO_EMAIL,
     emergencyAdmin: EMERGENCY_ADMIN_EMAIL,
     agency: "Sandhya Enterprises (Estd 2010)",
     protocol: "100% Free Zero-DLT Email & WhatsApp Verification",

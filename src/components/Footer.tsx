@@ -12,6 +12,7 @@ import {
   Globe,
   Instagram,
   Facebook,
+  Youtube,
   Truck,
   User,
   Calculator,
@@ -217,6 +218,12 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
                   {BUSINESS_INFO.emailOfficial}
                 </a>
               </div>
+              <div className="flex items-start gap-1.5">
+                <Mail className="w-3.5 h-3.5 text-purple-400 flex-shrink-0 mt-0.5" />
+                <a href={`mailto:${BUSINESS_INFO.emailYahoo}`} className="text-slate-300 hover:text-white break-all text-[11px]">
+                  {BUSINESS_INFO.emailYahoo}
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -326,11 +333,42 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
           {/* Social Links */}
           <div className="flex items-center gap-3">
             <a
+              href={BUSINESS_INFO.socials.google}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-400 hover:text-orange-400 transition-colors p-1"
+              aria-label="Google Business Profile"
+              title="Google Business Profile & Ratings"
+            >
+              <MapPin className="w-4 h-4" />
+            </a>
+            <a
+              href={BUSINESS_INFO.socials.youtube}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-400 hover:text-red-500 transition-colors p-1"
+              aria-label="YouTube Channel"
+              title="Official YouTube Channel (@sandhyaenterprisesgas)"
+            >
+              <Youtube className="w-4 h-4" />
+            </a>
+            <a
+              href={BUSINESS_INFO.socials.whatsappBusiness}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-slate-400 hover:text-emerald-400 transition-colors p-1"
+              aria-label="WhatsApp Business"
+              title="Official WhatsApp Business (@sandhya___enterprises)"
+            >
+              <MessageCircle className="w-4 h-4" />
+            </a>
+            <a
               href={BUSINESS_INFO.socials.instagram}
               target="_blank"
               rel="noopener noreferrer"
               className="text-slate-400 hover:text-pink-400 transition-colors p-1"
               aria-label="Instagram"
+              title="Instagram (@sandhya___enterprises)"
             >
               <Instagram className="w-4 h-4" />
             </a>
@@ -340,6 +378,7 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
               rel="noopener noreferrer"
               className="text-slate-400 hover:text-blue-400 transition-colors p-1"
               aria-label="Facebook"
+              title="Facebook (Bharat Gas KA-52)"
             >
               <Facebook className="w-4 h-4" />
             </a>
@@ -349,17 +388,9 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
               rel="noopener noreferrer"
               className="text-slate-400 hover:text-teal-400 transition-colors p-1"
               aria-label="IndiaMART"
+              title="IndiaMART Commercial Catalog"
             >
               <Globe className="w-4 h-4" />
-            </a>
-            <a
-              href={BUSINESS_INFO.socials.google}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-400 hover:text-orange-400 transition-colors p-1"
-              aria-label="Google Map"
-            >
-              <MapPin className="w-4 h-4" />
             </a>
           </div>
         </div>

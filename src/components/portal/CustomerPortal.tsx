@@ -391,7 +391,7 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
                         type="text"
                         value={loginUserId}
                         onChange={(e) => setLoginUserId(e.target.value)}
-                        placeholder={lang === 'kn' ? 'ಉದಾ: cust-1 ಅಥವಾ 9845112233' : 'e.g. cust-1, cust-2 or phone'}
+                        placeholder={lang === 'kn' ? 'ಉದಾ: cust-1 ಅಥವಾ 7676398782' : 'e.g. cust-1, cust-2 or phone'}
                         className="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-sm font-bold text-white placeholder-slate-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
                       />
                     </div>

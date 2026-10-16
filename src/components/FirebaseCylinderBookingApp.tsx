@@ -223,7 +223,7 @@ export const FirebaseCylinderBookingApp: React.FC<FirebaseCylinderBookingAppProp
   const handleBookingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const finalContact = contactPerson.trim() || currentUser?.displayName || 'Commercial Partner';
-    const finalPhone = phone.trim() || '9845112233';
+    const finalPhone = phone.trim() || '7676398782';
     const fullAddress = `${customAddress ? `${customAddress.trim()}, ` : ''}${deliveryArea}`;
 
     if (!deliveryArea) {
@@ -806,7 +806,7 @@ export const FirebaseCylinderBookingApp: React.FC<FirebaseCylinderBookingAppProp
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="9845112233"
+                  placeholder="7676398782"
                   className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-500"
                 />
               </div>
