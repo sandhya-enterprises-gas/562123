@@ -384,7 +384,7 @@ export const ThermalLedgerReceipt: React.FC<ThermalLedgerReceiptProps> = ({
               <div className="font-bold uppercase">
                 *** OFFICIAL PASSBOOK STATEMENT ***
               </div>
-              <div>PESO Approved Commercial LPG Supply</div>
+              <div>Authorized Commercial LPG Supply (Estd. 2010)</div>
               <div>Mandatory O-Ring Leak Tested at Delivery</div>
               <div>Keep Empty Cylinders Ready for Exchange</div>
             </div>

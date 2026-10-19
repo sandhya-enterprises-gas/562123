@@ -54,7 +54,7 @@ export const FirebaseCylinderBookingApp: React.FC<FirebaseCylinderBookingAppProp
   const [dbConnected, setDbConnected] = useState<boolean>(true);
 
   // Booking Form State
-  const [brand, setBrand] = useState('Bharat Gas 19kg Commercial VOT');
+  const [brand, setBrand] = useState('Go Gas Commercial 19.2kg');
   const [quantity, setQuantity] = useState(2);
   const [businessName, setBusinessName] = useState('');
   const [contactPerson, setContactPerson] = useState('');
@@ -76,10 +76,11 @@ export const FirebaseCylinderBookingApp: React.FC<FirebaseCylinderBookingAppProp
 
   // Rates reference
   const brandPrices: Record<string, number> = {
-    'Bharat Gas 19kg Commercial VOT': 1850,
-    'Go Gas Commercial 19kg': 1790,
+    'Go Gas Commercial 19.2kg': 1790,
+    'Power Gas 19.2kg High-Pressure': 1820,
     'Go Gas 33kg Maxima LOT': 3150,
-    'Bharat Gas 47.5kg Industrial': 4450
+    'Power Gas 33kg LOT Heavy Commercial': 3180,
+    'Bharat Gas 19.2kg Commercial VOT': 1850
   };
 
   const estimatedTotal = (brandPrices[brand] || 1850) * quantity;
@@ -249,7 +250,7 @@ export const FirebaseCylinderBookingApp: React.FC<FirebaseCylinderBookingAppProp
       contactPerson: finalContact,
       phone: finalPhone,
       brand,
-      cylinderType: brand.includes('47.5kg') ? '47.5kg Industrial' : brand.includes('33kg') ? '33kg LOT' : '19kg Commercial VOT',
+      cylinderType: brand.includes('33kg') ? '33kg LOT' : brand.includes('17kg') ? '17kg Commercial' : brand.includes('15kg') ? '15kg Commercial' : brand.includes('12kg') ? '12kg Composite' : '19.2kg Commercial VOT',
       quantity: Number(quantity),
       deliveryArea: fullAddress,
       pincode: pincode || '562123',
@@ -709,10 +710,11 @@ export const FirebaseCylinderBookingApp: React.FC<FirebaseCylinderBookingAppProp
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {[
-                  { name: 'Bharat Gas 19kg Commercial VOT', desc: 'Hotel & Restaurant Standard', price: 1850 },
-                  { name: 'Go Gas Commercial 19kg', desc: 'Fast Heat Output', price: 1790 },
-                  { name: 'Go Gas 33kg Maxima LOT', desc: 'Heavy Catering & Bakery', price: 3150 },
-                  { name: 'Bharat Gas 47.5kg Industrial', desc: 'Factory & Heavy Manufacturing', price: 4450 }
+                  { name: 'Go Gas Commercial 19.2kg', desc: '⭐ Recommended • High Efficiency BTU', price: 1790 },
+                  { name: 'Power Gas 19.2kg High-Pressure', desc: '🔥 Popular Choice • Heavy Bhatti', price: 1820 },
+                  { name: 'Go Gas 33kg Maxima LOT', desc: 'Liquid Off-Take Catering Manifold', price: 3150 },
+                  { name: 'Power Gas 33kg LOT Heavy Commercial', desc: 'Industrial Bulk Kitchen Manifold', price: 3180 },
+                  { name: 'Bharat Gas 19.2kg Commercial VOT', desc: 'Standard Commercial Distribution', price: 1850 }
                 ].map((item) => (
                   <button
                     key={item.name}

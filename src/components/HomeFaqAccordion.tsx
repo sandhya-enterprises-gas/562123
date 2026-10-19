@@ -57,7 +57,7 @@ export const HomeFaqAccordion: React.FC<HomeFaqAccordionProps> = ({ lang }) => {
               <p className="text-xs text-slate-600">
                 {lang === 'kn'
                   ? 'ಸಿಲಿಂಡರ್ ಬುಕಿಂಗ್ ಮತ್ತು ಸುರಕ್ಷತೆಯ ಪ್ರಮುಖ ನಿಯಮಗಳನ್ನು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ ವೀಕ್ಷಿಸಿ.'
-                  : 'Quick answers on cylinder dispatch, payment terms, and PESO safety compliance.'}
+                  : 'Quick answers on cylinder dispatch, payment terms, and commercial safety guidelines.'}
               </p>
             </div>
 

@@ -49,7 +49,7 @@ export const FaqAndRulesPage: React.FC<FaqAndRulesPageProps> = ({ lang }) => {
           <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
             {lang === 'kn'
               ? 'ಸಿಲಿಂಡರ್ ಡೆಲಿವರಿ ಸಮಯ, ಪಾವತಿ ವಿಧಾನಗಳು, ಗ್ಯಾಸ್ ಪೈಪ್‌ಲೈನ್ ಅಳವಡಿಕೆ ಹಾಗೂ ಸುರಕ್ಷತಾ ನಿಯಮಗಳ ಸಂಪೂರ್ಣ ಅಧಿಕೃತ ಮಾಹಿತಿ.'
-              : 'Complete transparent guidelines on commercial LPG delivery schedules, accepted payment methods, manifold installation, and PESO safety rules.'}
+              : 'Complete transparent guidelines on commercial LPG delivery schedules, accepted payment methods, manifold installation, and commercial safety rules.'}
           </p>
 
           {/* Quick Helpline Badges */}

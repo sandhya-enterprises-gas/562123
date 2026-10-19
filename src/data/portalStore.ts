@@ -72,7 +72,7 @@ const INITIAL_CUSTOMERS: CustomerAccount[] = [
     area: 'Nelamangala Highway (562123)',
     pincode: '562123',
     password: 'password123',
-    preferredBrand: 'Bharat Gas 47.5kg',
+    preferredBrand: 'Power Gas 33kg LOT',
     balanceAmount: 8400, // ₹8,400 pending
     emptyCylindersDue: 4, // 4 MT Cylinders owed
     createdAt: '2024-03-01'
@@ -125,8 +125,8 @@ const INITIAL_ORDERS: OrderRecord[] = [
     businessName: 'Highway Star Dhaba',
     phone: '9741556677',
     area: 'Nelamangala Highway (562123)',
-    cylinderBrand: 'Bharat Gas',
-    cylinderType: '47.5kg Industrial',
+    cylinderBrand: 'Power Gas',
+    cylinderType: '33kg LOT Heavy Commercial',
     quantity: 2,
     totalAmount: 9200,
     amountPaid: 4600,

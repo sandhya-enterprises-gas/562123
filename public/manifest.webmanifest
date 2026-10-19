@@ -44,7 +44,7 @@
     {
       "name": "Book Cylinder",
       "short_name": "Book",
-      "description": "Instant 19kg / 47.5kg commercial cylinder booking",
+      "description": "Instant 12kg - 33kg LOT commercial cylinder booking",
       "url": "/#calculator",
       "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192" }]
     },
@@ -52,7 +52,7 @@
       "name": "WhatsApp Order",
       "short_name": "WhatsApp",
       "description": "Chat with Sandhya LPG dispatch desk",
-      "url": "https://wa.me/918152889500",
+      "url": "https://wa.me/sandhya___enterprises",
       "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192" }]
     }
   ]

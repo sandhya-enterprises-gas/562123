@@ -92,11 +92,9 @@ export const RateInquiryModal: React.FC<RateInquiryModalProps> = ({
                 onChange={(e) => setSelectedBrand(e.target.value)}
                 className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-300 text-xs font-bold text-slate-900 focus:border-orange-500 focus:outline-none"
               >
-                <option value="Bharat Gas 19kg Commercial">Bharat Gas - 19kg Commercial VOT</option>
-                <option value="Bharat Gas 47.5kg Industrial">Bharat Gas - 47.5kg Industrial Bulk</option>
-                <option value="Go Gas Commercial (Private LPG)">GoGas - 17kg/21kg/33kg Commercial</option>
-                <option value="Power Gas Commercial">Power Gas - Commercial 19kg/33kg</option>
-                <option value="Power Gas Domestic (Home)">Power Gas - Domestic LPG Cylinder</option>
+                <option value="Go Gas Commercial (⭐ Recommended)">Go Gas - Commercial (12kg / 17kg / 19.2kg / 33kg LOT - ⭐ Recommended)</option>
+                <option value="Power Gas Commercial (🔥 Popular Choice)">Power Gas - Commercial High-Pressure (12kg / 15kg / 17kg / 19.2kg / 33kg LOT - 🔥 Popular)</option>
+                <option value="Bharat Gas 19.2kg Commercial">Bharat Gas - 19.2kg Commercial VOT Standard</option>
               </select>
             </div>
 

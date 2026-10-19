@@ -37,6 +37,8 @@ import { CylinderBookingPage } from './components/CylinderBookingPage';
 import { TrackOrderPage } from './components/TrackOrderPage';
 import { AppSheetPage } from './components/AppSheetPage';
 import { FirebaseCylinderBookingApp } from './components/FirebaseCylinderBookingApp';
+import { GoGasLanding } from './components/GoGasLanding';
+import { PowerGasLanding } from './components/PowerGasLanding';
 import { ArrowRight, ExternalLink } from 'lucide-react';
 
 // Helper component to handle scroll behaviors on route changes
@@ -145,7 +147,7 @@ function MainAppLayout() {
       {/* 1. Hero Section with Primary Booking Buttons */}
       <Hero lang={lang} onOpenInquiryModal={() => handleOpenInquiry()} />
 
-      {/* 2. Core Commercial Trust Badges (100% Weight, Express Fleet, PESO, GST) */}
+      {/* 2. Core Commercial Trust Badges (100% Weight, Express Fleet, Since 2010, GST) */}
       <HomeTrustStrip
         lang={lang}
         onOpenCustomerPortal={() => navigate('/customer')}
@@ -211,6 +213,10 @@ function MainAppLayout() {
           <Route path="/faq" element={<FaqAndRulesPage lang={lang} />} />
           <Route path="/faq-rules" element={<FaqAndRulesPage lang={lang} />} />
           <Route path="/rules" element={<FaqAndRulesPage lang={lang} />} />
+
+          {/* DEDICATED BRAND LANDING PAGES (SALES PRIORITY: GO GAS & POWER GAS) */}
+          <Route path="/go-gas" element={<GoGasLanding lang={lang} onOpenInquiry={() => handleOpenInquiry('Go Gas')} />} />
+          <Route path="/power-gas" element={<PowerGasLanding lang={lang} onOpenInquiry={() => handleOpenInquiry('Power Gas')} />} />
 
           {/* Dedicated Sub-Pages */}
           <Route

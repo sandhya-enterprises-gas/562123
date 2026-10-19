@@ -217,7 +217,7 @@ INSPECTION SUMMARY:
 Premises Inspected: Commercial Kitchen & Manifold Bank
 Inspection Date: ${new Date().toLocaleDateString('en-IN')}
 Manifold Bank Type: 4+4 Cylinder VOT/LOT System
-Pressure Regulators: Dual-Stage PESO Approved
+Pressure Regulators: Dual-Stage Heavy-Duty Certified Commercial
 Pigtail Integrity: Zero Leaks Detected (Soap & Hydrostatic Checked)
 Emergency Shut-off Valve: Accessible & Tested Functional
 Fire Safety & Distance Norms: Compliant with Gas Cylinders Rules 2016

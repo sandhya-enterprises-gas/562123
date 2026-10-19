@@ -22,7 +22,8 @@ import {
   Home,
   FileSpreadsheet,
   ExternalLink,
-  HelpCircle
+  HelpCircle,
+  Zap
 } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Language, ActivePortalTab } from '../types';
@@ -90,10 +91,26 @@ export const Header: React.FC<HeaderProps> = ({
       highlight: 'amber'
     },
     {
+      to: '/go-gas',
+      id: 'gogas',
+      labelEn: 'Go Gas (⭐ Best Seller)',
+      labelKn: 'ಗೋ ಗ್ಯಾಸ್ (⭐ ಬೆಸ್ಟ್ ಸೆಲ್ಲರ್)',
+      icon: Flame,
+      highlight: 'emerald'
+    },
+    {
+      to: '/power-gas',
+      id: 'powergas',
+      labelEn: 'Power Gas (🔥 High Flame)',
+      labelKn: 'ಪವರ್ ಗ್ಯಾಸ್ (🔥 ಹೈ ಫ್ಲೇಮ್)',
+      icon: Zap,
+      highlight: 'blue'
+    },
+    {
       to: '/brands',
       id: 'brands',
-      labelEn: 'Gas Brands',
-      labelKn: 'ಗ್ಯಾಸ್ ಬ್ರ್ಯಾಂಡ್ಸ್',
+      labelEn: 'All Brands',
+      labelKn: 'ಎಲ್ಲಾ ಬ್ರ್ಯಾಂಡ್ಸ್',
       icon: Flame,
       highlight: false
     },

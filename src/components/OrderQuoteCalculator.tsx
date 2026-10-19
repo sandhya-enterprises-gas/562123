@@ -29,18 +29,17 @@ export const OrderQuoteCalculator: React.FC<OrderQuoteCalculatorProps> = ({ lang
   ];
 
   const brands = [
-    { name: 'Bharat Gas', value: 'Bharat Gas' },
-    { name: 'GoGas (Commercial LPG)', value: 'Go Gas' },
-    { name: 'Power Gas (Commercial)', value: 'Power Gas Commercial' },
-    { name: 'Power Gas (Domestic)', value: 'Power Gas Domestic' }
+    { name: '🟢 Go Gas (Commercial LPG - ⭐ Recommended)', value: 'Go Gas' },
+    { name: '🔵 Power Gas (High-Pressure - 🔥 Popular Choice)', value: 'Power Gas Commercial' },
+    { name: '🟠 Bharat Gas (Commercial Standard)', value: 'Bharat Gas' }
   ];
 
   const cylinderOptions = [
-    { label: '19 KG Commercial VOT (Standard)', value: '19kg Commercial' },
-    { label: '33 KG Commercial LOT/VOT (High Load)', value: '33kg Commercial' },
-    { label: '47.5 KG Industrial Cylinder (Bulk)', value: '47.5kg Industrial' },
-    { label: '17 KG / 21 KG Go Gas Private Cylinder', value: '17kg/21kg Go Gas' },
-    { label: '14.2 KG Domestic Cylinder', value: '14.2kg Domestic' }
+    { label: '19.2 KG Commercial VOT (Hotels / Canteens)', value: '19.2kg Commercial' },
+    { label: '33 KG Commercial LOT (Heavy Manifold / Catering)', value: '33kg Commercial LOT' },
+    { label: '17 KG Commercial / Elite Composite (High BTU)', value: '17kg Commercial' },
+    { label: '15 KG Commercial Cylinder', value: '15kg Commercial' },
+    { label: '12 KG Commercial / Composite (Compact / Cafe)', value: '12kg Commercial' }
   ];
 
   const locations = [

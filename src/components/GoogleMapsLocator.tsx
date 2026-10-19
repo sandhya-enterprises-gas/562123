@@ -49,8 +49,8 @@ export const AGENCY_LOCATION: AgencyLocation = {
   otherPhone: BUSINESS_INFO.phoneOtherEnquiry,
   hoursEn: 'Open All 7 Days | 24/7 Helpline: 8152889500 (Delivery: 7:00 AM - 9:00 PM)',
   hoursKn: 'ವಾರದ ಎಲ್ಲಾ ದಿನವೂ ಲಭ್ಯ | 24/7 ಸಹಾಯವಾಣಿ: 8152889500 (ಡೆಲಿವರಿ: ಬೆಳಿಗ್ಗೆ 7 - ರಾತ್ರಿ 9)',
-  stockEn: 'Bharat Gas 19kg & 47.5kg, Go Gas 21kg & Elite, Power Gas 19kg',
-  stockKn: 'ಭಾರತ್ ಗ್ಯಾಸ್ 19ಕೆಜಿ & 47.5ಕೆಜಿ, ಗೋ ಗ್ಯಾಸ್ 21ಕೆಜಿ & ಎಲೈಟ್, ಪವರ್ ಗ್ಯಾಸ್ 19ಕೆಜಿ',
+  stockEn: 'Go Gas (12kg, 15kg, 17kg, 19.2kg, 33kg LOT), Power Gas (High Pressure), Bharat Gas (19.2kg & 33kg LOT)',
+  stockKn: 'ಗೋ ಗ್ಯಾಸ್ (12kg, 15kg, 17kg, 19.2kg, 33kg LOT), ಪವರ್ ಗ್ಯಾಸ್ (ಹೈ ಪ್ರೆಶರ್), ಭಾರತ್ ಗ್ಯಾಸ್ (19.2kg & 33kg LOT)',
   coverageEn: 'Nelamangala, Nelamangala Rural, Bengaluru Rural, Industrial Zones & Surrounding Areas',
   coverageKn: 'ನೆಲಮಂಗಲ, ನೆಲಮಂಗಲ ಗ್ರಾಮಾಂತರ, ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರ ಮತ್ತು ಸುತ್ತಮುತ್ತಲಿನ ಕೈಗಾರಿಕಾ ವಲಯ',
   mapsUrl: 'https://maps.google.com/?q=Sharapurapalya,+Nelamangala,+Bengaluru+Rural+-+562123'
@@ -248,10 +248,10 @@ export const GoogleMapsLocator: React.FC<GoogleMapsLocatorProps> = ({ lang }) =>
               <ShieldCheck className="w-5 h-5 text-emerald-600 flex-shrink-0" />
               <div className="text-xs">
                 <div className="font-bold text-slate-900">
-                  {lang === 'kn' ? 'ಪೆಸೊ & ಎಕ್ಸ್‌ಪ್ಲೋಸಿವ್ಸ್ ನಿಯಮಾವಳಿ ಅನುಮೋದಿತ' : 'PESO & Explosives Licensed Godown'}
+                  {lang === 'kn' ? '2010 ರಿಂದ ಅಧಿಕೃತ ಗೋದಾಮು & ಡಿಪೋ' : 'Authorized Secure Storage & Depot (Since 2010)'}
                 </div>
                 <div className="text-[10px] text-slate-500">
-                  {lang === 'kn' ? 'ಗ್ಯಾಸ್ ಸಿಲಿಂಡರ್ ನಿಯಮಗಳು 2016 ಕ್ಕೆ ಸಂಪೂರ್ಣ ಬದ್ಧತೆ' : 'Certified storage under Gas Cylinders Rules 2016'}
+                  {lang === 'kn' ? 'ವಾಣಿಜ್ಯ ಸಿಲಿಂಡರ್ ಸುರಕ್ಷತಾ ನಿಯಮಗಳಿಗೆ ಸಂಪೂರ್ಣ ಬದ್ಧತೆ' : 'Fully verified commercial LPG depot & express dispatch yard'}
                 </div>
               </div>
             </div>

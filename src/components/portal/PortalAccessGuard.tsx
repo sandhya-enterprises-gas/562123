@@ -934,10 +934,14 @@ export const PortalAccessGuard: React.FC<PortalAccessGuardProps> = ({
               `Fast, 100% free verified access for commercial LPG cylinder orders, tracking & invoices.`}
           </p>
 
-          <div className="flex items-center justify-center gap-2 mt-2 text-[10px] text-slate-500 font-medium">
-            <span>Bharat Gas 19kg & 47.5kg</span>
+          <div className="flex items-center justify-center gap-2 mt-2 text-[10px] text-slate-500 font-medium flex-wrap">
+            <span className="text-emerald-400 font-bold">Go Gas (Recommended)</span>
             <span>•</span>
-            <span>HP Gas Commercial</span>
+            <span className="text-blue-400 font-bold">Power Gas (Popular)</span>
+            <span>•</span>
+            <span>Bharat Gas</span>
+            <span>•</span>
+            <span>12kg - 33kg LOT</span>
             <span>•</span>
             <span>Nelamangala (562123)</span>
           </div>

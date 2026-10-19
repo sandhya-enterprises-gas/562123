@@ -95,8 +95,8 @@ export const OFFICIAL_CUSTOMER_BENEFITS = {
       {
         id: 'portfolio',
         title: 'ವಿವಿಧ ಶ್ರೇಣಿಯ ಸಿಲಿಂಡರ್',
-        desc: '12kg, 17kg, 19kg, 33kg & 45kg (LOT/VOT) ಸಿಲಿಂಡರ್‌ಗಳು ಲಭ್ಯ.',
-        badge: '12kg - 45kg'
+        desc: '12kg, 15kg, 17kg, 19.2kg & 33kg LOT ಸಿಲಿಂಡರ್‌ಗಳು ಲಭ್ಯ (45kg/47.5kg ಲಭ್ಯವಿಲ್ಲ).',
+        badge: '12kg - 33kg LOT'
       },
       {
         id: 'gogas-elite',
@@ -137,8 +137,8 @@ export const OFFICIAL_CUSTOMER_BENEFITS = {
       {
         id: 'portfolio',
         title: 'Full Cylinder Range',
-        desc: '12kg, 17kg, 19kg, 33kg, and 45kg (LOT/VOT) industrial options.',
-        badge: '12kg to 45kg'
+        desc: '12kg, 15kg, 17kg, 19.2kg, and 33kg LOT commercial options (45kg/47.5kg not available).',
+        badge: '12kg to 33kg LOT'
       },
       {
         id: 'gogas-elite',
@@ -238,197 +238,178 @@ export const OFFICIAL_DISTRIBUTOR_BENEFITS = {
   }
 };
 
+export const AVAILABLE_CYLINDERS = [
+  '12 KG',
+  '15 KG',
+  '17 KG',
+  '19.2 KG',
+  '33 KG LOT'
+] as const;
+
+export const CYLINDER_AVAILABILITY_NOTE = {
+  kn: 'ಪ್ರಮುಖ ಸೂಚನೆ: ನಮ್ಮ ಬಳಿ 45 KG / 47.5 KG ಗ್ಯಾಸ್ ಲಭ್ಯವಿಲ್ಲ. ಕೇವಲ 12 KG, 15 KG, 17 KG, 19.2 KG ಮತ್ತು 33 KG LOT ಸಿಲಿಂಡರ್‌ಗಳು ಮಾತ್ರ ಲಭ್ಯವಿವೆ.',
+  en: 'Important Notice: We do NOT supply 45 KG or 47.5 KG cylinders. Only 12 KG, 15 KG, 17 KG, 19.2 KG, and 33 KG LOT commercial cylinders are available.'
+};
+
 export const CYLINDER_PRODUCTS: CylinderProduct[] = [
   {
-    id: 'bharat-19kg',
-    brand: 'Bharat Gas',
-    brandKey: 'bharat',
-    nameEn: 'Bharat Gas 19kg Commercial LPG',
-    nameKn: 'ಭಾರತ್ ಗ್ಯಾಸ್ 19 ಕೆ.ಜಿ ಕಮರ್ಷಿಯಲ್',
-    capacity: '19 KG',
-    typeEn: 'Commercial Heavy Duty (VOT)',
-    typeKn: 'ಕಮರ್ಷಿಯಲ್ ಹೆವಿ ಡ್ಯೂಟಿ (VOT)',
-    idealForEn: 'Hotels, Restaurants, Bakeries, Dhabas',
-    idealForKn: 'ಹೋಟೆಲ್, ರೆಸ್ಟೋರೆಂಟ್, ಬೇಕರಿ, ದಾಬಾ',
+    id: 'gogas-commercial',
+    brand: 'Go Gas',
+    brandKey: 'gogas',
+    nameEn: 'Go Gas Commercial (12kg / 17kg / 19.2kg / 33kg LOT)',
+    nameKn: 'ಗೋ ಗ್ಯಾಸ್ ಕಮರ್ಷಿಯಲ್ (12kg / 17kg / 19.2kg / 33kg LOT)',
+    capacity: '12 KG / 17 KG / 19.2 KG / 33 KG LOT',
+    typeEn: 'Commercial High-Efficiency LPG (Best Seller)',
+    typeKn: 'ಕಮರ್ಷಿಯಲ್ ಹೈ-ಎಫಿಷಿಯನ್ಸಿ ಎಲ್‌ಪಿಜಿ (ಬೆಸ್ಟ್ ಸೆಲ್ಲರ್)',
+    idealForEn: 'Hotels, Restaurants, Bakeries, Canteens & Cloud Kitchens',
+    idealForKn: 'ಹೋಟೆಲ್, ರೆಸ್ಟೋರೆಂಟ್, ಬೇಕರಿ, ಕ್ಯಾಂಟೀನ್ & ಕ್ಲೌಡ್ ಕಿಚನ್',
     featuresEn: [
-      'Pure blue flame & high thermal output',
-      'Certified cylinder with tamper-proof seal',
-      'Daily doorstep express supply',
-      'Emergency refill backup'
+      'Instant business connection with zero documentation delay',
+      'High thermal BTU efficiency with soot-free clean blue flame',
+      'Rapid doorstep delivery across Nelamangala & Highway corridor',
+      'Competitive commercial pricing & full cylinder weight guarantee'
     ],
     featuresKn: [
-      'ಸ್ವಚ್ಛ ನೀಲಿ ಜ್ವಾಲೆ & ಗರಿಷ್ಠ ಶಾಖ',
-      'ಪ್ರಮಾಣೀಕೃತ ಸಿಲಿಂಡರ್ & ಅಧಿಕೃತ ಸೀಲ್',
-      'ದೈನಂದಿನ ಎಕ್ಸ್‌ಪ್ರೆಸ್ ಡೆಲಿವರಿ',
-      'ತುರ್ತು ರೀಫಿಲ್ ಸೌಲಭ್ಯ'
+      'ದಾಖಲೆಗಳ ಗೋಜಿಲ್ಲದೆ ತಕ್ಷಣ ಹೊಸ ಕಮರ್ಷಿಯಲ್ ಸಂಪರ್ಕ',
+      'ಕಪ್ಪು ಕಲೆ ರಹಿತ ಶುದ್ಧ ನೀಲಿ ಜ್ವಾಲೆ & ಗರಿಷ್ಠ ಉಷ್ಣತೆ',
+      'ನೆಲಮಂಗಲ & ಹೆದ್ದಾರಿಯಲ್ಲಿ 30-45 ನಿಮಿಷಗಳಲ್ಲಿ ತ್ವರಿತ ಡೆಲಿವರಿ',
+      'ಅತ್ಯುತ್ತಮ ವಾಣಿಜ್ಯ ರಿಯಾಯಿತಿ ದರ & ನಿಖರ ತೂಕದ ಖಾತರಿ'
     ],
-    badgeEn: 'Hotel Favorite',
-    badgeKn: 'ಹೋಟೆಲ್‌ಗಳ ಮೊದಲ ಆಯ್ಕೆ',
+    badgeEn: '⭐ Recommended (Best Seller)',
+    badgeKn: '⭐ ಅತ್ಯುತ್ತಮ ಆಯ್ಕೆ (ಬೆಸ್ಟ್ ಸೆಲ್ಲರ್)',
     color: {
-      primary: '#dc2626', // Red
-      secondary: '#991b1b',
-      bg: 'bg-red-50',
-      border: 'border-red-200'
+      primary: '#059669', // Emerald Green
+      secondary: '#047857',
+      bg: 'bg-emerald-50',
+      border: 'border-emerald-300'
     }
   },
   {
     id: 'gogas-elite',
     brand: 'Go Gas',
     brandKey: 'gogas',
-    nameEn: 'GoGas Elite Composite Cylinder',
-    nameKn: 'ಗೋಗ್ಯಾಸ್ ಎಲೈಟ್ ಕಾಂಪೋಸಿಟ್ ಸಿಲಿಂಡರ್',
-    capacity: '10kg & 17kg',
-    typeEn: 'Lightweight Composite LPG',
-    typeKn: 'ಲೈಟ್‌ವೇಟ್ ಕಾಂಪೋಸಿಟ್ ಎಲ್‌ಪಿಜಿ',
-    idealForEn: 'Cafes, Bakeries, Food Trucks, Cloud Kitchens',
-    idealForKn: 'ಕೆಫೆ, ಬೇಕರಿ, ಫುಡ್ ಟ್ರಕ್, ಕ್ಲೌಡ್ ಕಿಚನ್',
+    nameEn: 'GoGas Elite Composite Cylinder (12kg & 17kg)',
+    nameKn: 'ಗೋಗ್ಯಾಸ್ ಎಲೈಟ್ ಕಾಂಪೋಸಿಟ್ ಸಿಲಿಂಡರ್ (12kg & 17kg)',
+    capacity: '12 KG & 17 KG',
+    typeEn: 'Lightweight Composite LPG (Translucent Body)',
+    typeKn: 'ಲೈಟ್‌ವೇಟ್ ಕಾಂಪೋಸಿಟ್ ಎಲ್‌ಪಿಜಿ (ಪಾರದರ್ಶಕ)',
+    idealForEn: 'Modern Cafes, Bakeries, Food Trucks, Fine Dining',
+    idealForKn: 'ಮಾಡರ್ನ್ ಕೆಫೆ, ಬೇಕರಿ, ಫುಡ್ ಟ್ರಕ್ & ಫೈನ್ ಡೈನಿಂಗ್',
     featuresEn: [
-      'Rust-proof lightweight fiberglass body',
-      'Translucent body: visible LPG level',
-      '100% explosion-proof certified',
-      'Zero floor rust stains'
+      'Rust-proof lightweight fiberglass body: visible LPG level',
+      '100% explosion-proof certified design',
+      'Zero floor rust stains in clean kitchen environments',
+      'Easy handling and attractive modern appearance'
     ],
     featuresKn: [
-      'ತುಕ್ಕು ಹಿಡಿಯದ ಹಗುರ ಫೈಬರ್‌ಗ್ಲಾಸ್ ಬಾಡಿ',
-      'ಪಾರದರ್ಶಕ: ಗ್ಯಾಸ್ ಮಟ್ಟ ಹೊರಗಿಂದಲೇ ಕಾಣುತ್ತದೆ',
+      'ತುಕ್ಕು ಹಿಡಿಯದ ಹಗುರ ಫೈಬರ್‌ಗ್ಲಾಸ್ ಬಾಡಿ: ಗ್ಯಾಸ್ ಮಟ್ಟ ಹೊರಗಿಂದಲೇ ಕಾಣುತ್ತದೆ',
       '100% ಸ್ಫೋಟ-ನಿರೋಧಕ ವಿನ್ಯಾಸ',
-      'ನೆಲದ ಮೇಲೆ ಕಲೆಗಳಿಲ್ಲ'
+      'ಕಿಚನ್ ನೆಲದ ಮೇಲೆ ಯಾವುದೇ ಕಲೆಗಳಿಲ್ಲ',
+      'ಸಾಗಿಸಲು ಸುಲಭ ಹಾಗೂ ಆಕರ್ಷಕ ವಿನ್ಯಾಸ'
     ],
-    badgeEn: 'Composite Tech',
-    badgeKn: 'ಪಾರದರ್ಶಕ & ಲೈಟ್‌ವೇಟ್',
+    badgeEn: '🏆 Composite Tech',
+    badgeKn: '🏆 ಕಾಂಪೋಸಿಟ್ ತಂತ್ರಜ್ಞಾನ',
     color: {
-      primary: '#0284c7', // Sky Blue
-      secondary: '#0369a1',
-      bg: 'bg-sky-50',
-      border: 'border-sky-200'
-    }
-  },
-  {
-    id: 'bharat-45kg',
-    brand: 'Bharat Gas',
-    brandKey: 'bharat',
-    nameEn: 'Bharat Gas 45kg / 47.5kg Industrial',
-    nameKn: 'ಭಾರತ್ ಗ್ಯಾಸ್ 45 / 47.5 ಕೆ.ಜಿ ಇಂಡಸ್ಟ್ರಿಯಲ್',
-    capacity: '45 KG / 47.5 KG',
-    typeEn: 'Industrial Bulk LOT / VOT',
-    typeKn: 'ಕೈಗಾರಿಕಾ ಬಲ್ಕ್ LOT / VOT',
-    idealForEn: 'Industries, Marriage Halls, Bulk Bakeries',
-    idealForKn: 'ಕಾರ್ಖಾನೆಗಳು, ಕಲ್ಯಾಣ ಮಂಟಪ, ಬೃಹತ್ ಬೇಕರಿ',
-    featuresEn: [
-      'Liquid Off-Take (LOT) high flow',
-      'Zero leftover gas residue',
-      'Best for multi-cylinder manifolds',
-      'Free pipeline inspection'
-    ],
-    featuresKn: [
-      'ಲಿಕ್ವಿಡ್ ಆಫ್-ಟೇಕ್ (LOT) ಅಧಿಕ ಹರಿವು',
-      'ಸಿಲಿಂಡರ್‌ನಲ್ಲಿ ಗ್ಯಾಸ್ ಉಳಿಯದ ದಹನ',
-      'ಮ್ಯಾನಿಫೋಲ್ಡ್ ಸಿಸ್ಟಮ್‌ಗೆ ಸೂಕ್ತ',
-      'ಉಚಿತ ಪೈಪ್‌ಲೈನ್ ತಪಾಸಣೆ'
-    ],
-    badgeEn: 'Industrial LOT',
-    badgeKn: 'ಕೈಗಾರಿಕಾ LOT',
-    color: {
-      primary: '#b91c1c',
-      secondary: '#7f1d1d',
-      bg: 'bg-rose-50',
-      border: 'border-rose-200'
-    }
-  },
-  {
-    id: 'gogas-commercial',
-    brand: 'Go Gas',
-    brandKey: 'gogas',
-    nameEn: 'Go Gas Commercial (17kg / 33kg / 45kg)',
-    nameKn: 'ಗೋ ಗ್ಯಾಸ್ ಕಮರ್ಷಿಯಲ್ (17kg / 33kg / 45kg)',
-    capacity: '17 KG / 33 KG / 45 KG',
-    typeEn: 'Private Commercial LPG',
-    typeKn: 'ಪ್ರೈವೇಟ್ ಕಮರ್ಷಿಯಲ್ ಎಲ್‌ಪಿಜಿ',
-    idealForEn: 'Catering, Cloud Kitchens, Canteens',
-    idealForKn: 'ಕ್ಯಾಟರಿಂಗ್, ಕ್ಲೌಡ್ ಕಿಚನ್, ಕ್ಯಾಂಟೀನ್',
-    featuresEn: [
-      'Instant connection without ration card',
-      'Competitive private LPG bulk price',
-      'Soot-free clean blue flame',
-      'Prompt doorstep delivery'
-    ],
-    featuresKn: [
-      'ದಾಖಲೆಗಳಿಲ್ಲದೆ ತಕ್ಷಣ ಹೊಸ ಕನೆಕ್ಷನ್',
-      'ಖಾಸಗಿ ವಲಯದ ಅತ್ಯುತ್ತಮ ಬಲ್ಕ್ ದರ',
-      'ಕಪ್ಪು ಕಲೆ ರಹಿತ ಶುದ್ಧ ನೀಲಿ ಜ್ವಾಲೆ',
-      'ತಕ್ಷಣದ ಡೋರ್‌ಸ್ಟೆಪ್ ಡೆಲಿವರಿ'
-    ],
-    badgeEn: 'Instant Setup',
-    badgeKn: 'ತ್ವರಿತ ಕನೆಕ್ಷನ್',
-    color: {
-      primary: '#2563eb', // Blue
-      secondary: '#1d4ed8',
-      bg: 'bg-blue-50',
-      border: 'border-blue-200'
+      primary: '#0d9488', // Teal Green
+      secondary: '#0f766e',
+      bg: 'bg-teal-50',
+      border: 'border-teal-200'
     }
   },
   {
     id: 'powergas-commercial',
     brand: 'Power Gas',
     brandKey: 'powergas',
-    nameEn: 'Power Gas High Pressure (19kg / 33kg / 45kg)',
-    nameKn: 'ಪವರ್ ಗ್ಯಾಸ್ ಹೈ ಪ್ರೆಶರ್ (19kg / 33kg / 45kg)',
-    capacity: '19 KG / 33 KG / 45 KG',
-    typeEn: 'High Pressure Heavy Commercial',
-    typeKn: 'ಹೈ ಪ್ರೆಶರ್ ಕಮರ್ಷಿಯಲ್',
-    idealForEn: 'Highway Dhabas, Heavy Kitchens, Bhatti',
-    idealForKn: 'ಹೈವೇ ದಾಬಾ, ಭಾರಿ ಕಿಚನ್, ಭಟ್ಟಿ',
+    nameEn: 'Power Gas High Pressure (12kg / 17kg / 19.2kg / 33kg LOT)',
+    nameKn: 'ಪವರ್ ಗ್ಯಾಸ್ ಹೈ ಪ್ರೆಶರ್ (12kg / 17kg / 19.2kg / 33kg LOT)',
+    capacity: '12 KG / 17 KG / 19.2 KG / 33 KG LOT',
+    typeEn: 'High-Pressure Heavy Commercial (Most Popular)',
+    typeKn: 'ಹೈ-ಪ್ರೆಶರ್ ಹೆವಿ ಕಮರ್ಷಿಯಲ್ (ಅತ್ಯಂತ ಜನಪ್ರಿಯ)',
+    idealForEn: 'Highway Dhabas, Heavy Kitchens, Bhatti Stoves & Catering',
+    idealForKn: 'ಹೈವೇ ದಾಬಾ, ಭಾರಿ ಕಿಚನ್, ಭಟ್ಟಿ ಸ್ಟೌವ್ & ಕ್ಯಾಟರಿಂಗ್',
     featuresEn: [
-      'Heavy commercial burner compatibility',
-      'High thermal heat output',
-      'Steady festival/bulk supply',
-      'Dual safety leak check'
+      'Engineered for intense flame and continuous high-temperature cooking',
+      'Compatible with high-pressure burners & commercial bhatti nozzles',
+      'Reliable supply during festival rushes and peak business hours',
+      'Direct doorstep commercial delivery with live support'
     ],
     featuresKn: [
-      'ಕಮರ್ಷಿಯಲ್ ಬರ್ನರ್‌ಗೆ ಸೂಕ್ತ ಪ್ರೆಶರ್',
-      'ಶಕ್ತಿಶಾಲಿ ಅಧಿಕ ಶಾಖದ ಜ್ವಾಲೆ',
-      'ಹಬ್ಬದ ಸೀಸನ್‌ನಲ್ಲೂ ತಡೆರಹಿತ ಸರಬರಾಜು',
-      'ಡಬಲ್ ಸುರಕ್ಷತಾ ತಪಾಸಣೆ'
+      'ತೀವ್ರ ಜ್ವಾಲೆ ಮತ್ತು ನಿರಂತರ ಹೆಚ್ಚಿನ ತಾಪಮಾನದ ಅಡುಗೆಗೆ ವಿಶೇಷ ವಿನ್ಯಾಸ',
+      'ಹೈ-ಪ್ರೆಶರ್ ಬರ್ನರ್ ಮತ್ತು ಕಮರ್ಷಿಯಲ್ ಭಟ್ಟಿಗಳಿಗೆ ಅತ್ಯುತ್ತಮ',
+      'ಹಬ್ಬದ ಸೀಸನ್ ಹಾಗೂ ಪೀಕ್ ಸಮಯದಲ್ಲೂ ತಡೆರಹಿತ ಸರಬರಾಜು',
+      'ನೇರ ಡೋರ್‌ಸ್ಟೆಪ್ ಡೆಲಿವರಿ ಮತ್ತು ಗ್ರಾಹಕ ಸೇವೆ'
     ],
-    badgeEn: 'High Pressure',
-    badgeKn: 'ಹೈ ಪ್ರೆಶರ್',
+    badgeEn: '🔥 Popular Choice',
+    badgeKn: '🔥 ಜನಪ್ರಿಯ ಆಯ್ಕೆ',
     color: {
-      primary: '#d97706', // Amber
-      secondary: '#b45309',
-      bg: 'bg-amber-50',
-      border: 'border-amber-200'
+      primary: '#2563eb', // Royal Blue
+      secondary: '#1d4ed8',
+      bg: 'bg-blue-50',
+      border: 'border-blue-300'
     }
   },
   {
-    id: 'gogas-12kg',
-    brand: 'Go Gas',
-    brandKey: 'gogas',
-    nameEn: 'Go Gas 12kg Commercial & Lab',
-    nameKn: 'ಗೋ ಗ್ಯಾಸ್ 12 ಕೆ.ಜಿ ಕಮರ್ಷಿಯಲ್ & ಲ್ಯಾಬ್',
-    capacity: '12 KG',
-    typeEn: 'Compact Commercial (12KG)',
-    typeKn: 'ಕಾಂಪ್ಯಾಕ್ಟ್ ಕಮರ್ಷಿಯಲ್ (12KG)',
-    idealForEn: 'Laboratories, Kiosks, Food Stalls, Small Cafes',
-    idealForKn: 'ಲ್ಯಾಬ್, ಫುಡ್ ಕಿಯಾಸ್ಕ್, ಸಣ್ಣ ಕೆಫೆ',
+    id: 'bharat-19kg',
+    brand: 'Bharat Gas',
+    brandKey: 'bharat',
+    nameEn: 'Bharat Gas 19.2kg Commercial Standard VOT',
+    nameKn: 'ಭಾರತ್ ಗ್ಯಾಸ್ 19.2 ಕೆ.ಜಿ ಕಮರ್ಷಿಯಲ್ ಸ್ಟ್ಯಾಂಡರ್ಡ್ VOT',
+    capacity: '19.2 KG',
+    typeEn: 'Commercial Heavy Duty (VOT Standard)',
+    typeKn: 'ಕಮರ್ಷಿಯಲ್ ಹೆವಿ ಡ್ಯೂಟಿ (VOT)',
+    idealForEn: 'Hotels, Traditional Canteens, Sweet Centers',
+    idealForKn: 'ಹೋಟೆಲ್, ಕ್ಯಾಂಟೀನ್, ಸ್ವೀಟ್ ಸೆಂಟರ್',
     featuresEn: [
-      'Compact size for compact spaces',
-      'Easy carry handle with quick valve',
-      'Factory-sealed accurate weight',
-      'Quick counter pickup or delivery'
+      'Standard commercial manifold connection compatible',
+      'Certified cylinder with tamper-proof seal and inspection',
+      'Regular scheduled doorstep distribution',
+      'Official commercial billing with GST'
     ],
     featuresKn: [
-      'ಸಣ್ಣ ಜಾಗಗಳಿಗೆ ಸೂಕ್ತವಾದ ಗಾತ್ರ',
-      'ಸಾಗಿಸಲು ಸುಲಭವಾದ ಹ್ಯಾಂಡಲ್',
-      'ಸೀಲ್ ಮಾಡಿದ ನಿಖರ ತೂಕ',
-      'ಕೌಂಟರ್ ಪಿಕ್‌ಅಪ್ ಅಥವಾ ಡೆಲಿವರಿ'
+      'ಸ್ಟ್ಯಾಂಡರ್ಡ್ ಕಮರ್ಷಿಯಲ್ ಮ್ಯಾನಿಫೋಲ್ಡ್ ಸಂಪರ್ಕಕ್ಕೆ ಸೂಕ್ತ',
+      'ಪ್ರಮಾಣೀಕೃತ ಸಿಲಿಂಡರ್ & ಅಧಿಕೃತ ಸೀಲ್',
+      'ನಿಯಮಿತ ನಿಗದಿತ ಡೋರ್‌ಸ್ಟೆಪ್ ವಿತರಣೆ',
+      'ಜಿಎಸ್‌ಟಿ ಸಹಿತ ಅಧಿಕೃತ ಬಿಲ್'
     ],
-    badgeEn: 'Compact 12kg',
-    badgeKn: 'ಕಾಂಪ್ಯಾಕ್ಟ್ 12 ಕೆ.ಜಿ',
+    badgeEn: 'Standard Commercial',
+    badgeKn: 'ಸ್ಟ್ಯಾಂಡರ್ಡ್ ಕಮರ್ಷಿಯಲ್',
     color: {
-      primary: '#059669', // Emerald
-      secondary: '#047857',
-      bg: 'bg-emerald-50',
-      border: 'border-emerald-200'
+      primary: '#ea580c', // Orange/Neutral
+      secondary: '#c2410c',
+      bg: 'bg-orange-50',
+      border: 'border-orange-200'
+    }
+  },
+  {
+    id: 'bharat-33kg',
+    brand: 'Bharat Gas',
+    brandKey: 'bharat',
+    nameEn: 'Bharat Gas 33kg LOT Commercial',
+    nameKn: 'ಭಾರತ್ ಗ್ಯಾಸ್ 33 ಕೆ.ಜಿ LOT ಕಮರ್ಷಿಯಲ್',
+    capacity: '33 KG LOT',
+    typeEn: 'Commercial Liquid Off-Take (LOT)',
+    typeKn: 'ಕಮರ್ಷಿಯಲ್ ಲಿಕ್ವಿಡ್ ಆಫ್-ಟೇಕ್ (LOT)',
+    idealForEn: 'Multi-Cylinder Banks, Marriage Halls, Bulk Bakeries & Ovens',
+    idealForKn: 'ಮಲ್ಟಿ-ಸಿಲಿಂಡರ್ ಬ್ಯಾಂಕ್, ಕಲ್ಯಾಣ ಮಂಟಪ, ಬೃಹತ್ ಬೇಕರಿ & ಓವನ್',
+    featuresEn: [
+      'Liquid Off-Take (LOT) valve technology for high flow rates',
+      'No cylinder freezing during heavy continuous draw',
+      'Maximum thermal output with zero fuel residue left behind',
+      'Safety inspected for manifold banks'
+    ],
+    featuresKn: [
+      'ಅಧಿಕ ಹರಿವಿಗಾಗಿ ಲಿಕ್ವಿಡ್ ಆಫ್-ಟೇಕ್ (LOT) ವಾಲ್ವ್ ತಂತ್ರಜ್ಞಾನ',
+      'ಹೆಚ್ಚು ಬಳಸಿದಾಗ ಸಿಲಿಂಡರ್ ಹೆಪ್ಪುಗಟ್ಟುವುದಿಲ್ಲ',
+      'ಸಿಲಿಂಡರ್‌ನಲ್ಲಿ ಗ್ಯಾಸ್ ಉಳಿಯದೆ ಗರಿಷ್ಠ ದಹನ ದಕ್ಷತೆ',
+      'ಮ್ಯಾನಿಫೋಲ್ಡ್ ಬ್ಯಾಂಕ್‌ಗಳಿಗೆ ಸುರಕ್ಷತಾ ತಪಾಸಣೆ'
+    ],
+    badgeEn: 'Industrial LOT (33kg)',
+    badgeKn: 'ಕೈಗಾರಿಕಾ LOT (33kg)',
+    color: {
+      primary: '#991b1b', // Deep Red
+      secondary: '#7f1d1d',
+      bg: 'bg-rose-50',
+      border: 'border-rose-200'
     }
   }
 ];
@@ -501,7 +482,7 @@ export const CUSTOMER_SEGMENTS: CustomerSegment[] = [
     id: 'kalyana-mantapa',
     titleEn: 'Marriage Halls & Parties',
     titleKn: 'ಕಲ್ಯಾಣ ಮಂಟಪ & ಸಮಾರಂಭ',
-    descEn: 'High volume 19kg & 47.5kg cylinder banks for mega feasts and functions.',
+    descEn: 'High volume 19.2kg & 33kg LOT cylinder banks for mega feasts and functions.',
     descKn: 'ಮದುವೆ ಸಮಾರಂಭಗಳಿಗೆ ದೊಡ್ಡ ಪ್ರಮಾಣದ ಸಿಲಿಂಡರ್‌ಗಳು & ಸುರಕ್ಷಿತ ಬ್ಯಾಂಕ್.',
     icon: 'Building2',
     tagEn: 'Bulk Booking',
@@ -647,10 +628,10 @@ export const FAQS = [
     aKn: 'ನೆಲಮಂಗಲ ಮತ್ತು ಬೆಂಗಳೂರು ಗ್ರಾಮಾಂತರಕ್ಕೆ (562123) ಪ್ರತಿದಿನ ಡೆಲಿವರಿ. ತುಮಕೂರು ಮತ್ತು ಶಿರಾ ಭಾಗಕ್ಕೆ ಬಲ್ಕ್ ಆರ್ಡರ್‌ಗಳಿಗೆ (10-15+) ಮಾತ್ರ ಡೆಲಿವರಿ.'
   },
   {
-    qEn: 'What LPG brands are available?',
-    qKn: 'ಯಾವ ಬ್ರ್ಯಾಂಡ್‌ಗಳು ಲಭ್ಯವಿವೆ?',
-    aEn: 'Bharat Gas (Commercial 19kg & 47.5kg), Go Gas (12kg, 17kg, 33kg), and Power Gas (Commercial & Domestic).',
-    aKn: 'ಭಾರತ್ ಗ್ಯಾಸ್ (19kg & 47.5kg), ಗೋ ಗ್ಯಾಸ್ (12kg, 17kg, 33kg) ಮತ್ತು ಪವರ್ ಗ್ಯಾಸ್ ಲಭ್ಯವಿವೆ.'
+    qEn: 'What LPG brands and cylinder sizes are available?',
+    qKn: 'ಯಾವ ಬ್ರ್ಯಾಂಡ್‌ಗಳು ಮತ್ತು ಸಿಲಿಂಡರ್ ಅಳತೆಗಳು ಲಭ್ಯವಿವೆ?',
+    aEn: 'We supply Go Gas (⭐ Recommended Best Seller), Power Gas (🔥 Popular High Pressure), and Bharat Gas. Available cylinder sizes: 12 KG, 15 KG, 17 KG, 19.2 KG, and 33 KG LOT. (Note: 45 KG / 47.5 KG cylinders are not supplied).',
+    aKn: 'ನಾವು ಗೋ ಗ್ಯಾಸ್ (⭐ ಬೆಸ್ಟ್ ಸೆಲ್ಲರ್), ಪವರ್ ಗ್ಯಾಸ್ (🔥 ಹೈ ಪ್ರೆಶರ್) ಮತ್ತು ಭಾರತ್ ಗ್ಯಾಸ್ ಪೂರೈಸುತ್ತೇವೆ. ಲಭ್ಯವಿರುವ ಸಿಲಿಂಡರ್ ಅಳತೆಗಳು: 12 KG, 15 KG, 17 KG, 19.2 KG, ಮತ್ತು 33 KG LOT. (ಸೂಚನೆ: ನಮ್ಮಲ್ಲಿ 45 KG / 47.5 KG ಸಿಲಿಂಡರ್‌ಗಳು ಲಭ್ಯವಿಲ್ಲ).'
   },
   {
     qEn: 'Do you install commercial gas pipelines?',

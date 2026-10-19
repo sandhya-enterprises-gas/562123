@@ -46,8 +46,8 @@ export const HomePageSectionsHub: React.FC<HomePageSectionsHubProps> = ({
       icon: Flame,
       labelKn: 'ಗ್ಯಾಸ್ ಬ್ರ್ಯಾಂಡ್‌ಗಳು',
       labelEn: 'Gas Brands',
-      subKn: 'ಭಾರತ್, ಗೋ ಗ್ಯಾಸ್, ಪವರ್ ಗ್ಯಾಸ್',
-      subEn: '19kg, 33kg, 47.5kg & Composite',
+      subKn: 'ಗೋ ಗ್ಯಾಸ್, ಪವರ್ ಗ್ಯಾಸ್ & ಭಾರತ್',
+      subEn: '12kg, 15kg, 17kg, 19.2kg & 33kg LOT',
       badgeKn: 'ಅಧಿಕೃತ ಪೂರೈಕೆ',
       badgeEn: 'Official Brands',
       color: 'from-orange-500 to-amber-600'
@@ -59,7 +59,7 @@ export const HomePageSectionsHub: React.FC<HomePageSectionsHubProps> = ({
       labelEn: 'Services & Pipeline',
       subKn: 'ಕಮರ್ಷಿಯಲ್ ಪೈಪ್‌ಲೈನ್ & ಮ್ಯಾನಿಫೋಲ್ಡ್',
       subEn: 'Manifold Installation & 24/7 Support',
-      badgeKn: 'PESO ಗುಣಮಟ್ಟ',
+      badgeKn: 'ಗುಣಮಟ್ಟದ ಸೇವೆ',
       badgeEn: 'Certified',
       color: 'from-blue-600 to-indigo-600'
     },

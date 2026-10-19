@@ -101,9 +101,9 @@ export const TrackOrderPage: React.FC<TrackOrderPageProps> = ({ lang }) => {
     },
     {
       num: 2,
-      titleEn: 'PESO Safety & Net Weight Checked',
-      titleKn: 'ಸುರಕ್ಷತೆ ಮತ್ತು ನಿವ್ವಳ ತೂಕ ತಪಾಸಣೆ',
-      descEn: '100% PESO inspection passed, valve sealed with holographic tamper-proof seal.',
+      titleEn: 'Safety & Calibrated Net Weight Checked',
+      titleKn: 'ಸುರಕ್ಷತೆ ಮತ್ತು ನಿಖರ ತೂಕ ತಪಾಸಣೆ',
+      descEn: '100% digital weight inspection passed, valve sealed with holographic tamper-proof seal.',
       descKn: '100% ನಿಖರ ತೂಕ ಮತ್ತು ಕವಾಟ ಸೋರಿಕೆ ಮುಕ್ತ ಮುದ್ರೆ ಪರಿಶೀಲಿಸಲಾಗಿದೆ.'
     },
     {

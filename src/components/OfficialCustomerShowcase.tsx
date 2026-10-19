@@ -108,7 +108,7 @@ export const OfficialCustomerShowcase: React.FC<OfficialCustomerShowcaseProps> =
           })}
         </div>
 
-        {/* Wide Cylinder Portfolio Spotlight (12kg, 17kg, 19kg, 33kg, 45kg LOT/VOT) */}
+        {/* Wide Cylinder Portfolio Spotlight (12kg, 15kg, 17kg, 19.2kg & 33kg LOT) */}
         <div className="bg-slate-950/90 rounded-2xl border border-slate-800 p-6 sm:p-8 space-y-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-5">
             <div>
@@ -116,7 +116,7 @@ export const OfficialCustomerShowcase: React.FC<OfficialCustomerShowcaseProps> =
                 {lang === 'kn' ? 'ಸಂಪೂರ್ಣ ಸಿಲಿಂಡರ್ ಶ್ರೇಣಿ' : 'Comprehensive LPG Portfolio'}
               </div>
               <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mt-0.5">
-                12kg, 17kg, 19kg, 33kg & 45kg (LOT/VOT)
+                12kg, 15kg, 17kg, 19.2kg & 33kg LOT
               </h3>
             </div>
             <div className="flex items-center gap-2">

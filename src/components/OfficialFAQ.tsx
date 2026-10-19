@@ -52,8 +52,8 @@ export const OFFICIAL_FAQS: FAQItem[] = [
     badgeKn: 'ಬಲ್ಕ್ ಸಪ್ಲೈ ಕಾರಿಡಾರ್',
     qEn: 'What are the delivery schedules for Tumkur Road, Dobbaspet, and Sira bulk corridors?',
     qKn: 'ತುಮಕೂರು ರಸ್ತೆ, ಡಾಬಸ್‌ಪೇಟೆ ಮತ್ತು ಶಿರಾ ಕಾರಿಡಾರ್‌ಗಳಿಗೆ ಬಲ್ಕ್ ಸಪ್ಲೈ ನಿಯಮಗಳು ಮತ್ತು ವೇಳಾಪಟ್ಟಿ ಯಾವುವು?',
-    aEn: 'We operate dedicated daily delivery vehicles across the Tumkur Road highway belt, Nelamangala Industrial Area, and Dobbaspet. For extended corridors like Sira and industrial outer rings, dedicated truck dispatch is scheduled for bulk requirements of 10 to 15 commercial cylinders (19kg / 47.5kg) within 24 hours of booking.',
-    aKn: 'ತುಮಕೂರು ರಸ್ತೆ ಹೆದ್ದಾರಿ, ನೆಲಮಂಗಲ ಕೈಗಾರಿಕಾ ಪ್ರದೇಶ ಹಾಗೂ ಡಾಬಸ್‌ಪೇಟೆಗೆ ನಮ್ಮ ನಿತ್ಯದ ಡೆಲಿವರಿ ವಾಹನಗಳು ಸಂಚರಿಸುತ್ತವೆ. ಶಿರಾ ಹಾಗೂ ದೂರದ ಬಲ್ಕ್ ಕಾರಿಡಾರ್‌ಗಳಿಗೆ ಕನಿಷ್ಠ 10 ರಿಂದ 15 ಕಮರ್ಷಿಯಲ್ ಸಿಲಿಂಡರ್‌ಗಳ (19kg / 47.5kg) ಬೃಹತ್ ಆರ್ಡರ್‌ಗಳಿಗೆ 24 ಗಂಟೆಯೊಳಗೆ ಮೀಸಲಾದ ಸರಕು ಸಾಗಣೆ ವಾಹನದಲ್ಲಿ ನೇರ ಡೆಲಿವರಿ ಸೌಲಭ್ಯವಿದೆ.'
+    aEn: 'We operate dedicated daily delivery vehicles across the Tumkur Road highway belt, Nelamangala Industrial Area, and Dobbaspet. For extended corridors like Sira and industrial outer rings, dedicated truck dispatch is scheduled for bulk requirements of 10 to 15 commercial cylinders (19.2kg / 33kg LOT) within 24 hours of booking.',
+    aKn: 'ತುಮಕೂರು ರಸ್ತೆ ಹೆದ್ದಾರಿ, ನೆಲಮಂಗಲ ಕೈಗಾರಿಕಾ ಪ್ರದೇಶ ಹಾಗೂ ಡಾಬಸ್‌ಪೇಟೆಗೆ ನಮ್ಮ ನಿತ್ಯದ ಡೆಲಿವರಿ ವಾಹನಗಳು ಸಂಚರಿಸುತ್ತವೆ. ಶಿರಾ ಹಾಗೂ ದೂರದ ಬಲ್ಕ್ ಕಾರಿಡಾರ್‌ಗಳಿಗೆ ಕನಿಷ್ಠ 10 ರಿಂದ 15 ಕಮರ್ಷಿಯಲ್ ಸಿಲಿಂಡರ್‌ಗಳ (19.2kg / 33kg LOT) ಬೃಹತ್ ಆರ್ಡರ್‌ಗಳಿಗೆ 24 ಗಂಟೆಯೊಳಗೆ ಮೀಸಲಾದ ಸರಕು ಸಾಗಣೆ ವಾಹನದಲ್ಲಿ ನೇರ ಡೆಲಿವರಿ ಸೌಲಭ್ಯವಿದೆ.'
   },
   {
     id: 'faq-del-3',

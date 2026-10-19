@@ -73,7 +73,7 @@ export interface CustomerAccount {
   area: string;
   pincode: string;
   password?: string;
-  preferredBrand: 'Bharat Gas 19kg' | 'Bharat Gas 47.5kg' | 'Go Gas 21kg' | 'Power Gas 19kg';
+  preferredBrand: 'Bharat Gas 19.2kg' | 'Bharat Gas 33kg LOT' | 'Go Gas 17kg' | 'Go Gas 33kg LOT' | 'Power Gas 19.2kg' | '12kg Commercial' | '15kg Commercial' | string;
   balanceAmount: number; // Outstanding amount in INR
   emptyCylindersDue: number; // Empty / MT cylinders due to be returned
   createdAt: string;

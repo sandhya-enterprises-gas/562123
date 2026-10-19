@@ -798,7 +798,7 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
                         {lang === 'kn' ? 'ಸಿಲಿಂಡರ್ ಆಯ್ಕೆಮಾಡಿ' : 'Select Quantity & Brand'}
                       </strong>
                       <span className="text-slate-400 text-[11px] block mt-0.5">
-                        {lang === 'kn' ? '19kg ವಾಣಿಜ್ಯ ಅಥವಾ 47.5kg ಆಯ್ಕೆಮಾಡಿ' : '19kg Commercial or 47.5kg Jumbo'}
+                        {lang === 'kn' ? '19.2kg ವಾಣಿಜ್ಯ ಅಥವಾ 33kg LOT ಆಯ್ಕೆಮಾಡಿ' : '19.2kg Commercial or 33kg LOT'}
                       </span>
                     </div>
 
@@ -1048,10 +1048,11 @@ export const CustomerPortal: React.FC<CustomerPortalProps> = ({ lang }) => {
                       onChange={(e) => setOrderType(e.target.value)}
                       className="w-full px-2.5 py-2 bg-slate-50 border border-slate-300 rounded-lg text-xs font-bold text-slate-900 focus:outline-none"
                     >
-                      <option value="19kg Commercial VOT">19 KG Commercial VOT</option>
-                      <option value="47.5kg Industrial">47.5 KG Industrial Bulk</option>
-                      <option value="33kg Commercial">33 KG Commercial</option>
-                      <option value="21kg Private">21 KG Private</option>
+                      <option value="19.2kg Commercial VOT">19.2 KG Commercial VOT</option>
+                      <option value="33kg Commercial LOT">33 KG LOT Commercial</option>
+                      <option value="17kg Commercial">17 KG Commercial / Composite</option>
+                      <option value="15kg Commercial">15 KG Commercial</option>
+                      <option value="12kg Commercial">12 KG Commercial / Composite</option>
                     </select>
                   </div>
 

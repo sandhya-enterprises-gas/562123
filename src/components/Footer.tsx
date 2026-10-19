@@ -151,16 +151,16 @@ export const Footer: React.FC<FooterProps> = ({ lang, onOpenInquiryModal }) => {
             </h4>
             <div className="space-y-1.5 text-xs text-slate-400">
               <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
-                <strong className="text-white">Bharat Gas</strong>: 19kg & 47.5kg
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                <strong className="text-white">Go Gas</strong>: 12kg, 17kg, 19.2kg & 33kg LOT <span className="text-[10px] text-emerald-400 font-bold">(⭐ Recommended)</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                <strong className="text-white">GoGas</strong>: 17kg, 21kg & 33kg
+                <strong className="text-white">Power Gas</strong>: 12kg, 15kg, 17kg, 19.2kg & 33kg LOT <span className="text-[10px] text-blue-400 font-bold">(🔥 Popular)</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                <strong className="text-white">Power Gas</strong>: Commercial & Domestic
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+                <strong className="text-white">Bharat Gas</strong>: 19.2kg Commercial VOT
               </div>
               <div className="pt-1.5 text-slate-400 text-[11px] leading-relaxed">
                 <strong className="text-orange-400">Coverage:</strong> Nelamangala (562123), Dobbaspet, Tumkur Road, Bangalore Rural.

@@ -37,12 +37,12 @@ export const HomeTrustStrip: React.FC<HomeTrustStripProps> = ({
     },
     {
       icon: ShieldCheck,
-      titleKn: 'PESO & ಸುರಕ್ಷತಾ ಪ್ರಮಾಣಿತ',
-      titleEn: 'PESO & Safety Compliant',
-      descKn: 'ಅಧಿಕೃತ ಸಿಲಿಂಡರ್ ಸೀಲ್, ಸುರಕ್ಷಿತ ವಾಲ್ವ್ ಮತ್ತು ಗುಣಮಟ್ಟದ ಮಾನದಂಡ.',
-      descEn: 'Tamper-proof safety seals, authentic testing & compliance.',
-      badgeKn: 'ಅಧಿಕೃತ ಡೀಲರ್',
-      badgeEn: 'Authorized',
+      titleKn: '2010 ರಿಂದ ವಿಶ್ವಾಸಾರ್ಹ ಸೇವೆ',
+      titleEn: 'Trusted Since 2010',
+      descKn: '16+ ವರ್ಷಗಳ ಅನುಭವ, ಅಧಿಕೃತ ಸಿಲಿಂಡರ್ ಸೀಲ್ ಮತ್ತು ನಿಷ್ಠಾವಂತ ವಾಣಿಜ್ಯ ಸೇವೆ.',
+      descEn: '16+ years experience, tamper-proof seals & dedicated business LPG service.',
+      badgeKn: '16+ ವರ್ಷಗಳ ವಿಶ್ವಾಸ',
+      badgeEn: 'Since 2010',
       actionSection: 'services' as const
     },
     {

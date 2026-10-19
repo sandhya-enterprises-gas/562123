@@ -514,9 +514,11 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                   {[
-                    { id: '19kg Commercial VOT', label: '19 KG Commercial (VOT)', sub: 'Standard Hotel & Kitchen' },
-                    { id: '33kg Commercial LOT/VOT', label: '33 KG Commercial', sub: 'High Volume Burners' },
-                    { id: '47.5kg Industrial Bulk', label: '47.5 KG Industrial', sub: 'Factory / Heavy Catering' }
+                    { id: '12kg Commercial', label: '12 KG Commercial', sub: 'Cafes & Food Trucks' },
+                    { id: '15kg Commercial', label: '15 KG Commercial', sub: 'Bakeries & Canteens' },
+                    { id: '17kg Commercial', label: '17 KG Commercial', sub: 'High-Efficiency Kitchens' },
+                    { id: '19.2kg Commercial VOT', label: '19.2 KG Commercial', sub: 'Standard Hotel Workhorse' },
+                    { id: '33kg LOT Commercial', label: '33 KG LOT Industrial', sub: 'Liquid Off-Take Manifolds' }
                   ].map((cyl) => (
                     <button
                       key={cyl.id}
@@ -716,7 +718,7 @@ export const CylinderBookingPage: React.FC<CylinderBookingPageProps> = ({ lang }
               <ul className="space-y-2.5 text-slate-300 text-xs">
                 <li className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>100% PESO Certified Net Weight Inspection on Delivery</span>
+                  <span>100% Calibrated Electronic Net Weight Inspection on Delivery</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
